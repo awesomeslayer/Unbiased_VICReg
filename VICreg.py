@@ -37,28 +37,37 @@ def vicreg_loss_biased(x, y, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0):
     # Total loss
     loss = sim_coeff * repr_loss + std_coeff * std_loss + cov_coeff * cov_loss
     return loss
-
 def vicreg_loss_unbiased(x, y, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0):
-    N, D = x.size()
+    N, D = x.size()  # N is batch size, D is feature dimension
+
+    # Invariance loss (representation loss)
     repr_loss = F.mse_loss(x, y)
     
+    # Concatenate representations
     combined = torch.cat([x, y], dim=0)
     
+    # Random permutation of indices and split into two groups
     indices = torch.randperm(N)
-    z1_indices = indices[N//2]  
-    z2_indices = indices[N//2:]  
+    z1_indices = indices[:N//2]  # First half for z1
+    z2_indices = indices[N//2:]  # Second half for z2
 
-    z1 = combined[z1_indices]
-    z2 = combined[z2_indices]
+    z1 = combined[z1_indices]  # List of vectors in z1
+    z2 = combined[z2_indices]  # List of vectors in z2
 
-    cov_z1 = (z1.T @ z1) / (N//2 - 1)
-    cov_z2 = (z2.T @ z2) / (N//2 - 1)
+    # Compute covariance matrices
+    cov_z1 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z1]) / (N//2 - 1)
+    cov_z2 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z2]) / (N//2 - 1)
 
-    I = torch.eye(cov_z1.size(0)).to(cov_z1.device)
+    # Identity matrix for covariance normalization
+    I = torch.eye(D).to(cov_z1.device)
 
-    cov_diff = (cov_z1 - I) @ (cov_z2 - I)  
+    # Covariance difference <cov_z1 - I, cov_z2 - I>
+    cov_diff = (cov_z1 - I) @ (cov_z2 - I)
+    
+    # Covariance loss based on Frobenius norm
     cov_loss = torch.norm(cov_diff, p='fro')
 
+    # Total loss
     loss = sim_coeff * repr_loss + cov_coeff * cov_loss
     return loss
 
