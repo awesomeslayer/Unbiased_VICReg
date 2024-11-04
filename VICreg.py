@@ -143,7 +143,7 @@ def linear_evaluation(model, device, trainloader, testloader):
         param.requires_grad = False
     # Define a linear classifier
     classifier = nn.Linear(128, 10).to(device)
-    optimizer = optim.Adam(classifier.parameters(), lr=0.001)
+    optimizer = optim.Adam(classifier.parameters(), lr=0.03)
     criterion = nn.CrossEntropyLoss()
     # Training loop
     for epoch in range(5):
