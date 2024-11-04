@@ -25,12 +25,43 @@ from distributed import init_distributed_mode
 import resnet
 
 
+import numpy as np
+import pickle
+import os
+
+def unpickle(file):
+    with open(file, 'rb') as fo:
+        dict = pickle.load(fo, encoding='bytes')
+    return dict
+
+def load_cifar10(data_dir):
+    train_data = []
+    train_labels = []
+
+    # Загрузка 5 тренировочных батчей
+    for i in range(1, 6):
+        batch = unpickle(os.path.join(data_dir, f"data_batch_{i}"))
+        train_data.append(batch[b'data'])
+        train_labels.extend(batch[b'labels'])
+
+    # Объединение данных в один массив
+    train_data = np.vstack(train_data).reshape(-1, 3, 32, 32)
+    train_labels = np.array(train_labels)
+
+    # Загрузка тестового набора
+    test_batch = unpickle(os.path.join(data_dir, "test_batch"))
+    test_data = test_batch[b'data'].reshape(-1, 3, 32, 32)
+    test_labels = np.array(test_batch[b'labels'])
+
+    return (train_data, train_labels), (test_data, test_labels)
+
+
 def get_arguments():
     parser = argparse.ArgumentParser(description="Pretrain a resnet model with VICReg", add_help=False)
 
     # Data
-    parser.add_argument("--data-dir", type=Path, default="/path/to/imagenet", required=True,
-                        help='Path to the image net dataset')
+    parser.add_argument("--data-dir", type=Path, default="/path/to/cifar10", required=True,
+                        help='Path to the CIFAR-10 dataset')  # Обновили путь к CIFAR-10
 
     # Checkpoints
     parser.add_argument("--exp-dir", type=Path, default="./exp",
@@ -76,7 +107,6 @@ def get_arguments():
 
     return parser
 
-
 def main(args):
     torch.backends.cudnn.benchmark = True
     init_distributed_mode(args)
@@ -91,8 +121,16 @@ def main(args):
 
     transforms = aug.TrainTransform()
 
-    dataset = datasets.ImageFolder(args.data_dir / "train", transforms)
+    # Загрузка CIFAR-10
+    (train_data, train_labels), (test_data, test_labels) = load_cifar10(args.data_dir)
+
+    train_data = torch.tensor(train_data, dtype=torch.float32).permute(0, 2, 3, 1)  # Преобразование к [batch, 32, 32, 3]
+    train_labels = torch.tensor(train_labels, dtype=torch.long)
+
+    # Создаем кастомный Dataset для CIFAR-10
+    dataset = torch.utils.data.TensorDataset(train_data, train_labels)
     sampler = torch.utils.data.distributed.DistributedSampler(dataset, shuffle=True)
+
     assert args.batch_size % args.world_size == 0
     per_device_batch_size = args.batch_size // args.world_size
     loader = torch.utils.data.DataLoader(
@@ -106,6 +144,7 @@ def main(args):
     model = VICReg(args).cuda(gpu)
     model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
     model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[gpu])
+
     optimizer = LARS(
         model.parameters(),
         lr=0,
@@ -126,9 +165,10 @@ def main(args):
 
     start_time = last_logging = time.time()
     scaler = torch.cuda.amp.GradScaler()
+
     for epoch in range(start_epoch, args.epochs):
         sampler.set_epoch(epoch)
-        for step, ((x, y), _) in enumerate(loader, start=epoch * len(loader)):
+        for step, (x, y) in enumerate(loader, start=epoch * len(loader)):
             x = x.cuda(gpu, non_blocking=True)
             y = y.cuda(gpu, non_blocking=True)
 
@@ -162,7 +202,6 @@ def main(args):
             torch.save(state, args.exp_dir / "model.pth")
     if args.rank == 0:
         torch.save(model.module.backbone.state_dict(), args.exp_dir / "resnet50.pth")
-
 
 def adjust_learning_rate(args, optimizer, loader, step):
     max_steps = args.epochs * len(loader)
