@@ -7,10 +7,10 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import sys
 
-# Ensure reproducibility
-torch.manual_seed(0)
-np.random.seed(0)
+log_file = open("logs/logs.txt", "a")
+sys.stdout = log_file
 
 # Device configuration
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -194,7 +194,7 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim):
 
 # Experiment with different batch sizes and plot accuracies
 #batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-batch_size = [4]
+batch_sizes = [4]
 num_epochs = 1
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
@@ -236,7 +236,9 @@ for batch_size in batch_sizes:
         vicreg_losses.append(epoch_loss / len(train_loader))
 
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
+    print("Evaluating VICReg") 
     vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 2048)
+    print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%')
     vicreg_accuracies.append(vicreg_acc)
 
     # Unbiased VICReg
@@ -259,7 +261,9 @@ for batch_size in batch_sizes:
             epoch_loss += loss.item()
         unbiased_vicreg_losses.append(epoch_loss / len(train_loader))
     plot_loss_curve(unbiased_vicreg_losses, f'UnbiasedVICReg_{batch_size}')
+    print("Evaluating UnbiasedVICReg")   
     unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 2048)
+    print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%')
     unbiased_vicreg_accuracies.append(unbiased_vicreg_acc)
 
     # SimCLR
@@ -283,7 +287,11 @@ for batch_size in batch_sizes:
             epoch_loss += loss.item()
         simclr_losses.append(epoch_loss / len(train_loader))
     plot_loss_curve(simclr_losses, f'SimCLR_{batch_size}')
+    print("Evaluating SimCLR")
+    # Pass the encoder directly, not a function
     simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 256)
+    print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%')
+    
     simclr_accuracies.append(simclr_acc)
 
 # Plot accuracies
@@ -297,3 +305,6 @@ plt.title(f'Accuracy vs. Batch Size with n_epochs = {num_epochs} for VICReg, Unb
 plt.legend()
 plt.grid(True)
 plt.savefig(f"experiments/main_plot_{num_epochs}.png")
+
+log_file.close()
+sys.stdout = sys.__stdout__
