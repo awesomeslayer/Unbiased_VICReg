@@ -238,7 +238,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
     print("Evaluating VICReg") 
-    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader)
+    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 2048)
     print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%')
     vicreg_accuracies.append(vicreg_acc)
 
@@ -265,7 +265,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(unbiased_vicreg_losses, f'UnbiasedVICReg_{batch_size}')
     print("Evaluating UnbiasedVICReg")   
-    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader)
+    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 2048)
     print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%')
     unbiased_vicreg_accuracies.append(unbiased_vicreg_acc)
 
@@ -293,7 +293,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(simclr_losses, f'SimCLR_{batch_size}')
     print("Evaluating SimCLR")
-    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader)
+    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 256)
     print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%')
     
     simclr_accuracies.append(simclr_acc)
