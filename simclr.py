@@ -139,9 +139,9 @@ def linear_evaluation(encoder, device, train_loader, test_loader):
     return accuracy
 
 # List of batch sizes to experiment with
-batch_sizes = [16]
+batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
 simclr_accuracies = []
-num_epochs = 1
+num_epochs = 20
 for batch_size in batch_sizes:
     print(f"\nRunning experiments with batch size: {batch_size}")
     # Create DataLoaders with the current batch size
@@ -150,7 +150,7 @@ for batch_size in batch_sizes:
 
     # Initialize model
     simclr_model = SimCLR().to(device)
-    optimizer = optim.Adam(simclr_model.parameters(), lr=0.001)
+    optimizer = optim.Adam(simclr_model.parameters(), lr=0.03)
     nt_xent_criterion = NT_XentLoss(batch_size, temperature=0.5)
 
     # Training SimCLR

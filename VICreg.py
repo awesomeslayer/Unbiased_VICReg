@@ -175,10 +175,10 @@ def linear_evaluation(model, device, trainloader, testloader):
     return accuracy
 
 # List of batch sizes to experiment with
-batch_sizes = [16]
+batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
-num_epochs = 1
+num_epochs = 15
 
 for batch_size in batch_sizes:
     print(f"\nRunning experiments with batch size: {batch_size}")
@@ -191,8 +191,8 @@ for batch_size in batch_sizes:
     unbiased_vicreg = UnbiasedVICReg().to(device)
 
     # Optimizers
-    optimizer_vicreg = optim.Adam(vicreg.parameters(), lr=0.001)
-    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg.parameters(), lr=0.001)
+    optimizer_vicreg = optim.Adam(vicreg.parameters(), lr=0.03)
+    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg.parameters(), lr=0.03)
 
     # Training biased VICReg
     for epoch in range(num_epochs):  # Reduced epochs for faster execution
