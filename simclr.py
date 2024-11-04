@@ -1,16 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# Import the data loading function
-from data_loader import get_cifar10_datasets
-from torchvision import transforms
-
+# Ensure reproducibility
 torch.manual_seed(0)
 np.random.seed(0)
 
@@ -75,7 +73,7 @@ class NT_XentLoss(nn.Module):
         loss /= N
         return loss
 
-# Data Augmentation for training
+# Data Augmentation
 train_transform = transforms.Compose([
     transforms.RandomResizedCrop(size=32),
     transforms.RandomHorizontalFlip(),
@@ -85,34 +83,21 @@ train_transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-# Data Transformation for evaluation
-eval_transform = transforms.Compose([
+test_transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-# Specify the root directory for the dataset
-data_root = './data'
-
-# Load Datasets using data_loader.py
-train_dataset, _ = get_cifar10_datasets(train_transform=None, test_transform=None)
-_, test_dataset = get_cifar10_datasets(train_transform=None, test_transform=eval_transform)
+# Load Datasets
+train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=train_transform)
+test_dataset = datasets.CIFAR10(root='./data', train=False, download=True, transform=test_transform)
 
 # Function to create two augmented views
 def get_augmented_views(batch):
-    # Transformation pipeline
-    transform = transforms.Compose([
-        transforms.ToPILImage(),  # Convert tensor to PIL Image
-        transforms.RandomResizedCrop(size=32),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomApply([transforms.ColorJitter(
-            brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1)], p=0.8),
-        transforms.RandomGrayscale(p=0.2),
-        transforms.ToTensor(),  # Convert back to tensor
-    ])
-    xi = torch.stack([transform(img) for img in batch])
-    xj = torch.stack([transform(img) for img in batch])
+    # Convert tensors to PIL Images
+    pil_images = [transforms.ToPILImage()(img) for img in batch]
+    xi = torch.stack([train_transform(img) for img in pil_images])
+    xj = torch.stack([train_transform(img) for img in pil_images])
     return xi.to(device), xj.to(device)
-
 
 
 # Linear Evaluation
@@ -127,6 +112,7 @@ def linear_evaluation(encoder, device, train_loader, test_loader):
     # Training loop
     for epoch in range(5):
         classifier.train()
+        running_loss = 0.0
         for data, target in train_loader:
             data, target = data.to(device), target.to(device)
             with torch.no_grad():
@@ -136,6 +122,7 @@ def linear_evaluation(encoder, device, train_loader, test_loader):
             loss = criterion(output, target)
             loss.backward()
             optimizer.step()
+            running_loss += loss.item()
     # Testing
     classifier.eval()
     correct = 0
@@ -152,9 +139,9 @@ def linear_evaluation(encoder, device, train_loader, test_loader):
     return accuracy
 
 # List of batch sizes to experiment with
-batch_sizes = [64, 128, 256, 512]
+batch_sizes = [16]
 simclr_accuracies = []
-
+num_epochs = 1
 for batch_size in batch_sizes:
     print(f"\nRunning experiments with batch size: {batch_size}")
     # Create DataLoaders with the current batch size
@@ -167,12 +154,11 @@ for batch_size in batch_sizes:
     nt_xent_criterion = NT_XentLoss(batch_size, temperature=0.5)
 
     # Training SimCLR
-    for epoch in range(5):  # Adjust number of epochs as needed
+    for epoch in range(num_epochs):  # Adjust number of epochs as needed
         simclr_model.train()
         running_loss = 0.0
-        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/5 [SimCLR]")
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [SimCLR]")
         for (data, _) in progress_bar:
-            # Apply transformations to create augmented views
             xi, xj = get_augmented_views(data)
             optimizer.zero_grad()
             _, zi = simclr_model(xi)
@@ -186,17 +172,8 @@ for batch_size in batch_sizes:
 
     # Evaluate SimCLR
     print("Evaluating SimCLR")
-
-    # Prepare DataLoaders for evaluation
-    train_evalset, test_evalset = get_cifar10_datasets(train_transform=eval_transform, test_transform=eval_transform)
-    train_evalloader = DataLoader(train_evalset, batch_size=batch_size, shuffle=True)
-    test_evalloader = DataLoader(test_evalset, batch_size=batch_size, shuffle=False)
-
-    # Use the encoder model directly
-    simclr_model.eval()
-    encoder = simclr_model.encoder
-
-    simclr_accuracy = linear_evaluation(encoder, device, train_evalloader, test_evalloader)
+    # Pass the encoder directly, not a function
+    simclr_accuracy = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader)
     print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_accuracy:.2f}%')
     simclr_accuracies.append(simclr_accuracy)
 
@@ -204,7 +181,7 @@ for batch_size in batch_sizes:
     os.makedirs('weights', exist_ok=True)
     torch.save(simclr_model.state_dict(), f'weights/simclr_weights_batchsize_{batch_size}.pth')
 
-# Plotting the accuracies and saving the plot
+# Plotting the accuracies
 plt.figure(figsize=(10, 6))
 plt.plot(batch_sizes, simclr_accuracies, marker='o', label='SimCLR')
 plt.title('Accuracy vs Batch Size for SimCLR')
@@ -212,5 +189,4 @@ plt.xlabel('Batch Size')
 plt.ylabel('Accuracy (%)')
 plt.legend()
 plt.grid(True)
-plt.savefig('simclr_accuracy_vs_batchsize.png')  # Save the plot as an image file
-plt.show()
+plt.savefig("./experiments/simclr.pdf")
