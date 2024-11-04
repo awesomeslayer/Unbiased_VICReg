@@ -193,8 +193,9 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim):
     return accuracy
 
 # Experiment with different batch sizes and plot accuracies
-batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-num_epochs = 15
+#batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+batch_size = [4]
+num_epochs = 1
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
 simclr_accuracies = []
@@ -213,16 +214,17 @@ def plot_loss_curve(losses, model_name):
 for batch_size in batch_sizes:
     print(f"\nRunning experiments with batch size: {batch_size}")
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)    
     # VICReg
     vicreg_model = VICReg().to(device)
     optimizer_vicreg = optim.Adam(vicreg_model.parameters(), lr=0.03)
     vicreg_losses = []
     for epoch in range(num_epochs):
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [SimCLR]")
+
         vicreg_model.train()
         epoch_loss = 0
-        for (data, _) in train_loader:
+        for (data, _) in progress_bar:
             x1, x2 = get_augmented_views(data)
             optimizer_vicreg.zero_grad()
             z1 = vicreg_model(x1)
@@ -232,6 +234,7 @@ for batch_size in batch_sizes:
             optimizer_vicreg.step()
             epoch_loss += loss.item()
         vicreg_losses.append(epoch_loss / len(train_loader))
+
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
     vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 2048)
     vicreg_accuracies.append(vicreg_acc)
@@ -241,9 +244,11 @@ for batch_size in batch_sizes:
     optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg_model.parameters(), lr=0.03)
     unbiased_vicreg_losses = []
     for epoch in range(num_epochs):
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [SimCLR]")
+
         unbiased_vicreg_model.train()
         epoch_loss = 0
-        for (data, _) in train_loader:
+        for (data, _) in progress_bar:
             x1, x2 = get_augmented_views(data)
             optimizer_unbiased_vicreg.zero_grad()
             z1 = unbiased_vicreg_model(x1)
@@ -263,9 +268,11 @@ for batch_size in batch_sizes:
     criterion_simclr = NT_XentLoss(batch_size=batch_size, temperature=0.5)
     simclr_losses = []
     for epoch in range(num_epochs):
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [SimCLR]")
+
         simclr_model.train()
         epoch_loss = 0
-        for (data, _) in train_loader:
+        for (data, _) in progress_bar:
             x1, x2 = get_augmented_views(data)
             optimizer_simclr.zero_grad()
             _, z1 = simclr_model(x1)
