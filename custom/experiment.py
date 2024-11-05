@@ -10,9 +10,10 @@ import os
 import sys
 
 log_file = open("logs/logs.txt", "w")
+print("awesome!", file = log_file, flush=True)
 
 # Device configuration
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0")
 
 # Data augmentation transforms
 train_transform = transforms.Compose([
@@ -175,6 +176,7 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim, l
     for epoch in range(num_epochs_eval):
         progress_bar = tqdm(train_loader, desc=f"Eval Epoch {epoch + 1}/{num_epochs_eval}")
         classifier.train()
+        epoch_loss = 0.0
         for data, target in progress_bar:
             data, target = data.to(device), target.to(device)
             with torch.no_grad():
@@ -184,9 +186,10 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim, l
             loss = criterion(output, target)
             loss.backward()
             optimizer.step()
+            epoch_loss += loss.item()
             progress_bar.set_postfix({'Eval_Loss': f'{loss.item():.4f}'})
 
-        print(f'Epoch {epoch + 1}, Eval_Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
+        print(f'Epoch {epoch + 1}, Eval_Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file, flush=True)
 
     classifier.eval()
     correct = 0
@@ -224,7 +227,7 @@ def plot_loss_curve(losses, model_name):
     plt.savefig(f"experiments/loss/{model_name}.png")
 
 for batch_size in batch_sizes:
-    print(f"\nRunning experiments with batch size: {batch_size}\n", file = log_file)
+    print(f"\nRunning experiments with batch size: {batch_size}\n", file = log_file, flush=True)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)    
     # VICReg
@@ -248,12 +251,12 @@ for batch_size in batch_sizes:
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
         
         vicreg_losses.append(min(epoch_loss / len(train_loader), 228))
-        print(f'VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
+        print(f'VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file, flush=True)
 
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
-    print("Evaluating VICReg\n", file = log_file) 
+    print("Evaluating VICReg\n", file = log_file, flush=True) 
     vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
-    print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%\n', file = log_file)
+    print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%\n', file = log_file, flush=True)
     vicreg_accuracies.append(vicreg_acc)
 
     # Unbiased VICReg
@@ -277,12 +280,12 @@ for batch_size in batch_sizes:
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
         
         unbiased_vicreg_losses.append(min(epoch_loss / len(train_loader), 228))
-        print(f'Unbiased_VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
+        print(f'Unbiased_VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file, flush=True)
 
     plot_loss_curve(unbiased_vicreg_losses, f'UnbiasedVICReg_{batch_size}')
-    print("Evaluating UnbiasedVICReg\n", file = log_file)   
+    print("Evaluating UnbiasedVICReg\n", file = log_file, flush=True)   
     unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
-    print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%\n', file = log_file)
+    print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%\n', file = log_file, flush=True)
     unbiased_vicreg_accuracies.append(unbiased_vicreg_acc)
 
     # SimCLR
@@ -305,12 +308,12 @@ for batch_size in batch_sizes:
             epoch_loss += loss.item()
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
         simclr_losses.append(min(epoch_loss / len(train_loader), 228))
-        print(f'SIMCLR Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
+        print(f'SIMCLR Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file, flush=True)
 
     plot_loss_curve(simclr_losses, f'SimCLR_{batch_size}')
-    print("Evaluating SimCLR\n", file = log_file)
+    print("Evaluating SimCLR\n", file = log_file, flush=True)
     simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
-    print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%\n', file = log_file)
+    print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%\n', file = log_file, flush=True)
     
     simclr_accuracies.append(simclr_acc)
 

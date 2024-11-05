@@ -1,1 +1,82 @@
+awesome!
+
+Running experiments with batch size: 4
+
+VICReg Epoch 1, Loss: 37.2347
+
+VICReg Epoch 2, Loss: 36.0019
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 36.0019
+
+Epoch 2, Eval_Loss: 36.0019
+
+VICReg Accuracy with batch size 4: 31.86%
+
+Unbiased_VICReg Epoch 1, Loss: 11.9428
+
+Unbiased_VICReg Epoch 2, Loss: 11.2592
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 11.2592
+
+Epoch 2, Eval_Loss: 11.2592
+
+Unbiased VICReg Accuracy with batch size 4: 28.89%
+
+SIMCLR Epoch 1, Loss: 1.6996
+
+SIMCLR Epoch 2, Loss: 1.5242
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.5242
+
+Epoch 2, Eval_Loss: 1.5242
+
+SimCLR Accuracy with batch size 4: 33.86%
+
+
+Running experiments with batch size: 8
+
+VICReg Epoch 1, Loss: 35.4978
+
+VICReg Epoch 2, Loss: 34.0628
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 34.0628
+
+Epoch 2, Eval_Loss: 34.0628
+
+VICReg Accuracy with batch size 8: 32.63%
+
+Unbiased_VICReg Epoch 1, Loss: 11.4013
+
+Unbiased_VICReg Epoch 2, Loss: 11.2629
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 11.2629
+
+Epoch 2, Eval_Loss: 11.2629
+
+Unbiased VICReg Accuracy with batch size 8: 25.18%
+
+SIMCLR Epoch 1, Loss: 2.2207
+
+SIMCLR Epoch 2, Loss: 1.9601
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.9601
+
+Epoch 2, Eval_Loss: 1.9601
+
+SimCLR Accuracy with batch size 8: 35.67%
+
+
+Running experiments with batch size: 16
 
