@@ -92,7 +92,7 @@ class VICReg(nn.Module):
         self.projector = nn.Sequential(
             nn.Linear(feature_dim, 512),
             nn.ReLU(),
-            nn.Linear(512, 128)
+            nn.Linear(512, 512)
         )
 
     def forward(self, x):
@@ -121,7 +121,7 @@ class SimCLR(nn.Module):
         self.projector = nn.Sequential(
             nn.Linear(feature_dim, 512),
             nn.ReLU(),
-            nn.Linear(512, 128)
+            nn.Linear(512, 512)
         )
 
     def forward(self, x):
