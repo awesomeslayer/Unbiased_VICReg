@@ -139,7 +139,7 @@ def linear_evaluation(encoder, device, train_loader, test_loader):
     return accuracy
 
 # List of batch sizes to experiment with
-batch_sizes = [512]
+batch_sizes = [64, 128, 256, 512]
 simclr_accuracies = []
 
 for batch_size in batch_sizes:
@@ -154,7 +154,7 @@ for batch_size in batch_sizes:
     nt_xent_criterion = NT_XentLoss(batch_size, temperature=0.5)
 
     # Training SimCLR
-    for epoch in range(1):  # Adjust number of epochs as needed
+    for epoch in range(5):  # Adjust number of epochs as needed
         simclr_model.train()
         running_loss = 0.0
         progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/5 [SimCLR]")

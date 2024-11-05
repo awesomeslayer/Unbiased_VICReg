@@ -37,39 +37,33 @@ def vicreg_loss_biased(x, y, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0):
     # Total loss
     loss = sim_coeff * repr_loss + std_coeff * std_loss + cov_coeff * cov_loss
     return loss
+
 def vicreg_loss_unbiased(x, y, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0):
-    N, D = x.size()  # N is batch size, D is feature dimension
-
-    # Invariance loss (representation loss)
+    # This is your current vicreg_loss function
+    # Invariance loss
     repr_loss = F.mse_loss(x, y)
-    
-    # Concatenate representations
-    combined = torch.cat([x, y], dim=0)
-    
-    # Random permutation of indices and split into two groups
-    indices = torch.randperm(N)
-    z1_indices = indices[:N//2]  # First half for z1
-    z2_indices = indices[N//2:]  # Second half for z2
 
-    z1 = combined[z1_indices]  # List of vectors in z1
-    z2 = combined[z2_indices]  # List of vectors in z2
+    # Variance loss
+    std_x = torch.sqrt(x.var(dim=0, unbiased=True) + 1e-04)
+    std_y = torch.sqrt(y.var(dim=0, unbiased=True) + 1e-04)
+    std_loss = torch.mean(F.relu(1 - std_x)) + torch.mean(F.relu(1 - std_y))
 
-    # Compute covariance matrices
-    cov_z1 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z1]) / (N//2 - 1)
-    cov_z2 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z2]) / (N//2 - 1)
+    # Center the embeddings
+    x = x - x.mean(dim=0)
+    y = y - y.mean(dim=0)
 
-    # Identity matrix for covariance normalization
-    I = torch.eye(D).to(cov_z1.device)
+    # Unbiased covariance estimation (divide by N - 1)
+    N, D = x.size()
+    cov_x = (x.T @ x) / (N - 1)
+    cov_y = (y.T @ y) / (N - 1)
 
-    # Covariance difference <cov_z1 - I, cov_z2 - I>
-    cov_diff = (cov_z1 - I) @ (cov_z2 - I)
-    
-    # Covariance loss based on Frobenius norm
-    cov_loss = torch.norm(cov_diff, p='fro')
+    # Covariance loss
+    cov_loss = (off_diagonal(cov_x).pow_(2).sum() / D) + (off_diagonal(cov_y).pow_(2).sum() / D)
 
     # Total loss
-    loss = sim_coeff * repr_loss + cov_coeff * cov_loss
+    loss = sim_coeff * repr_loss + std_coeff * std_loss + cov_coeff * cov_loss
     return loss
+
 
 # Standard VICReg Model
 class VICReg(nn.Module):
@@ -143,7 +137,7 @@ def linear_evaluation(model, device, trainloader, testloader):
         param.requires_grad = False
     # Define a linear classifier
     classifier = nn.Linear(128, 10).to(device)
-    optimizer = optim.Adam(classifier.parameters(), lr=0.03)
+    optimizer = optim.Adam(classifier.parameters(), lr=0.001)
     criterion = nn.CrossEntropyLoss()
     # Training loop
     for epoch in range(5):
@@ -175,11 +169,9 @@ def linear_evaluation(model, device, trainloader, testloader):
     return accuracy
 
 # List of batch sizes to experiment with
-#batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-batch_sizes = [512]
+batch_sizes = [64, 128, 256, 512]
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
-num_epochs = 1
 
 for batch_size in batch_sizes:
     print(f"\nRunning experiments with batch size: {batch_size}")
@@ -192,14 +184,14 @@ for batch_size in batch_sizes:
     unbiased_vicreg = UnbiasedVICReg().to(device)
 
     # Optimizers
-    optimizer_vicreg = optim.Adam(vicreg.parameters(), lr=0.03)
-    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg.parameters(), lr=0.03)
+    optimizer_vicreg = optim.Adam(vicreg.parameters(), lr=0.001)
+    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg.parameters(), lr=0.001)
 
     # Training biased VICReg
-    for epoch in range(num_epochs):  # Reduced epochs for faster execution
+    for epoch in range(5):  # Reduced epochs for faster execution
         vicreg.train()
         running_loss = 0.0
-        progress_bar = tqdm(trainloader, desc=f"Epoch {epoch + 1}/{num_epochs} [VICReg]")
+        progress_bar = tqdm(trainloader, desc=f"Epoch {epoch + 1}/5 [VICReg]")
         for (data, _) in progress_bar:
             # Generate two augmented views
             x1, x2 = get_augmented_views(data)
@@ -214,10 +206,10 @@ for batch_size in batch_sizes:
         print(f'VICReg Epoch {epoch + 1}, Loss: {running_loss / len(trainloader):.4f}')
 
     # Training UnbiasedVICReg
-    for epoch in range(num_epochs):  # Reduced epochs for faster execution
+    for epoch in range(5):  # Reduced epochs for faster execution
         unbiased_vicreg.train()
         running_loss = 0.0
-        progress_bar = tqdm(trainloader, desc=f"Epoch {epoch + 1}/{num_epochs} [UnbiasedVICReg]")
+        progress_bar = tqdm(trainloader, desc=f"Epoch {epoch + 1}/5 [UnbiasedVICReg]")
         for (data, _) in progress_bar:
             # Generate two augmented views
             x1, x2 = get_augmented_views(data)
@@ -252,4 +244,4 @@ plt.xlabel('Batch Size')
 plt.ylabel('Accuracy (%)')
 plt.legend()
 plt.grid(True)
-plt.savefig("experiments/vicreg.png")
+plt.show()

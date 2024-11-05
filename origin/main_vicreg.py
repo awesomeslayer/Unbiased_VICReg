@@ -1,10 +1,3 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
-
-
 from pathlib import Path
 import argparse
 import json
@@ -25,43 +18,12 @@ from distributed import init_distributed_mode
 import resnet
 
 
-import numpy as np
-import pickle
-import os
-
-def unpickle(file):
-    with open(file, 'rb') as fo:
-        dict = pickle.load(fo, encoding='bytes')
-    return dict
-
-def load_cifar10(data_dir):
-    train_data = []
-    train_labels = []
-
-    # Загрузка 5 тренировочных батчей
-    for i in range(1, 6):
-        batch = unpickle(os.path.join(data_dir, f"data_batch_{i}"))
-        train_data.append(batch[b'data'])
-        train_labels.extend(batch[b'labels'])
-
-    # Объединение данных в один массив
-    train_data = np.vstack(train_data).reshape(-1, 3, 32, 32)
-    train_labels = np.array(train_labels)
-
-    # Загрузка тестового набора
-    test_batch = unpickle(os.path.join(data_dir, "test_batch"))
-    test_data = test_batch[b'data'].reshape(-1, 3, 32, 32)
-    test_labels = np.array(test_batch[b'labels'])
-
-    return (train_data, train_labels), (test_data, test_labels)
-
-
 def get_arguments():
     parser = argparse.ArgumentParser(description="Pretrain a resnet model with VICReg", add_help=False)
 
     # Data
-    parser.add_argument("--data-dir", type=Path, default="/path/to/cifar10", required=True,
-                        help='Path to the CIFAR-10 dataset')  # Обновили путь к CIFAR-10
+    parser.add_argument("--data-dir", type=Path, default="/path/to/imagenet", required=True,
+                        help='Path to the image net dataset')
 
     # Checkpoints
     parser.add_argument("--exp-dir", type=Path, default="./exp",
@@ -107,6 +69,7 @@ def get_arguments():
 
     return parser
 
+
 def main(args):
     torch.backends.cudnn.benchmark = True
     init_distributed_mode(args)
@@ -121,16 +84,8 @@ def main(args):
 
     transforms = aug.TrainTransform()
 
-    # Загрузка CIFAR-10
-    (train_data, train_labels), (test_data, test_labels) = load_cifar10(args.data_dir)
-
-    train_data = torch.tensor(train_data, dtype=torch.float32).permute(0, 2, 3, 1)  # Преобразование к [batch, 32, 32, 3]
-    train_labels = torch.tensor(train_labels, dtype=torch.long)
-
-    # Создаем кастомный Dataset для CIFAR-10
-    dataset = torch.utils.data.TensorDataset(train_data, train_labels)
+    dataset = datasets.ImageFolder(args.data_dir / "train", transforms)
     sampler = torch.utils.data.distributed.DistributedSampler(dataset, shuffle=True)
-
     assert args.batch_size % args.world_size == 0
     per_device_batch_size = args.batch_size // args.world_size
     loader = torch.utils.data.DataLoader(
@@ -144,7 +99,6 @@ def main(args):
     model = VICReg(args).cuda(gpu)
     model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
     model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[gpu])
-
     optimizer = LARS(
         model.parameters(),
         lr=0,
@@ -165,10 +119,9 @@ def main(args):
 
     start_time = last_logging = time.time()
     scaler = torch.cuda.amp.GradScaler()
-
     for epoch in range(start_epoch, args.epochs):
         sampler.set_epoch(epoch)
-        for step, (x, y) in enumerate(loader, start=epoch * len(loader)):
+        for step, ((x, y), _) in enumerate(loader, start=epoch * len(loader)):
             x = x.cuda(gpu, non_blocking=True)
             y = y.cuda(gpu, non_blocking=True)
 
@@ -202,6 +155,7 @@ def main(args):
             torch.save(state, args.exp_dir / "model.pth")
     if args.rank == 0:
         torch.save(model.module.backbone.state_dict(), args.exp_dir / "resnet50.pth")
+
 
 def adjust_learning_rate(args, optimizer, loader, step):
     max_steps = args.epochs * len(loader)
@@ -257,36 +211,7 @@ class VICReg(nn.Module):
             + self.args.cov_coeff * cov_loss
         )
         return loss
-    
-    def unbiased_forward(self, x, y):
-        x = self.projector(self.backbone(x))
-        y = self.projector(self.backbone(y))
 
-        repr_loss = F.mse_loss(x, y)
-        
-        combined = torch.cat([x, y], dim=0)
-        
-        indices = torch.randperm(self.args.batch_size)
-        z1_indices = indices[:self.args.batch_size//2]  
-        z2_indices = indices[self.args.batch_size//2:]  
-
-        z1 = combined[z1_indices]
-        z2 = combined[z2_indices]
-
-        cov_z1 = (z1.T @ z1) / (self.args.batch_size//2 - 1)
-        cov_z2 = (z2.T @ z2) / (self.args.batch_size//2 - 1)
-
-        I = torch.eye(cov_z1.size(0)).to(cov_z1.device)
-
-        cov_diff = (cov_z1 - I) @ (cov_z2 - I)  
-        cov_loss = torch.norm(cov_diff, p='fro')
-
-        loss = (
-            self.args.sim_coeff * repr_loss
-            + self.args.cov_coeff * cov_loss
-        )
-        return loss
-    
 
 def Projector(args, embedding):
     mlp_spec = f"{embedding}-{args.mlp}"
