@@ -211,6 +211,46 @@ class VICReg(nn.Module):
             + self.args.cov_coeff * cov_loss
         )
         return loss
+    
+
+class Unbiased_VICReg(nn.Module):
+    def __init__(self, args):
+        super().__init__()
+        self.args = args
+        self.num_features = int(args.mlp.split("-")[-1])
+        self.backbone, self.embedding = resnet.__dict__[args.arch](
+            zero_init_residual=True
+        )
+        self.projector = Projector(args, self.embedding)
+
+    def forward(self, x, y):
+        x = self.projector(self.backbone(x))
+        y = self.projector(self.backbone(y))
+
+        repr_loss = F.mse_loss(x, y)
+
+        x = torch.cat(FullGatherLayer.apply(x), dim=0)
+        y = torch.cat(FullGatherLayer.apply(y), dim=0)
+        x = x - x.mean(dim=0)
+        y = y - y.mean(dim=0)
+
+        combined = torch.cat([x, y], dim=0)
+        indices = torch.randperm(self.args.batch_size)
+        
+        z1 = combined[indices[:self.args.batch_size//2]]
+        z2 = combined[indices[self.args.batch_size//2:]]
+        
+        cov_z1 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z1]) / (self.args.batch_size//2 - 1)
+        cov_z2 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z2]) / (self.args.batch_size//2 - 1)
+        
+        I = torch.eye(self.num_features).to(cov_z1.device)
+        
+        cov_diff = (cov_z1 - I) @ (cov_z2 - I)
+        cov_loss = torch.norm(cov_diff, p='fro')
+        loss = self.args.sim_coeff * repr_loss + self.args.cov_coeff * cov_loss
+    
+        return loss
+    
 
 
 def Projector(args, embedding):
