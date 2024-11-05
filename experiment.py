@@ -158,15 +158,16 @@ class NT_XentLoss(nn.Module):
         return loss
 
 # Training and evaluation loop (shared for all models)
-def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim):
+def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim, lr):
     for param in encoder.parameters():
         param.requires_grad = False
     classifier = nn.Linear(feature_dim, 10).to(device)
-    optimizer = optim.Adam(classifier.parameters(), lr=0.03)
+    optimizer = optim.Adam(classifier.parameters(), lr=lr)
     criterion = nn.CrossEntropyLoss()
-    for epoch in range(5):
+    for epoch in range(10):
+        progress_bar = tqdm(train_loader, desc=f"Eval Epoch {epoch + 1}/10")
         classifier.train()
-        for data, target in train_loader:
+        for data, target in progress_bar:
             data, target = data.to(device), target.to(device)
             with torch.no_grad():
                 features = encoder(data)
@@ -175,6 +176,10 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim):
             loss = criterion(output, target)
             loss.backward()
             optimizer.step()
+            progress_bar.set_postfix({'Eval_Loss': f'{loss.item():.4f}'})
+
+        print(f'Epoch {epoch + 1}, Eval_Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
+
     classifier.eval()
     correct = 0
     total = 0
@@ -191,7 +196,8 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim):
 
 # Experiment with different batch sizes and plot accuracies
 batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-num_epochs = 15
+num_epochs = 20
+lr = 0.01
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
 simclr_accuracies = []
@@ -213,7 +219,7 @@ for batch_size in batch_sizes:
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)    
     # VICReg
     vicreg_model = VICReg().to(device)
-    optimizer_vicreg = optim.Adam(vicreg_model.parameters(), lr=0.03)
+    optimizer_vicreg = optim.Adam(vicreg_model.parameters(), lr=lr)
     vicreg_losses = []
     for epoch in range(num_epochs):
         progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [VICReg]")
@@ -231,18 +237,18 @@ for batch_size in batch_sizes:
             epoch_loss += loss.item()
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
         
-        vicreg_losses.append(epoch_loss / len(train_loader))
+        vicreg_losses.append(min(epoch_loss / len(train_loader), 228))
         print(f'VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
 
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
     print("Evaluating VICReg\n", file = log_file) 
-    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 128)
+    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 256, lr)
     print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%\n', file = log_file)
     vicreg_accuracies.append(vicreg_acc)
 
     # Unbiased VICReg
     unbiased_vicreg_model = UnbiasedVICReg().to(device)
-    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg_model.parameters(), lr=0.03)
+    optimizer_unbiased_vicreg = optim.Adam(unbiased_vicreg_model.parameters(), lr=lr)
     unbiased_vicreg_losses = []
     for epoch in range(num_epochs):
         progress_bar = tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} [Unbiased_VICReg]")
@@ -260,18 +266,18 @@ for batch_size in batch_sizes:
             epoch_loss += loss.item()
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
         
-        unbiased_vicreg_losses.append(epoch_loss / len(train_loader))
+        unbiased_vicreg_losses.append(min(epoch_loss / len(train_loader), 228))
         print(f'Unbiased_VICReg Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
 
     plot_loss_curve(unbiased_vicreg_losses, f'UnbiasedVICReg_{batch_size}')
     print("Evaluating UnbiasedVICReg\n", file = log_file)   
-    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 128)
+    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 256, lr)
     print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%\n', file = log_file)
     unbiased_vicreg_accuracies.append(unbiased_vicreg_acc)
 
     # SimCLR
     simclr_model = SimCLR().to(device)
-    optimizer_simclr = optim.Adam(simclr_model.parameters(), lr=0.03)
+    optimizer_simclr = optim.Adam(simclr_model.parameters(), lr=lr)
     criterion_simclr = NT_XentLoss(batch_size=batch_size, temperature=0.5)
     simclr_losses = []
     for epoch in range(num_epochs):        
@@ -288,12 +294,12 @@ for batch_size in batch_sizes:
             optimizer_simclr.step()
             epoch_loss += loss.item()
             progress_bar.set_postfix({'Loss': f'{loss.item():.4f}'})
-        simclr_losses.append(epoch_loss / len(train_loader))
+        simclr_losses.append(min(epoch_loss / len(train_loader), 228))
         print(f'SIMCLR Epoch {epoch + 1}, Loss: {epoch_loss / len(train_loader):.4f}\n', file = log_file)
 
     plot_loss_curve(simclr_losses, f'SimCLR_{batch_size}')
     print("Evaluating SimCLR\n", file = log_file)
-    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 128)
+    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 256, lr)
     print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%\n', file = log_file)
     
     simclr_accuracies.append(simclr_acc)

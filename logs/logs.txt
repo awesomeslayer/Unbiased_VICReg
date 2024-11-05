@@ -1,6 +1,0 @@
-Files already downloaded and verified
-Files already downloaded and verified
-
-Running experiments with batch size: 512
-VICReg Epoch 1, Loss: 47443246708356904.0000
-Evaluating VICReg
