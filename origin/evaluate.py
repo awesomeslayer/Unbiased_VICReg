@@ -179,55 +179,64 @@ def main_worker(gpu, args):
         start_epoch = 0
         best_acc = argparse.Namespace(top1=0, top5=0)
 
-    # Data loading code
-    traindir = args.data_dir / "train"
-    valdir = args.data_dir / "val"
+    # Updated CIFAR-10 evaluation code
+
+    # Normalize for CIFAR-10
     normalize = transforms.Normalize(
-        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+        mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]
     )
 
-    train_dataset = datasets.ImageFolder(
-        traindir,
-        transforms.Compose(
-            [
-                transforms.RandomResizedCrop(224),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                normalize,
-            ]
-        ),
-    )
-    val_dataset = datasets.ImageFolder(
-        valdir,
-        transforms.Compose(
-            [
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                normalize,
-            ]
-        ),
+    # Train and validation datasets
+    train_dataset = datasets.CIFAR10(
+        root=args.data_dir,
+        train=True,
+        download=True,
+        transform=transforms.Compose([
+            transforms.RandomCrop(32, padding=4),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize,
+        ])
     )
 
+    val_dataset = datasets.CIFAR10(
+        root=args.data_dir,
+        train=False,
+        download=True,
+        transform=transforms.Compose([
+            transforms.ToTensor(),
+            normalize,
+        ])
+    )
+
+    # Adjust for partial training data if using 1% or 10% training set
     if args.train_percent in {1, 10}:
-        train_dataset.samples = []
+        train_dataset.data = []  # Clear current samples
         for fname in args.train_files:
             fname = fname.decode().strip()
-            cls = fname.split("_")[0]
-            train_dataset.samples.append(
-                (traindir / cls / fname, train_dataset.class_to_idx[cls])
-            )
+            label = int(fname.split("_")[0])  # Assuming file names indicate class
+            img_path = os.path.join(args.data_dir, 'train', fname)
+            image = Image.open(img_path)
+            train_dataset.data.append((image, label))
 
-    train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
+    # Distributed samplers
+    train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset, shuffle=True)
+    val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset, shuffle=False)
+
+    # Dataloader arguments
     kwargs = dict(
         batch_size=args.batch_size // args.world_size,
         num_workers=args.workers,
         pin_memory=True,
     )
+
+    # DataLoader for training and validation
     train_loader = torch.utils.data.DataLoader(
         train_dataset, sampler=train_sampler, **kwargs
     )
-    val_loader = torch.utils.data.DataLoader(val_dataset, **kwargs)
+    val_loader = torch.utils.data.DataLoader(
+        val_dataset, sampler=val_sampler, **kwargs
+    )
 
     start_time = time.time()
     for epoch in range(start_epoch, args.epochs):

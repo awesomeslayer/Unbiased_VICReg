@@ -206,10 +206,9 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim, l
     return accuracy
 
 # Experiment with different batch sizes and plot accuracies
-#batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-batch_sizes = [4, 8, 16]
-num_epochs = 2
-num_epochs_eval = 2
+batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+num_epochs = 10
+num_epochs_eval = 5
 lr = 0.001
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []

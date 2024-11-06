@@ -2,81 +2,1050 @@ awesome!
 
 Running experiments with batch size: 4
 
-VICReg Epoch 1, Loss: 37.2347
+VICReg Epoch 1, Loss: 37.0894
 
-VICReg Epoch 2, Loss: 36.0019
+VICReg Epoch 2, Loss: 36.1459
+
+VICReg Epoch 3, Loss: 35.9437
+
+VICReg Epoch 4, Loss: 35.7998
+
+VICReg Epoch 5, Loss: 35.7231
+
+VICReg Epoch 6, Loss: 35.7067
+
+VICReg Epoch 7, Loss: 35.6363
+
+VICReg Epoch 8, Loss: 35.5697
+
+VICReg Epoch 9, Loss: 35.5670
+
+VICReg Epoch 10, Loss: 35.4875
 
 Evaluating VICReg
 
-Epoch 1, Eval_Loss: 36.0019
+Epoch 1, Eval_Loss: 2.0114
 
-Epoch 2, Eval_Loss: 36.0019
+Epoch 2, Eval_Loss: 1.9755
 
-VICReg Accuracy with batch size 4: 31.86%
+Epoch 3, Eval_Loss: 1.9703
 
-Unbiased_VICReg Epoch 1, Loss: 11.9428
+Epoch 4, Eval_Loss: 1.9742
+
+Epoch 5, Eval_Loss: 1.9708
+
+VICReg Accuracy with batch size 4: 33.55%
+
+Unbiased_VICReg Epoch 1, Loss: 11.5325
 
 Unbiased_VICReg Epoch 2, Loss: 11.2592
 
+Unbiased_VICReg Epoch 3, Loss: 11.2562
+
+Unbiased_VICReg Epoch 4, Loss: 11.2549
+
+Unbiased_VICReg Epoch 5, Loss: 11.2553
+
+Unbiased_VICReg Epoch 6, Loss: 11.2542
+
+Unbiased_VICReg Epoch 7, Loss: 11.2543
+
+Unbiased_VICReg Epoch 8, Loss: 11.2535
+
+Unbiased_VICReg Epoch 9, Loss: 11.2531
+
+Unbiased_VICReg Epoch 10, Loss: 11.2533
+
 Evaluating UnbiasedVICReg
 
-Epoch 1, Eval_Loss: 11.2592
+Epoch 1, Eval_Loss: 2.0380
 
-Epoch 2, Eval_Loss: 11.2592
+Epoch 2, Eval_Loss: 2.0155
 
-Unbiased VICReg Accuracy with batch size 4: 28.89%
+Epoch 3, Eval_Loss: 2.0149
 
-SIMCLR Epoch 1, Loss: 1.6996
+Epoch 4, Eval_Loss: 2.0116
 
-SIMCLR Epoch 2, Loss: 1.5242
+Epoch 5, Eval_Loss: 2.0105
+
+Unbiased VICReg Accuracy with batch size 4: 29.38%
+
+SIMCLR Epoch 1, Loss: 1.6854
+
+SIMCLR Epoch 2, Loss: 1.5287
+
+SIMCLR Epoch 3, Loss: 1.4631
+
+SIMCLR Epoch 4, Loss: 1.4406
+
+SIMCLR Epoch 5, Loss: 1.4132
+
+SIMCLR Epoch 6, Loss: 1.4019
+
+SIMCLR Epoch 7, Loss: 1.3740
+
+SIMCLR Epoch 8, Loss: 1.3622
+
+SIMCLR Epoch 9, Loss: 1.3604
+
+SIMCLR Epoch 10, Loss: 1.3493
 
 Evaluating SimCLR
 
-Epoch 1, Eval_Loss: 1.5242
+Epoch 1, Eval_Loss: 1.9832
 
-Epoch 2, Eval_Loss: 1.5242
+Epoch 2, Eval_Loss: 1.9286
 
-SimCLR Accuracy with batch size 4: 33.86%
+Epoch 3, Eval_Loss: 1.9192
+
+Epoch 4, Eval_Loss: 1.9120
+
+Epoch 5, Eval_Loss: 1.9138
+
+SimCLR Accuracy with batch size 4: 36.34%
 
 
 Running experiments with batch size: 8
 
-VICReg Epoch 1, Loss: 35.4978
+VICReg Epoch 1, Loss: 35.8004
 
-VICReg Epoch 2, Loss: 34.0628
+VICReg Epoch 2, Loss: 34.1881
+
+VICReg Epoch 3, Loss: 33.8305
+
+VICReg Epoch 4, Loss: 33.6044
+
+VICReg Epoch 5, Loss: 33.5160
+
+VICReg Epoch 6, Loss: 33.4411
+
+VICReg Epoch 7, Loss: 33.3752
+
+VICReg Epoch 8, Loss: 33.3576
+
+VICReg Epoch 9, Loss: 33.2968
+
+VICReg Epoch 10, Loss: 33.1966
 
 Evaluating VICReg
 
-Epoch 1, Eval_Loss: 34.0628
+Epoch 1, Eval_Loss: 1.9149
 
-Epoch 2, Eval_Loss: 34.0628
+Epoch 2, Eval_Loss: 1.8681
 
-VICReg Accuracy with batch size 8: 32.63%
+Epoch 3, Eval_Loss: 1.8612
 
-Unbiased_VICReg Epoch 1, Loss: 11.4013
+Epoch 4, Eval_Loss: 1.8519
 
-Unbiased_VICReg Epoch 2, Loss: 11.2629
+Epoch 5, Eval_Loss: 1.8547
+
+VICReg Accuracy with batch size 8: 38.75%
+
+Unbiased_VICReg Epoch 1, Loss: 12.1448
+
+Unbiased_VICReg Epoch 2, Loss: 11.2606
+
+Unbiased_VICReg Epoch 3, Loss: 11.2613
+
+Unbiased_VICReg Epoch 4, Loss: 11.2601
+
+Unbiased_VICReg Epoch 5, Loss: 11.2587
+
+Unbiased_VICReg Epoch 6, Loss: 11.2567
+
+Unbiased_VICReg Epoch 7, Loss: 11.2562
+
+Unbiased_VICReg Epoch 8, Loss: 11.2560
+
+Unbiased_VICReg Epoch 9, Loss: 11.2550
+
+Unbiased_VICReg Epoch 10, Loss: 11.2553
 
 Evaluating UnbiasedVICReg
 
-Epoch 1, Eval_Loss: 11.2629
+Epoch 1, Eval_Loss: 2.0041
 
-Epoch 2, Eval_Loss: 11.2629
+Epoch 2, Eval_Loss: 1.9741
 
-Unbiased VICReg Accuracy with batch size 8: 25.18%
+Epoch 3, Eval_Loss: 1.9671
 
-SIMCLR Epoch 1, Loss: 2.2207
+Epoch 4, Eval_Loss: 1.9681
 
-SIMCLR Epoch 2, Loss: 1.9601
+Epoch 5, Eval_Loss: 1.9659
+
+Unbiased VICReg Accuracy with batch size 8: 29.52%
+
+SIMCLR Epoch 1, Loss: 2.2553
+
+SIMCLR Epoch 2, Loss: 1.9913
+
+SIMCLR Epoch 3, Loss: 1.8668
+
+SIMCLR Epoch 4, Loss: 1.7874
+
+SIMCLR Epoch 5, Loss: 1.7330
+
+SIMCLR Epoch 6, Loss: 1.6843
+
+SIMCLR Epoch 7, Loss: 1.6736
+
+SIMCLR Epoch 8, Loss: 1.6651
+
+SIMCLR Epoch 9, Loss: 1.6306
+
+SIMCLR Epoch 10, Loss: 1.6309
 
 Evaluating SimCLR
 
-Epoch 1, Eval_Loss: 1.9601
+Epoch 1, Eval_Loss: 1.9831
 
-Epoch 2, Eval_Loss: 1.9601
+Epoch 2, Eval_Loss: 1.8968
 
-SimCLR Accuracy with batch size 8: 35.67%
+Epoch 3, Eval_Loss: 1.8833
+
+Epoch 4, Eval_Loss: 1.8827
+
+Epoch 5, Eval_Loss: 1.8771
+
+SimCLR Accuracy with batch size 8: 36.89%
 
 
 Running experiments with batch size: 16
+
+VICReg Epoch 1, Loss: 34.8115
+
+VICReg Epoch 2, Loss: 32.8966
+
+VICReg Epoch 3, Loss: 32.2078
+
+VICReg Epoch 4, Loss: 31.9184
+
+VICReg Epoch 5, Loss: 31.7173
+
+VICReg Epoch 6, Loss: 31.5733
+
+VICReg Epoch 7, Loss: 31.4940
+
+VICReg Epoch 8, Loss: 31.3502
+
+VICReg Epoch 9, Loss: 31.3276
+
+VICReg Epoch 10, Loss: 31.3252
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.8508
+
+Epoch 2, Eval_Loss: 1.7869
+
+Epoch 3, Eval_Loss: 1.7780
+
+Epoch 4, Eval_Loss: 1.7698
+
+Epoch 5, Eval_Loss: 1.7719
+
+VICReg Accuracy with batch size 16: 41.24%
+
+Unbiased_VICReg Epoch 1, Loss: 12.8784
+
+Unbiased_VICReg Epoch 2, Loss: 11.2626
+
+Unbiased_VICReg Epoch 3, Loss: 11.2608
+
+Unbiased_VICReg Epoch 4, Loss: 11.2607
+
+Unbiased_VICReg Epoch 5, Loss: 11.2609
+
+Unbiased_VICReg Epoch 6, Loss: 11.2598
+
+Unbiased_VICReg Epoch 7, Loss: 11.2587
+
+Unbiased_VICReg Epoch 8, Loss: 11.2576
+
+Unbiased_VICReg Epoch 9, Loss: 11.2570
+
+Unbiased_VICReg Epoch 10, Loss: 11.2561
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.0309
+
+Epoch 2, Eval_Loss: 1.9610
+
+Epoch 3, Eval_Loss: 1.9569
+
+Epoch 4, Eval_Loss: 1.9428
+
+Epoch 5, Eval_Loss: 1.9349
+
+Unbiased VICReg Accuracy with batch size 16: 32.40%
+
+SIMCLR Epoch 1, Loss: 2.7389
+
+SIMCLR Epoch 2, Loss: 2.4406
+
+SIMCLR Epoch 3, Loss: 2.2199
+
+SIMCLR Epoch 4, Loss: 2.1206
+
+SIMCLR Epoch 5, Loss: 2.0661
+
+SIMCLR Epoch 6, Loss: 2.0268
+
+SIMCLR Epoch 7, Loss: 2.0204
+
+SIMCLR Epoch 8, Loss: 1.9917
+
+SIMCLR Epoch 9, Loss: 1.9607
+
+SIMCLR Epoch 10, Loss: 1.9309
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.9139
+
+Epoch 2, Eval_Loss: 1.8129
+
+Epoch 3, Eval_Loss: 1.7989
+
+Epoch 4, Eval_Loss: 1.7905
+
+Epoch 5, Eval_Loss: 1.7866
+
+SimCLR Accuracy with batch size 16: 39.21%
+
+
+Running experiments with batch size: 32
+
+VICReg Epoch 1, Loss: 34.2990
+
+VICReg Epoch 2, Loss: 32.0059
+
+VICReg Epoch 3, Loss: 31.3402
+
+VICReg Epoch 4, Loss: 30.8602
+
+VICReg Epoch 5, Loss: 30.5481
+
+VICReg Epoch 6, Loss: 30.2654
+
+VICReg Epoch 7, Loss: 30.0230
+
+VICReg Epoch 8, Loss: 29.8567
+
+VICReg Epoch 9, Loss: 29.6584
+
+VICReg Epoch 10, Loss: 29.5676
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.8191
+
+Epoch 2, Eval_Loss: 1.7372
+
+Epoch 3, Eval_Loss: 1.7190
+
+Epoch 4, Eval_Loss: 1.7108
+
+Epoch 5, Eval_Loss: 1.7055
+
+VICReg Accuracy with batch size 32: 44.07%
+
+Unbiased_VICReg Epoch 1, Loss: 12.7187
+
+Unbiased_VICReg Epoch 2, Loss: 11.2629
+
+Unbiased_VICReg Epoch 3, Loss: 11.2609
+
+Unbiased_VICReg Epoch 4, Loss: 11.2599
+
+Unbiased_VICReg Epoch 5, Loss: 11.2593
+
+Unbiased_VICReg Epoch 6, Loss: 11.2584
+
+Unbiased_VICReg Epoch 7, Loss: 11.2577
+
+Unbiased_VICReg Epoch 8, Loss: 11.2578
+
+Unbiased_VICReg Epoch 9, Loss: 11.2572
+
+Unbiased_VICReg Epoch 10, Loss: 11.2568
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.0739
+
+Epoch 2, Eval_Loss: 1.9791
+
+Epoch 3, Eval_Loss: 1.9610
+
+Epoch 4, Eval_Loss: 1.9593
+
+Epoch 5, Eval_Loss: 1.9549
+
+Unbiased VICReg Accuracy with batch size 32: 31.24%
+
+SIMCLR Epoch 1, Loss: 3.3437
+
+SIMCLR Epoch 2, Loss: 2.8690
+
+SIMCLR Epoch 3, Loss: 2.6409
+
+SIMCLR Epoch 4, Loss: 2.5485
+
+SIMCLR Epoch 5, Loss: 2.4760
+
+SIMCLR Epoch 6, Loss: 2.3983
+
+SIMCLR Epoch 7, Loss: 2.3407
+
+SIMCLR Epoch 8, Loss: 2.3008
+
+SIMCLR Epoch 9, Loss: 2.2598
+
+SIMCLR Epoch 10, Loss: 2.2295
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.9104
+
+Epoch 2, Eval_Loss: 1.7935
+
+Epoch 3, Eval_Loss: 1.7737
+
+Epoch 4, Eval_Loss: 1.7626
+
+Epoch 5, Eval_Loss: 1.7576
+
+SimCLR Accuracy with batch size 32: 43.30%
+
+
+Running experiments with batch size: 64
+
+VICReg Epoch 1, Loss: 35.6068
+
+VICReg Epoch 2, Loss: 32.2034
+
+VICReg Epoch 3, Loss: 31.1064
+
+VICReg Epoch 4, Loss: 30.2646
+
+VICReg Epoch 5, Loss: 29.7520
+
+VICReg Epoch 6, Loss: 29.4638
+
+VICReg Epoch 7, Loss: 29.0750
+
+VICReg Epoch 8, Loss: 28.8539
+
+VICReg Epoch 9, Loss: 28.6264
+
+VICReg Epoch 10, Loss: 28.4238
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.8308
+
+Epoch 2, Eval_Loss: 1.7399
+
+Epoch 3, Eval_Loss: 1.7188
+
+Epoch 4, Eval_Loss: 1.7053
+
+Epoch 5, Eval_Loss: 1.6995
+
+VICReg Accuracy with batch size 64: 45.11%
+
+Unbiased_VICReg Epoch 1, Loss: 15.3202
+
+Unbiased_VICReg Epoch 2, Loss: 11.2655
+
+Unbiased_VICReg Epoch 3, Loss: 11.2637
+
+Unbiased_VICReg Epoch 4, Loss: 11.2613
+
+Unbiased_VICReg Epoch 5, Loss: 11.2597
+
+Unbiased_VICReg Epoch 6, Loss: 11.2593
+
+Unbiased_VICReg Epoch 7, Loss: 11.2585
+
+Unbiased_VICReg Epoch 8, Loss: 11.2586
+
+Unbiased_VICReg Epoch 9, Loss: 11.2580
+
+Unbiased_VICReg Epoch 10, Loss: 11.2581
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.1321
+
+Epoch 2, Eval_Loss: 2.0317
+
+Epoch 3, Eval_Loss: 2.0069
+
+Epoch 4, Eval_Loss: 1.9948
+
+Epoch 5, Eval_Loss: 1.9880
+
+Unbiased VICReg Accuracy with batch size 64: 30.53%
+
+SIMCLR Epoch 1, Loss: 4.0207
+
+SIMCLR Epoch 2, Loss: 3.4652
+
+SIMCLR Epoch 3, Loss: 3.1945
+
+SIMCLR Epoch 4, Loss: 3.0204
+
+SIMCLR Epoch 5, Loss: 2.8982
+
+SIMCLR Epoch 6, Loss: 2.7988
+
+SIMCLR Epoch 7, Loss: 2.6952
+
+SIMCLR Epoch 8, Loss: 2.6089
+
+SIMCLR Epoch 9, Loss: 2.5571
+
+SIMCLR Epoch 10, Loss: 2.5100
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.8596
+
+Epoch 2, Eval_Loss: 1.7172
+
+Epoch 3, Eval_Loss: 1.6919
+
+Epoch 4, Eval_Loss: 1.6792
+
+Epoch 5, Eval_Loss: 1.6666
+
+SimCLR Accuracy with batch size 64: 46.63%
+
+
+Running experiments with batch size: 128
+
+VICReg Epoch 1, Loss: 37.7528
+
+VICReg Epoch 2, Loss: 32.3244
+
+VICReg Epoch 3, Loss: 30.5787
+
+VICReg Epoch 4, Loss: 29.7220
+
+VICReg Epoch 5, Loss: 29.2106
+
+VICReg Epoch 6, Loss: 28.7472
+
+VICReg Epoch 7, Loss: 28.4265
+
+VICReg Epoch 8, Loss: 28.1946
+
+VICReg Epoch 9, Loss: 28.0227
+
+VICReg Epoch 10, Loss: 27.7531
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.8105
+
+Epoch 2, Eval_Loss: 1.7259
+
+Epoch 3, Eval_Loss: 1.7024
+
+Epoch 4, Eval_Loss: 1.6921
+
+Epoch 5, Eval_Loss: 1.6877
+
+VICReg Accuracy with batch size 128: 46.92%
+
+Unbiased_VICReg Epoch 1, Loss: 36.5998
+
+Unbiased_VICReg Epoch 2, Loss: 11.2634
+
+Unbiased_VICReg Epoch 3, Loss: 11.2621
+
+Unbiased_VICReg Epoch 4, Loss: 11.2612
+
+Unbiased_VICReg Epoch 5, Loss: 11.2605
+
+Unbiased_VICReg Epoch 6, Loss: 11.2604
+
+Unbiased_VICReg Epoch 7, Loss: 11.2599
+
+Unbiased_VICReg Epoch 8, Loss: 11.2591
+
+Unbiased_VICReg Epoch 9, Loss: 11.2584
+
+Unbiased_VICReg Epoch 10, Loss: 11.2579
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.2256
+
+Epoch 2, Eval_Loss: 2.1397
+
+Epoch 3, Eval_Loss: 2.1014
+
+Epoch 4, Eval_Loss: 2.0804
+
+Epoch 5, Eval_Loss: 2.0651
+
+Unbiased VICReg Accuracy with batch size 128: 29.14%
+
+SIMCLR Epoch 1, Loss: 4.7605
+
+SIMCLR Epoch 2, Loss: 4.1820
+
+SIMCLR Epoch 3, Loss: 3.8254
+
+SIMCLR Epoch 4, Loss: 3.5787
+
+SIMCLR Epoch 5, Loss: 3.4232
+
+SIMCLR Epoch 6, Loss: 3.2869
+
+SIMCLR Epoch 7, Loss: 3.1744
+
+SIMCLR Epoch 8, Loss: 3.0696
+
+SIMCLR Epoch 9, Loss: 3.0094
+
+SIMCLR Epoch 10, Loss: 2.9208
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.8476
+
+Epoch 2, Eval_Loss: 1.6950
+
+Epoch 3, Eval_Loss: 1.6687
+
+Epoch 4, Eval_Loss: 1.6539
+
+Epoch 5, Eval_Loss: 1.6455
+
+SimCLR Accuracy with batch size 128: 47.34%
+
+
+Running experiments with batch size: 256
+
+VICReg Epoch 1, Loss: 39.1175
+
+VICReg Epoch 2, Loss: 33.7680
+
+VICReg Epoch 3, Loss: 31.6137
+
+VICReg Epoch 4, Loss: 30.3324
+
+VICReg Epoch 5, Loss: 29.6043
+
+VICReg Epoch 6, Loss: 29.1671
+
+VICReg Epoch 7, Loss: 28.7857
+
+VICReg Epoch 8, Loss: 28.5265
+
+VICReg Epoch 9, Loss: 28.2076
+
+VICReg Epoch 10, Loss: 27.9347
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.9013
+
+Epoch 2, Eval_Loss: 1.8181
+
+Epoch 3, Eval_Loss: 1.7994
+
+Epoch 4, Eval_Loss: 1.7750
+
+Epoch 5, Eval_Loss: 1.7699
+
+VICReg Accuracy with batch size 256: 43.57%
+
+Unbiased_VICReg Epoch 1, Loss: 16.3332
+
+Unbiased_VICReg Epoch 2, Loss: 11.2670
+
+Unbiased_VICReg Epoch 3, Loss: 11.2667
+
+Unbiased_VICReg Epoch 4, Loss: 11.2664
+
+Unbiased_VICReg Epoch 5, Loss: 11.2663
+
+Unbiased_VICReg Epoch 6, Loss: 11.2661
+
+Unbiased_VICReg Epoch 7, Loss: 11.2660
+
+Unbiased_VICReg Epoch 8, Loss: 11.2656
+
+Unbiased_VICReg Epoch 9, Loss: 11.2652
+
+Unbiased_VICReg Epoch 10, Loss: 11.2636
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.2566
+
+Epoch 2, Eval_Loss: 2.1940
+
+Epoch 3, Eval_Loss: 2.1589
+
+Epoch 4, Eval_Loss: 2.1409
+
+Epoch 5, Eval_Loss: 2.1285
+
+Unbiased VICReg Accuracy with batch size 256: 24.11%
+
+SIMCLR Epoch 1, Loss: 5.8871
+
+SIMCLR Epoch 2, Loss: 5.0459
+
+SIMCLR Epoch 3, Loss: 4.7730
+
+SIMCLR Epoch 4, Loss: 4.4385
+
+SIMCLR Epoch 5, Loss: 4.1770
+
+SIMCLR Epoch 6, Loss: 4.0346
+
+SIMCLR Epoch 7, Loss: 3.9351
+
+SIMCLR Epoch 8, Loss: 3.8199
+
+SIMCLR Epoch 9, Loss: 3.7148
+
+SIMCLR Epoch 10, Loss: 3.6369
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.8699
+
+Epoch 2, Eval_Loss: 1.7555
+
+Epoch 3, Eval_Loss: 1.7286
+
+Epoch 4, Eval_Loss: 1.7155
+
+Epoch 5, Eval_Loss: 1.6995
+
+SimCLR Accuracy with batch size 256: 46.61%
+
+
+Running experiments with batch size: 512
+
+VICReg Epoch 1, Loss: 39.3561
+
+VICReg Epoch 2, Loss: 34.6187
+
+VICReg Epoch 3, Loss: 33.0024
+
+VICReg Epoch 4, Loss: 31.3165
+
+VICReg Epoch 5, Loss: 30.7598
+
+VICReg Epoch 6, Loss: 30.2354
+
+VICReg Epoch 7, Loss: 29.4859
+
+VICReg Epoch 8, Loss: 29.2827
+
+VICReg Epoch 9, Loss: 28.8543
+
+VICReg Epoch 10, Loss: 28.4570
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 1.9265
+
+Epoch 2, Eval_Loss: 1.8447
+
+Epoch 3, Eval_Loss: 1.8210
+
+Epoch 4, Eval_Loss: 1.8039
+
+Epoch 5, Eval_Loss: 1.8006
+
+VICReg Accuracy with batch size 512: 41.00%
+
+Unbiased_VICReg Epoch 1, Loss: 32.8463
+
+Unbiased_VICReg Epoch 2, Loss: 11.2666
+
+Unbiased_VICReg Epoch 3, Loss: 11.2661
+
+Unbiased_VICReg Epoch 4, Loss: 11.2662
+
+Unbiased_VICReg Epoch 5, Loss: 11.2656
+
+Unbiased_VICReg Epoch 6, Loss: 11.2661
+
+Unbiased_VICReg Epoch 7, Loss: 11.2657
+
+Unbiased_VICReg Epoch 8, Loss: 11.2653
+
+Unbiased_VICReg Epoch 9, Loss: 11.2656
+
+Unbiased_VICReg Epoch 10, Loss: 11.2653
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.2976
+
+Epoch 2, Eval_Loss: 2.2887
+
+Epoch 3, Eval_Loss: 2.2810
+
+Epoch 4, Eval_Loss: 2.2738
+
+Epoch 5, Eval_Loss: 2.2682
+
+Unbiased VICReg Accuracy with batch size 512: 18.80%
+
+SIMCLR Epoch 1, Loss: 6.9778
+
+SIMCLR Epoch 2, Loss: 5.9657
+
+SIMCLR Epoch 3, Loss: 5.7114
+
+SIMCLR Epoch 4, Loss: 5.4665
+
+SIMCLR Epoch 5, Loss: 5.2070
+
+SIMCLR Epoch 6, Loss: 4.9375
+
+SIMCLR Epoch 7, Loss: 4.7808
+
+SIMCLR Epoch 8, Loss: 4.6185
+
+SIMCLR Epoch 9, Loss: 4.4984
+
+SIMCLR Epoch 10, Loss: 4.3426
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.9364
+
+Epoch 2, Eval_Loss: 1.7993
+
+Epoch 3, Eval_Loss: 1.7663
+
+Epoch 4, Eval_Loss: 1.7561
+
+Epoch 5, Eval_Loss: 1.7482
+
+SimCLR Accuracy with batch size 512: 44.64%
+
+
+Running experiments with batch size: 1024
+
+VICReg Epoch 1, Loss: 42.7800
+
+VICReg Epoch 2, Loss: 38.2869
+
+VICReg Epoch 3, Loss: 36.7070
+
+VICReg Epoch 4, Loss: 34.1520
+
+VICReg Epoch 5, Loss: 33.4586
+
+VICReg Epoch 6, Loss: 32.7055
+
+VICReg Epoch 7, Loss: 32.0236
+
+VICReg Epoch 8, Loss: 31.5215
+
+VICReg Epoch 9, Loss: 31.2995
+
+VICReg Epoch 10, Loss: 30.9770
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 2.0946
+
+Epoch 2, Eval_Loss: 2.0225
+
+Epoch 3, Eval_Loss: 1.9973
+
+Epoch 4, Eval_Loss: 1.9845
+
+Epoch 5, Eval_Loss: 1.9745
+
+VICReg Accuracy with batch size 1024: 32.87%
+
+Unbiased_VICReg Epoch 1, Loss: 264.1461
+
+Unbiased_VICReg Epoch 2, Loss: 11.2695
+
+Unbiased_VICReg Epoch 3, Loss: 11.2694
+
+Unbiased_VICReg Epoch 4, Loss: 11.2693
+
+Unbiased_VICReg Epoch 5, Loss: 11.2672
+
+Unbiased_VICReg Epoch 6, Loss: 11.2663
+
+Unbiased_VICReg Epoch 7, Loss: 11.2663
+
+Unbiased_VICReg Epoch 8, Loss: 11.2661
+
+Unbiased_VICReg Epoch 9, Loss: 11.2659
+
+Unbiased_VICReg Epoch 10, Loss: 11.2661
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.3011
+
+Epoch 2, Eval_Loss: 2.2979
+
+Epoch 3, Eval_Loss: 2.2951
+
+Epoch 4, Eval_Loss: 2.2923
+
+Epoch 5, Eval_Loss: 2.2894
+
+Unbiased VICReg Accuracy with batch size 1024: 17.76%
+
+SIMCLR Epoch 1, Loss: 7.7298
+
+SIMCLR Epoch 2, Loss: 6.8465
+
+SIMCLR Epoch 3, Loss: 6.5024
+
+SIMCLR Epoch 4, Loss: 6.3398
+
+SIMCLR Epoch 5, Loss: 6.0813
+
+SIMCLR Epoch 6, Loss: 5.8747
+
+SIMCLR Epoch 7, Loss: 5.6595
+
+SIMCLR Epoch 8, Loss: 5.4876
+
+SIMCLR Epoch 9, Loss: 5.3487
+
+SIMCLR Epoch 10, Loss: 5.2212
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 1.9904
+
+Epoch 2, Eval_Loss: 1.8345
+
+Epoch 3, Eval_Loss: 1.8119
+
+Epoch 4, Eval_Loss: 1.7956
+
+Epoch 5, Eval_Loss: 1.7883
+
+SimCLR Accuracy with batch size 1024: 42.37%
+
+
+Running experiments with batch size: 2048
+
+VICReg Epoch 1, Loss: 56.6294
+
+VICReg Epoch 2, Loss: 38.7402
+
+VICReg Epoch 3, Loss: 38.4099
+
+VICReg Epoch 4, Loss: 37.9270
+
+VICReg Epoch 5, Loss: 35.9747
+
+VICReg Epoch 6, Loss: 34.9469
+
+VICReg Epoch 7, Loss: 34.2079
+
+VICReg Epoch 8, Loss: 33.2847
+
+VICReg Epoch 9, Loss: 32.6042
+
+VICReg Epoch 10, Loss: 32.1603
+
+Evaluating VICReg
+
+Epoch 1, Eval_Loss: 2.1659
+
+Epoch 2, Eval_Loss: 2.0879
+
+Epoch 3, Eval_Loss: 2.0648
+
+Epoch 4, Eval_Loss: 2.0610
+
+Epoch 5, Eval_Loss: 2.0544
+
+VICReg Accuracy with batch size 2048: 29.07%
+
+Unbiased_VICReg Epoch 1, Loss: 262.3570
+
+Unbiased_VICReg Epoch 2, Loss: 11.2696
+
+Unbiased_VICReg Epoch 3, Loss: 11.2685
+
+Unbiased_VICReg Epoch 4, Loss: 11.2662
+
+Unbiased_VICReg Epoch 5, Loss: 11.2655
+
+Unbiased_VICReg Epoch 6, Loss: 11.2651
+
+Unbiased_VICReg Epoch 7, Loss: 11.2653
+
+Unbiased_VICReg Epoch 8, Loss: 11.2644
+
+Unbiased_VICReg Epoch 9, Loss: 11.2643
+
+Unbiased_VICReg Epoch 10, Loss: 11.2642
+
+Evaluating UnbiasedVICReg
+
+Epoch 1, Eval_Loss: 2.2988
+
+Epoch 2, Eval_Loss: 2.2899
+
+Epoch 3, Eval_Loss: 2.2820
+
+Epoch 4, Eval_Loss: 2.2752
+
+Epoch 5, Eval_Loss: 2.2686
+
+Unbiased VICReg Accuracy with batch size 2048: 20.18%
+
+SIMCLR Epoch 1, Loss: 9.8667
+
+SIMCLR Epoch 2, Loss: 7.9937
+
+SIMCLR Epoch 3, Loss: 7.7839
+
+SIMCLR Epoch 4, Loss: 7.5371
+
+SIMCLR Epoch 5, Loss: 7.3742
+
+SIMCLR Epoch 6, Loss: 7.2346
+
+SIMCLR Epoch 7, Loss: 7.1332
+
+SIMCLR Epoch 8, Loss: 7.0247
+
+SIMCLR Epoch 9, Loss: 6.9256
+
+SIMCLR Epoch 10, Loss: 6.7867
+
+Evaluating SimCLR
+
+Epoch 1, Eval_Loss: 2.0882
+
+Epoch 2, Eval_Loss: 1.9652
+
+Epoch 3, Eval_Loss: 1.9364
+
+Epoch 4, Eval_Loss: 1.9238
+
+Epoch 5, Eval_Loss: 1.9127
+
+SimCLR Accuracy with batch size 2048: 36.77%
 

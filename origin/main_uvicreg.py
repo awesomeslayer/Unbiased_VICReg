@@ -201,24 +201,22 @@ class VICReg(nn.Module):
         x = x - x.mean(dim=0)
         y = y - y.mean(dim=0)
 
-        std_x = torch.sqrt(x.var(dim=0) + 0.0001)
-        std_y = torch.sqrt(y.var(dim=0) + 0.0001)
-        std_loss = torch.mean(F.relu(1 - std_x)) / 2 + torch.mean(F.relu(1 - std_y)) / 2
-
-        cov_x = (x.T @ x) / (self.args.batch_size - 1)
-        cov_y = (y.T @ y) / (self.args.batch_size - 1)
-        cov_loss = off_diagonal(cov_x).pow_(2).sum().div(
-            self.num_features
-        ) + off_diagonal(cov_y).pow_(2).sum().div(self.num_features)
-
-        loss = (
-            self.args.sim_coeff * repr_loss
-            + self.args.std_coeff * std_loss
-            + self.args.cov_coeff * cov_loss
-        )
-        return loss
+        combined = torch.cat([x, y], dim=0)
+        indices = torch.randperm(self.args.batch_size)
+        
+        z1 = combined[indices[:self.args.batch_size//2]]
+        z2 = combined[indices[self.args.batch_size//2:]]
+        
+        cov_z1 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z1]) / (self.args.batch_size//2 - 1)
+        cov_z2 = sum([z.unsqueeze(1) @ z.unsqueeze(0) for z in z2]) / (self.args.batch_size//2 - 1)
+        
+        I = torch.eye(self.num_features).to(cov_z1.device)
+        
+        cov_diff = (cov_z1 - I) @ (cov_z2 - I)
+        cov_loss = torch.norm(cov_diff, p='fro')
+        loss = self.args.sim_coeff * repr_loss + self.args.cov_coeff * cov_loss
     
-
+        return loss
     
 
 
