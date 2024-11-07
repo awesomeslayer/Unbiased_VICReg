@@ -32,9 +32,9 @@ def get_arguments():
                         help='Print logs to the stats.txt file every [log-freq-time] seconds')
 
     # Model
-    parser.add_argument("--arch", type=str, default="resnet50",
+    parser.add_argument("--arch", type=str, default="resnet34",
                         help='Architecture of the backbone encoder network')
-    parser.add_argument("--mlp", default="512-512-512",
+    parser.add_argument("--mlp", default="1024-1024-1024",
                         help='Size and number of layers of the MLP expander head')
 
     # Optim

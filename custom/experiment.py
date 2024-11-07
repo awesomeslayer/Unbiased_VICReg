@@ -62,8 +62,8 @@ def vicreg_loss_biased(x, y, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0):
     x = x - x.mean(dim=0)
     y = y - y.mean(dim=0)
     N, D = x.size()
-    cov_x = (x.T @ x) / N
-    cov_y = (y.T @ y) / N
+    cov_x = (x.T @ x) / (N - 1)
+    cov_y = (y.T @ y) / (N - 1)
     cov_loss = (off_diagonal(cov_x).pow_(2).sum() / D) + (off_diagonal(cov_y).pow_(2).sum() / D)
     loss = sim_coeff * repr_loss + std_coeff * std_loss + cov_coeff * cov_loss
     return loss
@@ -85,7 +85,7 @@ def vicreg_loss_unbiased(x, y, sim_coeff=25.0, cov_coeff=1.0):
 
 # VICReg and SimCLR models
 class VICReg(nn.Module):
-    def __init__(self, feature_dim=2048):
+    def __init__(self, feature_dim=1024):
         super(VICReg, self).__init__()
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, padding=1),
@@ -101,7 +101,7 @@ class VICReg(nn.Module):
         self.projector = nn.Sequential(
             nn.Linear(feature_dim, 512),
             nn.ReLU(),
-            nn.Linear(512, 128)
+            nn.Linear(512, 2048)
         )
 
     def forward(self, x):
@@ -110,11 +110,11 @@ class VICReg(nn.Module):
         return h
 
 class UnbiasedVICReg(VICReg):
-    def __init__(self, feature_dim=2048):
+    def __init__(self, feature_dim=1024):
         super(UnbiasedVICReg, self).__init__(feature_dim)
 
 class SimCLR(nn.Module):
-    def __init__(self, feature_dim=2048):
+    def __init__(self, feature_dim=1024):
         super(SimCLR, self).__init__()
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, padding=1),
@@ -130,7 +130,7 @@ class SimCLR(nn.Module):
         self.projector = nn.Sequential(
             nn.Linear(feature_dim, 512),
             nn.ReLU(),
-            nn.Linear(512, 128)
+            nn.Linear(512, 2048)
         )
 
     def forward(self, x):
@@ -207,8 +207,8 @@ def linear_evaluation(encoder, device, train_loader, test_loader, feature_dim, l
 
 # Experiment with different batch sizes and plot accuracies
 batch_sizes = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-num_epochs = 10
-num_epochs_eval = 5
+num_epochs = 2
+num_epochs_eval = 2
 lr = 0.001
 vicreg_accuracies = []
 unbiased_vicreg_accuracies = []
@@ -254,7 +254,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(vicreg_losses, f'VICReg_{batch_size}')
     print("Evaluating VICReg\n", file = log_file, flush=True) 
-    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
+    vicreg_acc = linear_evaluation(vicreg_model.encoder, device, train_loader, test_loader, 1024, lr, num_epochs_eval)
     print(f'VICReg Accuracy with batch size {batch_size}: {vicreg_acc:.2f}%\n', file = log_file, flush=True)
     vicreg_accuracies.append(vicreg_acc)
 
@@ -283,7 +283,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(unbiased_vicreg_losses, f'UnbiasedVICReg_{batch_size}')
     print("Evaluating UnbiasedVICReg\n", file = log_file, flush=True)   
-    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
+    unbiased_vicreg_acc = linear_evaluation(unbiased_vicreg_model.encoder, device, train_loader, test_loader, 1024, lr, num_epochs_eval)
     print(f'Unbiased VICReg Accuracy with batch size {batch_size}: {unbiased_vicreg_acc:.2f}%\n', file = log_file, flush=True)
     unbiased_vicreg_accuracies.append(unbiased_vicreg_acc)
 
@@ -311,7 +311,7 @@ for batch_size in batch_sizes:
 
     plot_loss_curve(simclr_losses, f'SimCLR_{batch_size}')
     print("Evaluating SimCLR\n", file = log_file, flush=True)
-    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 2048, lr, num_epochs_eval)
+    simclr_acc = linear_evaluation(simclr_model.encoder, device, train_loader, test_loader, 1024, lr, num_epochs_eval)
     print(f'SimCLR Accuracy with batch size {batch_size}: {simclr_acc:.2f}%\n', file = log_file, flush=True)
     
     simclr_accuracies.append(simclr_acc)
