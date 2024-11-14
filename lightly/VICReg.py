@@ -12,10 +12,10 @@ import numpy as np
 import glob
 
 #todo:
-#0)good augumentations for cifar-10
-#1)online probing instead linear
-#2)logs on training epochs+steps, loss(and each part), same on evaluation (with lightining)
-#3)tensorborad logs and plots, model and other
+#0)good augumentations for cifar-10 +
+#1)online probing instead linear +-
+#2)logs on training epochs+steps, loss(and each part), same on evaluation (with lightining) -
+#3)tensorborad logs and plots, model and other -
 
 class CIFAR10TripleView(Dataset):
     def __init__(self, root, transform, train=True, download=True):
@@ -109,7 +109,7 @@ def save_checkpoint(model, optimizer, epoch, checkpoint_dir, prefix="vicreg"):
         'optimizer_state_dict': optimizer.state_dict(),
     }, checkpoint_path)
 
-def online_main(model, linear, device, num_epochs = 10, checkpoint_dir="exp256"):
+def online_main(num_epochs = 10, checkpoint_dir="exp256"):
     #device
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -233,7 +233,7 @@ def online_main(model, linear, device, num_epochs = 10, checkpoint_dir="exp256")
 
     return model, linear
 
-def linear_main(model, linear, device, num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", probing='linear'):
+def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", probing='linear'):
     #device
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
