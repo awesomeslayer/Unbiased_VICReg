@@ -46,8 +46,8 @@ class CIFAR10TripleView(Dataset):
         img_original = self.base_transform(img)
         
         # Get two augmented versions using VICReg transform
-        img_aug1 = self.vicreg_transform(img)
-        img_aug2 = self.vicreg_transform(img)
+        img_aug1 = self.transform(img)
+        img_aug2 = self.transform(img)
         
         return img_original, img_aug1, img_aug2, label
 
@@ -278,6 +278,8 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             total_loss = 0
             for batch in train_loader:
                 _, x0, x1, _ = batch
+                x0 = x0[0]
+                x1 = x1[0]
                 x0, x1 = x0.to(device), x1.to(device)
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
@@ -306,6 +308,8 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             
             for batch in train_loader:
                 x, _, _, y = batch
+                x = x[0]
+                y = y[0]
                 x = x.to(device)
                 y = y.to(device)
                 
@@ -340,6 +344,8 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             with torch.no_grad():
                 for batch in test_loader:
                     x, _, _, y = batch
+                    x = x[0]
+                    y = y[0]
                     x = x.to(device)
                     y = y.to(device)
                     
@@ -370,6 +376,8 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
         with torch.no_grad():
             for batch in test_loader:
                 x, _, _, y = batch
+                x = x[0]
+                y = y[0]
                 x = x.to(device)
                 y = y.to(device)
                 
