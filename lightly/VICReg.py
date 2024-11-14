@@ -163,6 +163,8 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
             for batch in train_loader:
                 #SSL
                 x, x0, x1, y = batch
+                x0 = x0[0]
+                x1 = x1[0]
                 x0, x1 = x0.to(device), x1.to(device)
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
@@ -214,7 +216,6 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
                 x, _, _, y = batch
                 x = x.to(device)
                 y = y.to(device)
-                
                 features = model.backbone(x).flatten(start_dim=1)
                 outputs = linear(features)
                 loss = nn.CrossEntropyLoss()(outputs, y)
@@ -308,7 +309,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             
             for batch in train_loader:
                 x, _, _, y = batch
-                x = x[0]
+                y = y.to(device)
                 x = x.to(device)
                 
                 with torch.no_grad():
@@ -342,7 +343,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             with torch.no_grad():
                 for batch in test_loader:
                     x, _, _, y = batch
-                    x = x[0]
+                    y = y.to(device)
                     x = x.to(device)
                     
                     features = model.backbone(x).flatten(start_dim=1)
