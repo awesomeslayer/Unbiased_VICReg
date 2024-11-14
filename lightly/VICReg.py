@@ -309,9 +309,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             for batch in train_loader:
                 x, _, _, y = batch
                 x = x[0]
-                y = y[0]
                 x = x.to(device)
-                y = y.to(device)
                 
                 with torch.no_grad():
                     features = model.backbone(x).flatten(start_dim=1)
@@ -345,9 +343,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
                 for batch in test_loader:
                     x, _, _, y = batch
                     x = x[0]
-                    y = y[0]
                     x = x.to(device)
-                    y = y.to(device)
                     
                     features = model.backbone(x).flatten(start_dim=1)
                     outputs = linear(features)
@@ -377,9 +373,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             for batch in test_loader:
                 x, _, _, y = batch
                 x = x[0]
-                y = y[0]
                 x = x.to(device)
-                y = y.to(device)
                 
                 features = model.backbone(x).flatten(start_dim=1)
                 outputs = linear(features)
