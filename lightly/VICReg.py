@@ -12,8 +12,7 @@ import numpy as np
 import glob
 
 #todo:
-#0)good augumentations for cifar-10 +
-#1)online probing instead linear +-
+#1)online probing instead linear +- test it
 #2)logs on training epochs+steps, loss(and each part), same on evaluation (with lightining) -
 #3)tensorborad logs and plots, model and other -
 
@@ -109,8 +108,11 @@ def save_checkpoint(model, optimizer, epoch, checkpoint_dir, prefix="vicreg"):
         'optimizer_state_dict': optimizer.state_dict(),
     }, checkpoint_path)
 
-def online_main(num_epochs = 10, checkpoint_dir="exp256"):
-    #device
+def online_main(num_epochs = 10, checkpoint_dir="oexp256"):
+    batch_size = 256
+    lr_linear = 1e-3
+    lr_vicreg = 1e-4
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     #model VICReg on resnet18 + 512-512-512
@@ -136,13 +138,13 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
     train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
     test_dataset = CIFAR10TripleView("data/", transform, train=False, download=True)
     
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=256, shuffle=True, 
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, 
                             drop_last=True, num_workers=8)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=256, shuffle=False, 
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False, 
                            drop_last=False, num_workers=8)
     
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-    linear_optimizer = torch.optim.AdamW(linear.parameters(), lr=1e-3)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr_vicreg)
+    linear_optimizer = torch.optim.AdamW(linear.parameters(), lr=lr_linear)
     
     vicreg_start = load_checkpoint(model, optimizer, checkpoint_dir, "vicreg"),
     linear_start = load_checkpoint(linear, linear_optimizer, checkpoint_dir, "linear")
@@ -234,8 +236,11 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
 
     return model, linear
 
-def linear_main(num_epochs = 10, num_eval_epochs = 10, checkpoint_dir="exp256", probing='linear'):
-    #device
+def linear_main(num_epochs = 350, num_eval_epochs = 30, checkpoint_dir="exp256"):
+    lr_vicreg = 1e-5
+    lr_linear = 1e-4
+    batch_size = 256
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     #model VICReg on resnet18 + 512-512-512
@@ -248,8 +253,6 @@ def linear_main(num_epochs = 10, num_eval_epochs = 10, checkpoint_dir="exp256", 
 
     #loss + optimizers
     vicreg_loss = VICRegLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
-    linear_optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
     #edited normilize for CIFAR10
     transform = VICRegTransform(input_size = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
@@ -261,13 +264,13 @@ def linear_main(num_epochs = 10, num_eval_epochs = 10, checkpoint_dir="exp256", 
     train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
     test_dataset = CIFAR10TripleView("data/", transform, train=False, download=True)
     
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=256, shuffle=True, 
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, 
                             drop_last=True, num_workers=8)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=256, shuffle=False, 
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False, 
                            drop_last=False, num_workers=8)
     
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-    linear_optimizer = torch.optim.AdamW(linear.parameters(), lr=1e-3)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr_vicreg)
+    linear_optimizer = torch.optim.AdamW(linear.parameters(), lr=lr_linear)
         
     vicreg_start = load_checkpoint(model, None, checkpoint_dir, prefix="vicreg")
     
@@ -362,5 +365,5 @@ def linear_main(num_epochs = 10, num_eval_epochs = 10, checkpoint_dir="exp256", 
 
 
 if __name__ == '__main__':
-    #online_main()
-    linear_main()
+    online_main()
+    #linear_main()
