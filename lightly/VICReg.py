@@ -127,7 +127,7 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
     linear_optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
     #edited normilize for CIFAR10
-    transform = VICRegTransform(int = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
+    transform = VICRegTransform(input_size = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
                                 cj_contrast = 0.8, cj_sat = 0.8, cj_hue = 0.2, min_scale = 0.08, random_gray_scale = 0.2, 
                                 gaussian_blur = 0.5, kernel_size = None, sigmas = (0.1, 2), vf_prob = 0.0, hf_prob = 0.5, 
                                 rr_prob = 0.0, rr_degrees = None, normalize = {'mean': [0.4914, 0.4822, 0.4465], 'std': [0.247, 0.243, 0.261]}) 
@@ -251,7 +251,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
     linear_optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
     #edited normilize for CIFAR10
-    transform = VICRegTransform(int = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
+    transform = VICRegTransform(input_size = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
                                 cj_contrast = 0.8, cj_sat = 0.8, cj_hue = 0.2, min_scale = 0.08, random_gray_scale = 0.2, 
                                 gaussian_blur = 0.5, kernel_size = None, sigmas = (0.1, 2), vf_prob = 0.0, hf_prob = 0.5, 
                                 rr_prob = 0.0, rr_degrees = None, normalize = {'mean': [0.4914, 0.4822, 0.4465], 'std': [0.247, 0.243, 0.261]}) 
