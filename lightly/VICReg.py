@@ -295,75 +295,41 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
     else:
         print(f"VICReg training already completed on {vicreg_start} epoch")
     
-    linear_start = load_checkpoint(linear, linear_optimizer, checkpoint_dir, prefix="linear")
-    
-    if linear_start < num_eval_epochs:
-        print(f"Continuing linear evaluation from epoch {linear_start} to {num_eval_epochs}")
-        for epoch in range(linear_start, num_eval_epochs):
-            # Training
-            model.eval()
-            linear.train()
-            train_loss = 0
-            correct = 0
-            total = 0
+    print(f"linear evaluation from epoch to {num_eval_epochs}")
+    for epoch in range(0, num_eval_epochs):
+        # Training
+        model.eval()
+        linear.train()
+        train_loss = 0
+        correct = 0
+        total = 0
+        
+        for batch in train_loader:
+            x, _, _, y = batch
+            y = y.to(device)
+            x = x.to(device)
             
-            for batch in train_loader:
-                x, _, _, y = batch
-                y = y.to(device)
-                x = x.to(device)
-                
-                with torch.no_grad():
-                    features = model.backbone(x).flatten(start_dim=1)
-                
-                linear_optimizer.zero_grad()
-                outputs = linear(features)
-                loss = nn.CrossEntropyLoss()(outputs, y)
-                loss.backward()
-                linear_optimizer.step()
-                
-                train_loss += loss.item()
-                _, predicted = outputs.max(1)
-                total += y.size(0)
-                correct += predicted.eq(y).sum().item()
+            with torch.no_grad():
+                features = model.backbone(x).flatten(start_dim=1)
             
+            linear_optimizer.zero_grad()
+            outputs = linear(features)
+            loss = nn.CrossEntropyLoss()(outputs, y)
+            loss.backward()
+            linear_optimizer.step()
+            
+            train_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += y.size(0)
+            correct += predicted.eq(y).sum().item()
+        
             train_accuracy = 100. * correct / total
             train_loss = train_loss / len(train_loader)
             print(f"epoch: {epoch:>02},"
                     f"Train Loss: {train_loss:.5f}, "
                     f"Train Acc: {train_accuracy:.2f}%")
-            save_checkpoint(linear, linear_optimizer, epoch, checkpoint_dir, prefix="linear")
             
-            # Testing
-            model.eval()
-            linear.eval()
-            test_loss = 0
-            correct = 0
-            total = 0
-            
-            with torch.no_grad():
-                for batch in test_loader:
-                    x, _, _, y = batch
-                    y = y.to(device)
-                    x = x.to(device)
-                    
-                    features = model.backbone(x).flatten(start_dim=1)
-                    outputs = linear(features)
-                    loss = nn.CrossEntropyLoss()(outputs, y)
-                    
-                    test_loss += loss.item()
-                    _, predicted = outputs.max(1)
-                    total += y.size(0)
-                    correct += predicted.eq(y).sum().item()
-            
-            test_accuracy = 100. * correct / total
-            test_loss = test_loss / len(test_loader)
-            
-            print(f"epoch: {epoch:>02},"
-                    f"Test Loss: {test_loss:.5f}, "
-                    f"Test Acc: {test_accuracy:.2f}%")
-    else:
-        print(f"Linear training already completed on {linear_start} epoch")
-        print(f"Testing on this epoch")
+        # Testing
         model.eval()
         linear.eval()
         test_loss = 0
@@ -373,7 +339,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
         with torch.no_grad():
             for batch in test_loader:
                 x, _, _, y = batch
-                x = x[0]
+                y = y.to(device)
                 x = x.to(device)
                 
                 features = model.backbone(x).flatten(start_dim=1)
@@ -391,7 +357,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
         print(f"epoch: {epoch:>02},"
                 f"Test Loss: {test_loss:.5f}, "
                 f"Test Acc: {test_accuracy:.2f}%")
-
+    
     return model, linear
 
 
