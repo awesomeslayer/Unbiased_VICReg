@@ -234,7 +234,7 @@ def online_main(num_epochs = 10, checkpoint_dir="exp256"):
 
     return model, linear
 
-def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", probing='linear'):
+def linear_main(num_epochs = 10, num_eval_epochs = 10, checkpoint_dir="exp256", probing='linear'):
     #device
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -295,7 +295,7 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
     else:
         print(f"VICReg training already completed on {vicreg_start} epoch")
     
-    print(f"linear evaluation from epoch to {num_eval_epochs}")
+    print(f"linear evaluation epochs to {num_eval_epochs}")
     for epoch in range(0, num_eval_epochs):
         # Training
         model.eval()
@@ -323,11 +323,11 @@ def linear_main(num_epochs = 10, num_eval_epochs = 5, checkpoint_dir="exp256", p
             total += y.size(0)
             correct += predicted.eq(y).sum().item()
         
-            train_accuracy = 100. * correct / total
-            train_loss = train_loss / len(train_loader)
-            print(f"epoch: {epoch:>02},"
-                    f"Train Loss: {train_loss:.5f}, "
-                    f"Train Acc: {train_accuracy:.2f}%")
+        train_accuracy = 100. * correct / total
+        train_loss = train_loss / len(train_loader)
+        print(f"epoch: {epoch:>02},"
+                f"Train Loss: {train_loss:.5f}, "
+                f"Train Acc: {train_accuracy:.2f}%")
             
         # Testing
         model.eval()
