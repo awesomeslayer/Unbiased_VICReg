@@ -108,10 +108,10 @@ def save_checkpoint(model, optimizer, epoch, checkpoint_dir, prefix="vicreg"):
         'optimizer_state_dict': optimizer.state_dict(),
     }, checkpoint_path)
 
-def online_main(num_epochs = 10, checkpoint_dir="oexp256"):
+def online_main(num_epochs = 200, checkpoint_dir="oexp256"):
     batch_size = 256
-    lr_linear = 1e-3
-    lr_vicreg = 1e-4
+    lr_linear = 1e-4
+    lr_vicreg = 1e-5
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -125,8 +125,6 @@ def online_main(num_epochs = 10, checkpoint_dir="oexp256"):
 
     #loss + optimizers
     vicreg_loss = VICRegLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
-    linear_optimizer = torch.optim.SGD(linear.parameters(), lr=0.01)
 
     #edited normilize for CIFAR10
     transform = VICRegTransform(input_size = 32, cj_prob = 0.8, cj_strength = 1.0, cj_bright = 0.8,
@@ -149,12 +147,13 @@ def online_main(num_epochs = 10, checkpoint_dir="oexp256"):
     vicreg_start = load_checkpoint(model, optimizer, checkpoint_dir, "vicreg"),
     linear_start = load_checkpoint(linear, linear_optimizer, checkpoint_dir, "linear")
     
-    if(vicreg_start == linear_start):
-        start_epoch = vicreg_start
+    if(vicreg_start[0] == linear_start):
+        start_epoch = vicreg_start[0]
     else:
         start_epoch = 0
 
     if start_epoch < num_epochs:
+        print(f"continue from {start_epoch} epoch:")
         model.train()
         linear.train()
         for epoch in range(start_epoch, num_epochs):
@@ -236,10 +235,10 @@ def online_main(num_epochs = 10, checkpoint_dir="oexp256"):
 
     return model, linear
 
-def linear_main(num_epochs = 350, num_eval_epochs = 30, checkpoint_dir="exp256"):
-    lr_vicreg = 1e-5
-    lr_linear = 1e-4
-    batch_size = 256
+def linear_main(num_epochs = 100, num_eval_epochs = 30, checkpoint_dir="exp16"):
+    lr_vicreg = 1e-4
+    lr_linear = 1e-3
+    batch_size = 16
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -365,5 +364,5 @@ def linear_main(num_epochs = 350, num_eval_epochs = 30, checkpoint_dir="exp256")
 
 
 if __name__ == '__main__':
-    online_main()
-    #linear_main()
+    #online_main()
+    linear_main()
