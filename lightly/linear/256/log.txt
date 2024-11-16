@@ -1,0 +1,46 @@
+[2024-11-16 17:58:52] Starting training with parameters:
+[2024-11-16 17:58:52] Batch size: 256
+[2024-11-16 17:58:52] Number of epochs: 100
+[2024-11-16 17:58:52] Number of eval epochs: 100
+[2024-11-16 17:58:52] Checkpoint directory: linear/256
+[2024-11-16 17:58:52] VICReg learning rate: 1e-05
+[2024-11-16 17:58:52] Linear learning rate: 0.0001
+[2024-11-16 17:58:52] Probing type: linear
+[2024-11-16 17:58:52] Using device: cuda
+[2024-11-16 17:58:56] Continuing VICReg training from epoch 0 to 100
+[2024-11-16 18:02:17] Starting training with parameters:
+[2024-11-16 18:02:17] Batch size: 256
+[2024-11-16 18:02:17] Number of epochs: 100
+[2024-11-16 18:02:17] Number of eval epochs: 100
+[2024-11-16 18:02:17] Checkpoint directory: linear/256
+[2024-11-16 18:02:17] VICReg learning rate: 1e-05
+[2024-11-16 18:02:17] Linear learning rate: 0.0001
+[2024-11-16 18:02:17] Probing type: linear
+[2024-11-16 18:02:17] Using device: cuda
+[2024-11-16 18:02:21] Continuing VICReg training from epoch 0 to 100
+[2024-11-16 18:02:40] Epoch: 00, VICReg loss: 22.07596
+[2024-11-16 18:02:59] Epoch: 01, VICReg loss: 21.80042
+[2024-11-16 18:06:39] Starting training with parameters:
+[2024-11-16 18:06:39] Batch size: 256
+[2024-11-16 18:06:39] Number of epochs: 5
+[2024-11-16 18:06:39] Number of eval epochs: 5
+[2024-11-16 18:06:39] Checkpoint directory: linear/256/
+[2024-11-16 18:06:39] VICReg learning rate: 1e-05
+[2024-11-16 18:06:39] Linear learning rate: 0.0001
+[2024-11-16 18:06:39] Probing type: linear
+[2024-11-16 18:06:39] Using device: cuda
+[2024-11-16 18:06:43] Continuing VICReg training from epoch 2 to 5
+[2024-11-16 18:07:01] Epoch: 02, VICReg loss: 21.68891
+[2024-11-16 18:07:21] Epoch: 03, VICReg loss: 21.57755
+[2024-11-16 18:07:40] Epoch: 04, VICReg loss: 21.48362
+[2024-11-16 18:07:40] Starting linear evaluation for 5 epochs
+[2024-11-16 18:07:59] Epoch: 00, Train Loss: 2.16689, Train Acc: 20.82%
+[2024-11-16 18:08:03] Epoch: 00, Test Loss: 2.00678, Test Acc: 25.65%
+[2024-11-16 18:08:21] Epoch: 01, Train Loss: 1.97695, Train Acc: 26.97%
+[2024-11-16 18:08:25] Epoch: 01, Test Loss: 1.93624, Test Acc: 27.96%
+[2024-11-16 18:08:44] Epoch: 02, Train Loss: 1.92044, Train Acc: 29.00%
+[2024-11-16 18:08:48] Epoch: 02, Test Loss: 1.89352, Test Acc: 29.83%
+[2024-11-16 18:09:07] Epoch: 03, Train Loss: 1.88366, Train Acc: 30.67%
+[2024-11-16 18:09:11] Epoch: 03, Test Loss: 1.86483, Test Acc: 30.97%
+[2024-11-16 18:09:29] Epoch: 04, Train Loss: 1.85668, Train Acc: 31.90%
+[2024-11-16 18:09:33] Epoch: 04, Test Loss: 1.84600, Test Acc: 31.72%
