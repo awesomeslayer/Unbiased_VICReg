@@ -140,7 +140,7 @@ class VICRegModel(pl.LightningModule):
         return optimizer
 
 
-def online_main(num_epochs=10, checkpoint_dir="lightning_logs"):
+def online_main(num_epochs=100, checkpoint_dir="lightning_logs"):
     batch_size = 256
     lr_linear = 1e-3
     lr_vicreg = 1e-4
