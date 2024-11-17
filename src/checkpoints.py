@@ -11,10 +11,11 @@ def setup_logging(checkpoint_dir: str) -> logging.Logger:
 
     logger = logging.getLogger("vicreg")
 
-    logger.setLevel(logging.INFO)
+    # Удаляем все обработчики перед добавлением нового
+    if logger.hasHandlers():
+        logger.handlers.clear()
 
-    # Disable propagation to the root logger (prevents logging in ./main.log)
-    # logger.propagate = False
+    logger.setLevel(logging.INFO)
 
     log_file_path = os.path.join(checkpoint_dir, "main.log")
     file_handler = logging.FileHandler(log_file_path)
