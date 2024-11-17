@@ -1,0 +1,15 @@
+# Ignore all __pycache__ directories
+__pycache__/
+
+# Ignore all .nox directories
+.nox/
+
+# Ignore data directory at the root level
+/data/
+
+# Ignore all .hydra directories
+.hydra/
+
+# Ignore specific files
+vicreg_latest.pt
+linear_latest.pt
