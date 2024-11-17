@@ -3,7 +3,7 @@ hydra:
     dir: .
 batch_sizes: [256, 128, 64]
 batch_size: 256
-num_epochs: 100
+num_epochs: 200
 num_eval_epochs: 50
 lambda_param: 25.0
 mu_param: 25.0

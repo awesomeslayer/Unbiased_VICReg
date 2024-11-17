@@ -3,10 +3,26 @@ import torch
 from torch import nn
 import logging
 
-def linear_probe(start_epoch, writer, model, linear, vicreg_start, 
-                 device, train_loader, test_loader, vicreg_loss, logger, optimizer, linear_optimizer, args):
+
+def linear_probe(
+    start_epoch,
+    writer,
+    model,
+    linear,
+    vicreg_start,
+    device,
+    train_loader,
+    test_loader,
+    vicreg_loss,
+    logger,
+    optimizer,
+    linear_optimizer,
+    args,
+):
     if start_epoch < args.num_epochs:
-        logger.info(f"Continuing VICReg training from epoch {vicreg_start} to {args.num_epochs}")
+        logger.info(
+            f"Continuing VICReg training from epoch {vicreg_start} to {args.num_epochs}"
+        )
         model.train()
 
         for epoch in range(vicreg_start, args.num_epochs):
@@ -26,9 +42,11 @@ def linear_probe(start_epoch, writer, model, linear, vicreg_start,
             logger.info(f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}")
 
             # TensorBoard logging for training loss
-            writer.add_scalar('VICReg_loss/train', avg_loss.item(), epoch)
+            writer.add_scalar("VICReg_loss/train", avg_loss.item(), epoch)
 
-            save_checkpoint(model, optimizer, epoch, args.checkpoint_dir, prefix="vicreg")
+            save_checkpoint(
+                model, optimizer, epoch, args.checkpoint_dir, prefix="vicreg"
+            )
     else:
         logger.info(f"VICReg training already completed on {vicreg_start} epoch")
 
@@ -62,14 +80,16 @@ def linear_probe(start_epoch, writer, model, linear, vicreg_start,
             total += y.size(0)
             correct += predicted.eq(y).sum().item()
 
-        train_accuracy = 100. * correct / total
+        train_accuracy = 100.0 * correct / total
         train_loss = train_loss / len(train_loader)
 
-        logger.info(f"Epoch: {epoch:>02}, Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%")
+        logger.info(
+            f"Epoch: {epoch:>02}, Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
+        )
 
         # TensorBoard logging for train loss and accuracy
-        writer.add_scalar('Train_loss', train_loss, epoch)
-        writer.add_scalar('Train_accuracy', train_accuracy, epoch)
+        writer.add_scalar("Train_loss", train_loss, epoch)
+        writer.add_scalar("Train_accuracy", train_accuracy, epoch)
 
         # Evaluation loop
         model.eval()
@@ -92,28 +112,45 @@ def linear_probe(start_epoch, writer, model, linear, vicreg_start,
                 total += y.size(0)
                 correct += predicted.eq(y).sum().item()
 
-        test_accuracy = 100. * correct / total
+        test_accuracy = 100.0 * correct / total
         test_loss = test_loss / len(test_loader)
 
-        logger.info(f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%")
+        logger.info(
+            f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
+        )
 
         # TensorBoard logging for test loss and accuracy
-        writer.add_scalar('Test_loss', test_loss, epoch)
-        writer.add_scalar('Test_accuracy', test_accuracy, epoch)
+        writer.add_scalar("Test_loss", test_loss, epoch)
+        writer.add_scalar("Test_accuracy", test_accuracy, epoch)
 
     # Close the TensorBoard writer
     writer.close()
 
     return True
 
-def online_probe(start_epoch, writer, model, linear, 
-                 device, train_loader, test_loader, vicreg_loss, logger, optimizer, linear_optimizer, args):
-    
+
+def online_probe(
+    start_epoch,
+    writer,
+    model,
+    linear,
+    device,
+    train_loader,
+    test_loader,
+    vicreg_loss,
+    logger,
+    optimizer,
+    linear_optimizer,
+    args,
+):
+
     if start_epoch < args.num_epochs:
-        logger.info(f"Continuing training from epoch {start_epoch} to {args.num_epochs}")
+        logger.info(
+            f"Continuing training from epoch {start_epoch} to {args.num_epochs}"
+        )
         model.train()
         linear.train()
-        
+
         for epoch in range(start_epoch, args.num_epochs):
             total_loss = 0
             train_loss = 0
@@ -134,41 +171,45 @@ def online_probe(start_epoch, writer, model, linear,
 
                 x = x.to(device)
                 y = y.to(device)
-                
+
                 with torch.no_grad():
                     features = model.backbone(x).flatten(start_dim=1)
-                
+
                 linear_optimizer.zero_grad()
                 outputs = linear(features)
                 loss = nn.CrossEntropyLoss()(outputs, y)
                 loss.backward()
                 linear_optimizer.step()
-                
+
                 train_loss += loss.item()
                 _, predicted = outputs.max(1)
                 total += y.size(0)
                 correct += predicted.eq(y).sum().item()
 
             avg_loss = total_loss / len(train_loader)
-            train_accuracy = 100. * correct / total
+            train_accuracy = 100.0 * correct / total
             train_loss = train_loss / len(train_loader)
 
-            writer.add_scalar('Loss/train', train_loss, epoch)
-            writer.add_scalar('Accuracy/train', train_accuracy, epoch)
-            writer.add_scalar('VICReg Loss/train', avg_loss, epoch)
+            writer.add_scalar("Loss/train", train_loss, epoch)
+            writer.add_scalar("Accuracy/train", train_accuracy, epoch)
+            writer.add_scalar("VICReg Loss/train", avg_loss, epoch)
 
-            logger.info(f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}, "
-                     f"Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%")
+            logger.info(
+                f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}, "
+                f"Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
+            )
 
             save_checkpoint(model, optimizer, epoch, args.checkpoint_dir, "vicreg")
-            save_checkpoint(linear, linear_optimizer, epoch, args.checkpoint_dir, "linear")
+            save_checkpoint(
+                linear, linear_optimizer, epoch, args.checkpoint_dir, "linear"
+            )
 
             model.eval()
             linear.eval()
             test_loss = 0
             correct = 0
             total = 0
-            
+
             with torch.no_grad():
                 for batch in test_loader:
                     x, _, _, y = batch
@@ -176,19 +217,21 @@ def online_probe(start_epoch, writer, model, linear,
                     features = model.backbone(x).flatten(start_dim=1)
                     outputs = linear(features)
                     loss = nn.CrossEntropyLoss()(outputs, y)
-                    
+
                     test_loss += loss.item()
                     _, predicted = outputs.max(1)
                     total += y.size(0)
                     correct += predicted.eq(y).sum().item()
-            
-            test_accuracy = 100. * correct / total
+
+            test_accuracy = 100.0 * correct / total
             test_loss = test_loss / len(test_loader)
 
-            writer.add_scalar('Loss/test', test_loss, epoch)
-            writer.add_scalar('Accuracy/test', test_accuracy, epoch)
+            writer.add_scalar("Loss/test", test_loss, epoch)
+            writer.add_scalar("Accuracy/test", test_accuracy, epoch)
 
-            logger.info(f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%")
+            logger.info(
+                f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
+            )
 
     else:
         logger.info(f"Training already completed on {start_epoch} epoch")
