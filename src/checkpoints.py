@@ -40,7 +40,6 @@ def load_checkpoint(model, optimizer, checkpoint_dir, prefix="vicreg"):
     if not os.path.exists(checkpoint_path):
         return 0
 
-    # Use weights_only=True to avoid FutureWarning
     checkpoint = torch.load(checkpoint_path, weights_only=True)
     model.load_state_dict(checkpoint["model_state_dict"])
     if optimizer is not None:

@@ -27,6 +27,7 @@ def train_evaluate(args, logger: logging.Logger):
         test_loader,
         start_epoch,
         vicreg_start,
+        linear_start,
     ) = setup_experiment(args, writer, device, logger)
 
     logger.info(f"Beginning train + evaluate for {args.probe} probing")
@@ -48,11 +49,11 @@ def train_evaluate(args, logger: logging.Logger):
         )
     elif args.probe == "linear":
         linear_probe(
-            start_epoch,
             writer,
             model,
             linear,
             vicreg_start,
+            linear_start,
             device,
             train_loader,
             test_loader,
@@ -73,15 +74,13 @@ def train_evaluate(args, logger: logging.Logger):
 def write_pictures(writer, train_loader, device, model, logger: logging.Logger):
     logger.info("Writing visualization data to TensorBoard")
     try:
-        # Load the first batch
         batch = next(iter(train_loader))
-        x, x0, _, y = batch  # x is original, x0 is augmented, y are labels
+        x, x0, _, y = batch
 
-        # Select 4 samples from the batch for visualization
         num_samples = 4
-        x_vis = x[:num_samples]  # Original images
-        x0_vis = x0[0][:num_samples]  # First augmentation of the images
-        labels_vis = y[:num_samples]  # Corresponding labels
+        x_vis = x[:num_samples]
+        x0_vis = x0[0][:num_samples]
+        labels_vis = y[:num_samples]
 
         writer.add_images("Original Images", x_vis, 0)
         writer.add_images("Augmented Images", x0_vis, 0)
@@ -100,7 +99,6 @@ def write_pictures(writer, train_loader, device, model, logger: logging.Logger):
 def setup_experiment(args, writer, device, logger: logging.Logger):
     logger.info("Setting up experiment...")
 
-    # Setup backbone
     if args.backbone == "resnet18":
         logger.info("Using ResNet18 backbone")
         resnet = torchvision.models.resnet18()
@@ -116,7 +114,6 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     model.to(device)
     linear = nn.Linear(args.projection_head_dims[-1], 10).to(device)
 
-    # Setup loss function
     if args.loss == "biased":
         logger.info("Using biased VICReg loss")
         vicreg_loss = VICRegLoss(
@@ -135,7 +132,6 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         logger.error(f"Unknown loss type: {args.loss}")
         raise ValueError(f"Unknown loss type: {args.loss}")
 
-    # Setup datasets and dataloaders
     logger.info("Setting up datasets and dataloaders")
     transform = VICRegTransform(input_size=32)
     train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
@@ -148,6 +144,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         drop_last=True,
         num_workers=8,
     )
+
     test_loader = torch.utils.data.DataLoader(
         test_dataset,
         batch_size=args.batch_size,
@@ -157,18 +154,16 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     )
     logger.info(f"Created dataloaders with batch size {args.batch_size}")
 
-    # Setup optimizers
-    optimizer = torch.optim.AdamW(
+    optimizer = torch.optim.Adam(
         model.parameters(), lr=args.lr_vicreg, weight_decay=1e-6
     )
-    linear_optimizer = torch.optim.AdamW(
+    linear_optimizer = torch.optim.SGD(
         linear.parameters(), lr=args.lr_linear, weight_decay=1e-6
     )
     logger.info(
         f"Created optimizers with learning rates: vicreg={args.lr_vicreg}, linear={args.lr_linear}"
     )
 
-    # Load checkpoints
     vicreg_start = load_checkpoint(model, optimizer, args.checkpoint_dir, "vicreg")
     linear_start = load_checkpoint(
         linear, linear_optimizer, args.checkpoint_dir, "linear"
@@ -178,7 +173,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     )
 
     start_epoch = vicreg_start if vicreg_start == linear_start else 0
-    logger.info(f"Starting from epoch {start_epoch}")
+    logger.info(f"Starting from epoch vicreg_start:{vicreg_start}")
 
     write_pictures(writer, train_loader, device, model, logger)
 
@@ -192,4 +187,5 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         test_loader,
         start_epoch,
         vicreg_start,
+        linear_start,
     )

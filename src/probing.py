@@ -1,15 +1,14 @@
 from src.checkpoints import save_checkpoint
 import torch
 from torch import nn
-import logging
 
 
 def linear_probe(
-    start_epoch,
     writer,
     model,
     linear,
     vicreg_start,
+    linear_start,
     device,
     train_loader,
     test_loader,
@@ -19,7 +18,7 @@ def linear_probe(
     linear_optimizer,
     args,
 ):
-    if start_epoch < args.num_epochs:
+    if vicreg_start < args.num_epochs:
         logger.info(
             f"Continuing VICReg training from epoch {vicreg_start} to {args.num_epochs}"
         )
@@ -41,7 +40,6 @@ def linear_probe(
             avg_loss = total_loss / len(train_loader)
             logger.info(f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}")
 
-            # TensorBoard logging for training loss
             writer.add_scalar("VICReg_loss/train", avg_loss.item(), epoch)
 
             save_checkpoint(
@@ -50,80 +48,116 @@ def linear_probe(
     else:
         logger.info(f"VICReg training already completed on {vicreg_start} epoch")
 
-    # Linear evaluation
-    logger.info(f"Starting linear evaluation for {args.num_eval_epochs} epochs")
-
-    for epoch in range(args.num_eval_epochs):
-        model.eval()
-        linear.train()
-
-        # Training loop
-        train_loss = 0
-        correct = 0
-        total = 0
-
-        for batch in train_loader:
-            x, _, _, y = batch
-            x, y = x.to(device), y.to(device)
-
-            with torch.no_grad():
-                features = model.backbone(x).flatten(start_dim=1)
-
-            linear_optimizer.zero_grad()
-            outputs = linear(features)
-            loss = nn.CrossEntropyLoss()(outputs, y)
-            loss.backward()
-            linear_optimizer.step()
-
-            train_loss += loss.item()
-            _, predicted = outputs.max(1)
-            total += y.size(0)
-            correct += predicted.eq(y).sum().item()
-
-        train_accuracy = 100.0 * correct / total
-        train_loss = train_loss / len(train_loader)
-
+    logger.info(f"linear_start {linear_start}, vicreg_start {vicreg_start}")
+    if linear_start < args.num_eval_epochs:
         logger.info(
-            f"Epoch: {epoch:>02}, Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
+            f"Starting linear evaluation from {linear_start}/{args.num_eval_epochs} epochs"
         )
 
-        # TensorBoard logging for train loss and accuracy
-        writer.add_scalar("Train_loss", train_loss, epoch)
-        writer.add_scalar("Train_accuracy", train_accuracy, epoch)
+        for epoch in range(linear_start, args.num_eval_epochs):
+            model.eval()
+            linear.train()
 
-        # Evaluation loop
-        model.eval()
-        linear.eval()
-        test_loss = 0
-        correct = 0
-        total = 0
+            train_loss = 0
+            correct = 0
+            total = 0
 
-        with torch.no_grad():
-            for batch in test_loader:
+            for batch in train_loader:
                 x, _, _, y = batch
                 x, y = x.to(device), y.to(device)
 
-                features = model.backbone(x).flatten(start_dim=1)
+                with torch.no_grad():
+                    features = model.backbone(x).flatten(start_dim=1)
+
+                linear_optimizer.zero_grad()
                 outputs = linear(features)
                 loss = nn.CrossEntropyLoss()(outputs, y)
+                loss.backward()
+                linear_optimizer.step()
 
-                test_loss += loss.item()
+                train_loss += loss.item()
                 _, predicted = outputs.max(1)
                 total += y.size(0)
                 correct += predicted.eq(y).sum().item()
 
-        test_accuracy = 100.0 * correct / total
-        test_loss = test_loss / len(test_loader)
+            train_accuracy = 100.0 * correct / total
+            train_loss = train_loss / len(train_loader)
 
-        logger.info(
-            f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
-        )
+            logger.info(
+                f"Epoch: {epoch:>02}, Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
+            )
 
-        # TensorBoard logging for test loss and accuracy
-        writer.add_scalar("Test_loss", test_loss, epoch)
-        writer.add_scalar("Test_accuracy", test_accuracy, epoch)
+            writer.add_scalar("Train_loss", train_loss, epoch)
+            writer.add_scalar("Train_accuracy", train_accuracy, epoch)
+            save_checkpoint(
+                linear, linear_optimizer, epoch, args.checkpoint_dir, "linear"
+            )
 
-    # Close the TensorBoard writer
+            model.eval()
+            linear.eval()
+            test_loss = 0
+            correct = 0
+            total = 0
+
+            with torch.no_grad():
+                for batch in test_loader:
+                    x, _, _, y = batch
+                    x, y = x.to(device), y.to(device)
+
+                    features = model.backbone(x).flatten(start_dim=1)
+                    outputs = linear(features)
+                    loss = nn.CrossEntropyLoss()(outputs, y)
+
+                    test_loss += loss.item()
+                    _, predicted = outputs.max(1)
+                    total += y.size(0)
+                    correct += predicted.eq(y).sum().item()
+
+            test_accuracy = 100.0 * correct / total
+            test_loss = test_loss / len(test_loader)
+
+            logger.info(
+                f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
+            )
+
+            writer.add_scalar("Test_loss", test_loss, epoch)
+            writer.add_scalar("Test_accuracy", test_accuracy, epoch)
+
+        else:
+            logger.info(
+                f"Train exists: {linear_start}/{args.num_eval_epochs} epochs, evaluate on train:"
+            )
+
+            model.eval()
+            linear.eval()
+            test_loss = 0
+            correct = 0
+            total = 0
+
+            with torch.no_grad():
+                for batch in test_loader:
+                    x, _, _, y = batch
+                    x, y = x.to(device), y.to(device)
+
+                    features = model.backbone(x).flatten(start_dim=1)
+                    outputs = linear(features)
+                    loss = nn.CrossEntropyLoss()(outputs, y)
+
+                    test_loss += loss.item()
+                    _, predicted = outputs.max(1)
+                    total += y.size(0)
+                    correct += predicted.eq(y).sum().item()
+
+            test_accuracy = 100.0 * correct / total
+            test_loss = test_loss / len(test_loader)
+
+            logger.info(
+                f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
+            )
+
+            writer.add_scalar("Test_loss", test_loss, epoch)
+            writer.add_scalar("Test_accuracy", test_accuracy, epoch)
+
     writer.close()
 
     return True
