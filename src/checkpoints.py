@@ -1,24 +1,35 @@
 import os
-import datetime
 import torch
+import logging
+from omegaconf import DictConfig
+import logging
+import os
 
-def setup_logger(checkpoint_dir):
+
+def setup_logging(checkpoint_dir: str) -> logging.Logger:
     os.makedirs(checkpoint_dir, exist_ok=True)
-    log_file = os.path.join(checkpoint_dir, 'log.txt')
-    return log_file
+    
+    logger = logging.getLogger('vicreg')
+    
+    logger.setLevel(logging.INFO)
+    
+    # Disable propagation to the root logger (prevents logging in ./main.log)
+    #logger.propagate = False
+    
+    log_file_path = os.path.join(checkpoint_dir, 'main.log')
+    file_handler = logging.FileHandler(log_file_path)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
 
-def log_message(message, log_file):
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    log_entry = f"[{timestamp}] {message}"
-    print(log_entry)
-    with open(log_file, 'a') as f:
-        f.write(log_entry + '\n')
+    logger.addHandler(file_handler)
 
-def log_config(config, log_file):
-    """Log the configuration parameters to the log file."""
-    log_message("Launching with the following config parameters:", log_file)
-    for key, value in config.items():
-        log_message(f"{key}: {value}", log_file)
+    return logger
+
+def log_config(cfg: DictConfig, logger: logging.Logger):
+    logger.info("Configuration:")
+    for key, value in cfg.items():
+        logger.info(f"{key}: {value}")
 
 def load_checkpoint(model, optimizer, checkpoint_dir, prefix="vicreg"):
     os.makedirs(checkpoint_dir, exist_ok=True)
