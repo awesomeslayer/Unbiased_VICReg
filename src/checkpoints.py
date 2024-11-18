@@ -45,7 +45,6 @@ def load_checkpoint(model, optimizer, checkpoint_dir, prefix="vicreg"):
     model.load_state_dict(checkpoint["model_state_dict"])
     if optimizer is not None:
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-
     return checkpoint["epoch"] + 1
 
 
