@@ -10,7 +10,8 @@ def linear_probe(
     vicreg_start,
     linear_start,
     device,
-    train_loader,
+    train_loader_vicreg,
+    train_loader_linear,
     test_loader,
     vicreg_loss,
     logger,
@@ -27,7 +28,7 @@ def linear_probe(
         for epoch in range(vicreg_start, args.num_epochs):
             total_loss = 0
 
-            for batch in train_loader:
+            for batch in train_loader_vicreg:
                 _, x0, x1, _ = batch
                 x0, x1 = x0[0].to(device), x1[0].to(device)
                 z0, z1 = model(x0), model(x1)
@@ -37,10 +38,10 @@ def linear_probe(
                 optimizer.step()
                 optimizer.zero_grad()
 
-            avg_loss = total_loss / len(train_loader)
-            logger.info(f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}")
+            avg_loss = total_loss / len(train_loader_vicreg)
+            logger.info(f"Epoch: {epoch:>02}, {args.loss}VICReg loss: {avg_loss:.5f}")
 
-            writer.add_scalar("VICReg_loss/train", avg_loss.item(), epoch)
+            writer.add_scalar(f"{args.loss}VICReg_loss/train", avg_loss.item(), epoch)
 
             save_checkpoint(
                 model, optimizer, epoch, args.checkpoint_dir, prefix="vicreg"
@@ -62,7 +63,7 @@ def linear_probe(
             correct = 0
             total = 0
 
-            for batch in train_loader:
+            for batch in train_loader_linear:
                 x, _, _, y = batch
                 x, y = x.to(device), y.to(device)
 
@@ -81,7 +82,7 @@ def linear_probe(
                 correct += predicted.eq(y).sum().item()
 
             train_accuracy = 100.0 * correct / total
-            train_loss = train_loss / len(train_loader)
+            train_loss = train_loss / len(train_loader_linear)
 
             logger.info(
                 f"Epoch: {epoch:>02}, Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
@@ -226,10 +227,10 @@ def online_probe(
 
             writer.add_scalar("Loss/train", train_loss, epoch)
             writer.add_scalar("Accuracy/train", train_accuracy, epoch)
-            writer.add_scalar("VICReg Loss/train", avg_loss, epoch)
+            writer.add_scalar(f"{args.loss}VICReg Loss/train", avg_loss, epoch)
 
             logger.info(
-                f"Epoch: {epoch:>02}, VICReg loss: {avg_loss:.5f}, "
+                f"Epoch: {epoch:>02}, {args.loss}VICReg loss: {avg_loss:.5f}, "
                 f"Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
             )
 

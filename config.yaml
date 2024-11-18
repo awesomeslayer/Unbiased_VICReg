@@ -1,18 +1,19 @@
 hydra:
   run:
     dir: .
-batch_sizes: [128, 64]
+batch_sizes: [256, 128, 64, 32, 16, 8]
 batch_size: 256
+batch_size_evaluate: 64
 num_epochs: 100
-num_eval_epochs: 50
-lambda_param: 25.0
-mu_param: 25.0
-nu_param: 1
+num_eval_epochs: 30
+sim_coeff: 25.0
+std_coeff: 25.0
+cov_coeff: 1
 lr_vicreg: 2e-4
-lr_linear: 1e-2
+lr_linear: 2e-2
 checkpoint_dir: "linear/128"
 backbone: "resnet18" #или resnet50
 projection_head_dims: [512, 512, 512]
 probe: "linear"  # или "online"
-loss: "biased" #или unbiased
+loss: "unbiased" #или unbiased
 

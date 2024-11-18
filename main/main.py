@@ -14,6 +14,9 @@ def main(cfg: DictConfig):
         cfg.batch_size = batch_size
         cfg.checkpoint_dir = os.path.join(base_checkpoint_dir, str(cfg.batch_size))
 
+        cfg.lr_vicreg = batch_size * 0.0002 / 64
+        # cfg.batch_size_evaluate = batch_size #same bs not const for eval
+
         logger = setup_logging(cfg.checkpoint_dir)
         logger.info(f"Checkpoint directory: {cfg.checkpoint_dir}")
 

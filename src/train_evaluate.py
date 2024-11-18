@@ -23,7 +23,8 @@ def train_evaluate(args, logger: logging.Logger):
         linear,
         linear_optimizer,
         vicreg_loss,
-        train_loader,
+        train_loader_vicreg,
+        train_loader_linear,
         test_loader,
         start_epoch,
         vicreg_start,
@@ -39,7 +40,7 @@ def train_evaluate(args, logger: logging.Logger):
             model,
             linear,
             device,
-            train_loader,
+            train_loader_vicreg,
             test_loader,
             vicreg_loss,
             logger,
@@ -55,7 +56,8 @@ def train_evaluate(args, logger: logging.Logger):
             vicreg_start,
             linear_start,
             device,
-            train_loader,
+            train_loader_vicreg,
+            train_loader_linear,
             test_loader,
             vicreg_loss,
             logger,
@@ -117,16 +119,15 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     if args.loss == "biased":
         logger.info("Using biased VICReg loss")
         vicreg_loss = VICRegLoss(
-            lambda_param=args.lambda_param,
-            mu_param=args.mu_param,
-            nu_param=args.nu_param,
+            lambda_param=args.sim_coeff,
+            mu_param=args.std_coeff,
+            nu_param=args.cov_coeff,
         )
     elif args.loss == "unbiased":
         logger.info("Using unbiased VICReg loss")
         vicreg_loss = UnbiasedVICRegLoss(
-            lambda_param=args.lambda_param,
-            mu_param=args.mu_param,
-            nu_param=args.nu_param,
+            sim_coeff=args.sim_coeff,
+            cov_coeff=args.cov_coeff,
         )
     else:
         logger.error(f"Unknown loss type: {args.loss}")
@@ -137,7 +138,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
     test_dataset = CIFAR10TripleView("data/", transform, train=False, download=True)
 
-    train_loader = torch.utils.data.DataLoader(
+    train_loader_vicreg = torch.utils.data.DataLoader(
         train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
@@ -145,14 +146,25 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         num_workers=8,
     )
 
+    train_loader_linear = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=args.batch_size_evaluate,
+        shuffle=True,
+        drop_last=True,
+        num_workers=8,
+    )
+
     test_loader = torch.utils.data.DataLoader(
         test_dataset,
-        batch_size=args.batch_size,
+        batch_size=args.batch_size_evaluate,
         shuffle=False,
         drop_last=False,
         num_workers=8,
     )
-    logger.info(f"Created dataloaders with batch size {args.batch_size}")
+
+    logger.info(
+        f"Created dataloaders with batch size {args.batch_size} and evaluate {args.batch_size_evaluate}"
+    )
 
     optimizer = torch.optim.Adam(
         model.parameters(), lr=args.lr_vicreg, weight_decay=1e-6
@@ -175,7 +187,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     start_epoch = vicreg_start if vicreg_start == linear_start else 0
     logger.info(f"Starting from epoch vicreg_start:{vicreg_start}")
 
-    write_pictures(writer, train_loader, device, model, logger)
+    write_pictures(writer, train_loader_vicreg, device, model, logger)
 
     return (
         model,
@@ -183,7 +195,8 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         linear,
         linear_optimizer,
         vicreg_loss,
-        train_loader,
+        train_loader_vicreg,
+        train_loader_linear,
         test_loader,
         start_epoch,
         vicreg_start,
