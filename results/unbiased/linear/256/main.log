@@ -1,0 +1,51 @@
+2024-11-18 00:03:35,024 - INFO - Checkpoint directory: ./results/unbiased/linear/256
+2024-11-18 00:03:35,024 - INFO - Configuration:
+2024-11-18 00:03:35,024 - INFO - batch_sizes: [256, 128, 64, 32, 16, 8]
+2024-11-18 00:03:35,024 - INFO - batch_size: 256
+2024-11-18 00:03:35,025 - INFO - batch_size_evaluate: 64
+2024-11-18 00:03:35,025 - INFO - num_epochs: 100
+2024-11-18 00:03:35,025 - INFO - num_eval_epochs: 30
+2024-11-18 00:03:35,025 - INFO - sim_coeff: 25.0
+2024-11-18 00:03:35,025 - INFO - std_coeff: 25.0
+2024-11-18 00:03:35,025 - INFO - cov_coeff: 1
+2024-11-18 00:03:35,025 - INFO - lr_vicreg: 0.0008
+2024-11-18 00:03:35,025 - INFO - lr_linear: 0.02
+2024-11-18 00:03:35,025 - INFO - checkpoint_dir: ./results/unbiased/linear/256
+2024-11-18 00:03:35,025 - INFO - backbone: resnet18
+2024-11-18 00:03:35,025 - INFO - projection_head_dims: [512, 512, 512]
+2024-11-18 00:03:35,025 - INFO - probe: linear
+2024-11-18 00:03:35,025 - INFO - loss: unbiased
+2024-11-18 00:03:35,025 - INFO - Running with batch_size=256
+2024-11-18 00:03:35,070 - INFO - Using device: cuda
+2024-11-18 00:03:35,071 - INFO - Setting up experiment...
+2024-11-18 00:03:35,071 - INFO - Using ResNet18 backbone
+2024-11-18 00:03:35,457 - INFO - Using unbiased VICReg loss
+2024-11-18 00:03:35,458 - INFO - Setting up datasets and dataloaders
+2024-11-18 00:03:36,869 - INFO - Created dataloaders with batch size 256 and evaluate 64
+2024-11-18 00:03:36,870 - INFO - Created optimizers with learning rates: vicreg=0.0008, linear=0.02
+2024-11-18 00:03:36,870 - INFO - Loaded checkpoints: vicreg_epoch=0, linear_epoch=0
+2024-11-18 00:03:36,870 - INFO - Starting from epoch vicreg_start:0
+2024-11-18 00:03:36,870 - INFO - Writing visualization data to TensorBoard
+2024-11-18 00:03:39,833 - INFO - Successfully wrote visualization data to TensorBoard
+2024-11-18 00:03:39,858 - INFO - Beginning train + evaluate for linear probing
+2024-11-18 00:03:39,858 - INFO - Continuing VICReg training from epoch 0 to 100
+2024-11-18 00:04:00,130 - INFO - Epoch: 00, VICReg loss: 28.64554
+2024-11-18 00:04:20,288 - INFO - Epoch: 01, VICReg loss: 22.64489
+2024-11-18 00:04:40,970 - INFO - Epoch: 02, VICReg loss: 22.61497
+2024-11-18 00:05:01,863 - INFO - Epoch: 03, VICReg loss: 22.60540
+2024-11-18 00:05:22,625 - INFO - Epoch: 04, VICReg loss: 22.59988
+2024-11-18 00:05:43,560 - INFO - Epoch: 05, VICReg loss: 22.59786
+2024-11-18 00:06:04,704 - INFO - Epoch: 06, VICReg loss: 22.59469
+2024-11-18 00:06:25,473 - INFO - Epoch: 07, VICReg loss: 22.59075
+2024-11-18 00:06:46,767 - INFO - Epoch: 08, VICReg loss: 22.58970
+2024-11-18 00:07:07,491 - INFO - Epoch: 09, VICReg loss: 22.58713
+2024-11-18 00:07:28,216 - INFO - Epoch: 10, VICReg loss: 22.58438
+2024-11-18 00:07:49,453 - INFO - Epoch: 11, VICReg loss: 22.58226
+2024-11-18 00:08:10,492 - INFO - Epoch: 12, VICReg loss: 22.57947
+2024-11-18 00:08:31,244 - INFO - Epoch: 13, VICReg loss: 22.57782
+2024-11-18 00:08:52,295 - INFO - Epoch: 14, VICReg loss: 22.57536
+2024-11-18 00:09:13,488 - INFO - Epoch: 15, VICReg loss: 22.57117
+2024-11-18 00:09:34,438 - INFO - Epoch: 16, VICReg loss: 22.56864
+2024-11-18 00:09:55,421 - INFO - Epoch: 17, VICReg loss: 22.56495
+2024-11-18 00:10:16,614 - INFO - Epoch: 18, VICReg loss: 22.56271
+2024-11-18 00:10:37,459 - INFO - Epoch: 19, VICReg loss: 22.55889
