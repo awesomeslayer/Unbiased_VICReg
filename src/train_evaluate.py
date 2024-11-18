@@ -114,7 +114,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     backbone = nn.Sequential(*list(resnet.children())[:-1])
     model = VICReg(backbone, args.projection_head_dims)
     model.to(device)
-    linear = nn.Linear(args.projection_head_dims[-1], 10).to(device)
+    linear = nn.Linear(args.projection_head_dims[0], 10).to(device)
 
     if args.loss == "biased":
         logger.info("Using biased VICReg loss")
