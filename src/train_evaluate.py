@@ -134,7 +134,13 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         raise ValueError(f"Unknown loss type: {args.loss}")
 
     logger.info("Setting up datasets and dataloaders")
-    transform = VICRegTransform(input_size=32)
+    transform = VICRegTransform(
+        input_size=32,
+        cj_strength=0.5,
+        min_scale=0.7,
+        gaussian_blur=0.0,
+        normalize={"mean": [0.4914, 0.4822, 0.4465], "std": [0.247, 0.243, 0.261]},
+    )
     train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
     test_dataset = CIFAR10TripleView("data/", transform, train=False, download=True)
 

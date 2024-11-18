@@ -8,9 +8,6 @@ class CIFAR10TripleView(Dataset):
         self.base_transform = transforms.Compose(
             [
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.4914, 0.4822, 0.4465], std=[0.247, 0.243, 0.261]
-                ),
             ]
         )
         self.transform = transform

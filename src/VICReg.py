@@ -9,11 +9,16 @@ class VICReg(nn.Module):
     def __init__(self, backbone, projection_head_dims):
         super().__init__()
         self.backbone = backbone
+        self.backbone[0] = nn.Conv2d(
+            3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+        )  # fix 1st layer
+        self.backbone[3] = nn.Identity()  # fix 1st maxpool
+
         self.projection_head = VICRegProjectionHead(
             input_dim=projection_head_dims[0],
             hidden_dim=projection_head_dims[1],
             output_dim=projection_head_dims[2],
-            num_layers=len(projection_head_dims),
+            num_layers=2,
         )
 
     def forward(self, x):

@@ -4,9 +4,11 @@ locations = "src", "main", "noxfile.py", "requirements.txt", "config.yaml"
 
 PYTHON_VERSIONS = ["3.9.16"]
 
+
 @nox.session(python=PYTHON_VERSIONS)
 def install_requirements(session):
     session.install("-r", "requirements.txt")
+
 
 @nox.session(python=PYTHON_VERSIONS)
 def lint(session):
