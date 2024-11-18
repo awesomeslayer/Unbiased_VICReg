@@ -3,12 +3,11 @@ import torchvision
 from torch.utils.tensorboard import SummaryWriter
 from torch import nn
 from lightly.loss import VICRegLoss
-from lightly.transforms.vicreg_transform import VICRegTransform
 import logging
 
 from src.checkpoints import load_checkpoint
 from src.VICReg import VICReg, UnbiasedVICRegLoss
-from src.datasets_setup import CIFAR10TripleView
+from src.datasets_setup import exCIFAR10
 from src.probing import online_probe, linear_probe
 
 
@@ -83,11 +82,11 @@ def write_pictures(writer, train_loader, device, model, logger: logging.Logger):
     logger.info("Writing visualization data to TensorBoard")
     try:
         batch = next(iter(train_loader))
-        x, x0, _, y = batch
+        x, _, x0, _, y = batch
 
         num_samples = 4
         x_vis = x[:num_samples]
-        x0_vis = x0[0][:num_samples]
+        x0_vis = x0[:num_samples]
         labels_vis = y[:num_samples]
 
         writer.add_images("Original Images", x_vis, 0)
@@ -109,15 +108,14 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
 
     if args.backbone == "resnet18":
         logger.info("Using ResNet18 backbone")
-        resnet = torchvision.models.resnet18()
+        backbone = torchvision.models.resnet18(num_classes = args.projection_head_dims[0])
     elif args.backbone == "resnet50":
         logger.info("Using ResNet50 backbone")
-        resnet = torchvision.models.resnet50()
+        backbone = torchvision.models.resnet50(num_classes = args.projection_head_dims[0])
     else:
         logger.error(f"Unknown backbone architecture: {args.backbone}")
         raise ValueError(f"Unknown backbone: {args.backbone}")
 
-    backbone = nn.Sequential(*list(resnet.children())[:-1])
     model = VICReg(backbone, args.projection_head_dims)
     model.to(device)
     linear = nn.Linear(args.projection_head_dims[0], 10).to(device)
@@ -140,15 +138,8 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         raise ValueError(f"Unknown loss type: {args.loss}")
 
     logger.info("Setting up datasets and dataloaders")
-    transform = VICRegTransform(
-        input_size=32,
-        cj_strength=0.5,
-        min_scale=0.7,
-        gaussian_blur=0.0,
-        normalize={"mean": [0.4914, 0.4822, 0.4465], "std": [0.247, 0.243, 0.261]},
-    )
-    train_dataset = CIFAR10TripleView("data/", transform, train=True, download=True)
-    test_dataset = CIFAR10TripleView("data/", transform, train=False, download=True)
+    train_dataset = exCIFAR10("data/", train=True, download=True)
+    test_dataset = exCIFAR10("data/", train=False, download=True)
 
     train_loader_vicreg = torch.utils.data.DataLoader(
         train_dataset,
@@ -169,8 +160,8 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     test_loader = torch.utils.data.DataLoader(
         test_dataset,
         batch_size=args.batch_size_evaluate,
-        shuffle=False,
-        drop_last=False,
+        shuffle=True,
+        drop_last=True,
         num_workers=8,
     )
 
@@ -179,29 +170,29 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     )
 
     optimizer = torch.optim.Adam(
-        model.parameters(), lr=args.lr_vicreg, weight_decay=1e-6
+        model.parameters(), lr=args.max_lr_vicreg#, weight_decay=1e-6
     )
-    linear_optimizer = torch.optim.SGD(
-        linear.parameters(), lr=args.lr_linear, weight_decay=1e-6
+    linear_optimizer = torch.optim.Adam(
+        linear.parameters(), lr=args.max_lr_linear#, weight_decay=1e-6
     )
 
     scheduler = torch.optim.lr_scheduler.OneCycleLR(
         optimizer,
-        max_lr=1e-3,
+        max_lr=args.max_lr_vicreg,
         epochs=args.num_epochs,
         steps_per_epoch=len(train_loader_vicreg),
         pct_start=0.1,
     )
     linear_scheduler = torch.optim.lr_scheduler.OneCycleLR(
         linear_optimizer,
-        max_lr=1e-3,
+        max_lr=args.max_lr_linear,
         epochs=args.num_eval_epochs,
         steps_per_epoch=len(train_loader_linear),
         pct_start=0.1,
     )
 
     logger.info(
-        f"Created optimizers with learning rates: vicreg={args.lr_vicreg}, linear={args.lr_linear}"
+        f"Created optimizers with learning rates: vicreg={args.max_lr_vicreg}, linear={args.max_lr_linear}"
     )
 
     vicreg_start = load_checkpoint(model, optimizer, args.checkpoint_dir, "vicreg")

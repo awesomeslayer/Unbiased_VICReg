@@ -31,8 +31,8 @@ def linear_probe(
             total_loss = 0
 
             for batch in train_loader_vicreg:
-                _, x0, x1, _ = batch
-                x0, x1 = x0[0].to(device), x1[0].to(device)
+                _, _, x0, x1, _ = batch
+                x0, x1 = x0.to(device), x1.to(device)
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
                 total_loss += loss.detach()
@@ -67,7 +67,8 @@ def linear_probe(
             total = 0
 
             for batch in train_loader_linear:
-                x, _, _, y = batch
+                _, x, _, _, y = batch
+
                 x, y = x.to(device), y.to(device)
 
                 with torch.no_grad():
@@ -106,7 +107,7 @@ def linear_probe(
 
             with torch.no_grad():
                 for batch in test_loader:
-                    x, _, _, y = batch
+                    x, _, _, _, y = batch
                     x, y = x.to(device), y.to(device)
 
                     features = model.backbone(x).flatten(start_dim=1)
@@ -141,7 +142,7 @@ def linear_probe(
 
             with torch.no_grad():
                 for batch in test_loader:
-                    x, _, _, y = batch
+                    x, _, _, _, y = batch
                     x, y = x.to(device), y.to(device)
 
                     features = model.backbone(x).flatten(start_dim=1)
@@ -199,9 +200,7 @@ def online_probe(
             total = 0
 
             for batch_idx, batch in enumerate(train_loader):
-                x, x0, x1, y = batch
-                x0 = x0[0]
-                x1 = x1[0]
+                _, x, x0, x1, y = batch
                 x0, x1 = x0.to(device), x1.to(device)
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
@@ -255,7 +254,7 @@ def online_probe(
 
             with torch.no_grad():
                 for batch in test_loader:
-                    x, _, _, y = batch
+                    x, _, _, _, y = batch
                     x, y = x.to(device), y.to(device)
                     features = model.backbone(x).flatten(start_dim=1)
                     outputs = linear(features)

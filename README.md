@@ -50,7 +50,13 @@ batch_size_sharing: False               # Same batch_size on linear eval (True/F
 
 The project uses nox for automation. Available sessions:
 
-1. Linting and Style:
+1. Running the Training with installing req-s:
+```bash
+nox -s install_requirements
+
+nox -s run
+```
+2. Linting and Style:
 ```bash
 # Run flake8
 nox -s lint
@@ -65,10 +71,6 @@ nox -s isort
 nox -s pylint
 ```
 
-2. Running the Training:
-```bash
-nox -s run
-```
 
 ### Running with Different Configurations
 

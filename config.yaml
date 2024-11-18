@@ -4,16 +4,16 @@ hydra:
 batch_sizes: [256, 128, 64, 32, 16, 8]
 batch_size: 256
 batch_size_evaluate: 64
-num_epochs: 50
+num_epochs: 100
 num_eval_epochs: 50
 sim_coeff: 25.0
 std_coeff: 25.0
 cov_coeff: 1
-lr_vicreg: 1e-3
-lr_linear: 1e-3
+max_lr_vicreg: 1e-3
+max_lr_linear: 2e-2
 backbone: "resnet18" #или resnet50
-projection_head_dims: [512, 2048, 2048] #first must be resnet output
-probe: "online"  # или "online"
+projection_head_dims: [512, 1024] #first must be resnet output
+probe: "linear"  # или "online"
 loss: "biased" #или unbiased
 batch_size_sharing: False
 

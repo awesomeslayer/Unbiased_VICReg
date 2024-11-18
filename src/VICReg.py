@@ -1,30 +1,42 @@
 import torch
 from torch import nn
-from lightly.models.modules.heads import VICRegProjectionHead
 import torch.distributed as dist
 from lightly.utils.dist import gather
 
+class Projector(nn.Module):
+    def __init__(self, encoder_dim, projector_dim):
+        super().__init__()
+        
+        self.network = nn.Sequential(
+            nn.Linear(encoder_dim, projector_dim),
+            nn.BatchNorm1d(projector_dim),
+            nn.ReLU(),
+            nn.Linear(projector_dim, projector_dim),
+            nn.BatchNorm1d(projector_dim),
+            nn.ReLU(),
+            nn.Linear(projector_dim, projector_dim),
+            nn.BatchNorm1d(projector_dim),
+            nn.ReLU(),
+            nn.Linear(projector_dim, projector_dim)
+        )
+            
+    def forward(self, x):
+        return self.network(x)
 
 class VICReg(nn.Module):
     def __init__(self, backbone, projection_head_dims):
         super().__init__()
         self.backbone = backbone
-        self.backbone[0] = nn.Conv2d(
-            3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
-        )  # fix 1st layer
-        self.backbone[3] = nn.Identity()  # fix 1st maxpool
+        
+        #for resnet18 from SIMCLR paper:
+        self.backbone.conv1 = nn.Conv2d(3, 64, kernel_size=(3,3), stride=1)
+        self.backbone.maxpool = nn.Identity()
 
-        self.projection_head = VICRegProjectionHead(
-            input_dim=projection_head_dims[0],
-            hidden_dim=projection_head_dims[1],
-            output_dim=projection_head_dims[2],
-            num_layers=2,
-        )
+        self.projection_head = Projector(projection_head_dims[0], projection_head_dims[1])
 
     def forward(self, x):
-        x = self.backbone(x).flatten(start_dim=1)
-        z = self.projection_head(x)
-        return z
+        y = self.backbone(x)
+        return self.projection_head(y)
 
 
 class UnbiasedVICRegLoss(nn.Module):
