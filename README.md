@@ -9,12 +9,13 @@ This repository contains an implementation of VICReg (Variance-Invariance-Covari
 ├── main
 │   └── main.py          # Main execution script
 ├── noxfile.py           # Development automation
-└── src
-    ├── checkpoints.py   # Checkpoint management
-    ├── datasets_setup.py # Dataset preparation
-    ├── probing.py       # Evaluation probing
-    ├── train_evaluate.py # Training and evaluation
-    └── VICReg.py        # VICReg implementation
+├── src
+|    ├── checkpoints.py   # Checkpoint management
+|    ├── datasets_setup.py # Dataset preparation
+|    ├── probing.py       # Evaluation probing
+|    ├── train_evaluate.py # Training and evaluation
+|    └── VICReg.py        # VICReg implementation
+└── results               #results dir
 ```
 
 ## Requirements
@@ -28,7 +29,6 @@ The project uses a `config.yaml` file to manage hyperparameters and training set
 
 ```yaml
 batch_sizes: [256, 128, 64, 32, 16, 8]  # Available batch sizes for testing
-batch_size: 256                          # Default training batch size
 batch_size_evaluate: 64                  # Evaluation batch size
 num_epochs: 100                          # Number of training epochs
 num_eval_epochs: 30                      # Number of evaluation epochs

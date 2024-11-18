@@ -2,7 +2,6 @@ hydra:
   run:
     dir: .
 batch_sizes: [256, 128, 64, 32, 16, 8]
-batch_size: 256
 batch_size_evaluate: 64
 num_epochs: 100
 num_eval_epochs: 50
