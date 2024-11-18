@@ -11,9 +11,9 @@ std_coeff: 25.0
 cov_coeff: 1
 lr_vicreg: 2e-4
 lr_linear: 2e-2
-checkpoint_dir: "linear/128"
 backbone: "resnet18" #или resnet50
 projection_head_dims: [512, 512, 512]
 probe: "linear"  # или "online"
 loss: "unbiased" #или unbiased
+batch_size_sharing: False
 
