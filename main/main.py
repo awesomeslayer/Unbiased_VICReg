@@ -7,7 +7,6 @@ from src.train_evaluate import train_evaluate
 
 @hydra.main(config_path="..", config_name="config.yaml", version_base="1.1")
 def main(cfg: DictConfig):
-    # Allow modification of the config
     OmegaConf.set_struct(cfg, False)
 
     base_checkpoint_dir = f"./results/{cfg.loss}/{cfg.probe}"
