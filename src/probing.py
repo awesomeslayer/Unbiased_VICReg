@@ -16,7 +16,9 @@ def linear_probe(
     vicreg_loss,
     logger,
     optimizer,
+    scheduler,
     linear_optimizer,
+    linear_scheduler,
     args,
 ):
     if vicreg_start < args.num_epochs:
@@ -36,6 +38,7 @@ def linear_probe(
                 total_loss += loss.detach()
                 loss.backward()
                 optimizer.step()
+                scheduler.step()
                 optimizer.zero_grad()
 
             avg_loss = total_loss / len(train_loader_vicreg)
@@ -75,6 +78,7 @@ def linear_probe(
                 loss = nn.CrossEntropyLoss()(outputs, y)
                 loss.backward()
                 linear_optimizer.step()
+                linear_scheduler.step()
 
                 train_loss += loss.item()
                 _, predicted = outputs.max(1)
@@ -175,7 +179,9 @@ def online_probe(
     vicreg_loss,
     logger,
     optimizer,
+    scheduler,
     linear_optimizer,
+    linear_scheduler,
     args,
 ):
 
@@ -202,6 +208,7 @@ def online_probe(
                 total_loss += loss.detach()
                 loss.backward()
                 optimizer.step()
+                scheduler.step()
                 optimizer.zero_grad()
 
                 x = x.to(device)
@@ -215,6 +222,7 @@ def online_probe(
                 loss = nn.CrossEntropyLoss()(outputs, y)
                 loss.backward()
                 linear_optimizer.step()
+                linear_scheduler.step()
 
                 train_loss += loss.item()
                 _, predicted = outputs.max(1)

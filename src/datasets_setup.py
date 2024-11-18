@@ -7,6 +7,7 @@ class CIFAR10TripleView(Dataset):
     def __init__(self, root, transform, train=True, download=True):
         self.base_transform = transforms.Compose(
             [
+                transforms.Resize((32, 32)),
                 transforms.ToTensor(),
             ]
         )

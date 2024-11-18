@@ -11,7 +11,8 @@ def main(cfg: DictConfig):
 
     base_checkpoint_dir = f"./results/{cfg.loss}/{cfg.probe}"
     os.makedirs(base_checkpoint_dir, exist_ok=True)
-
+    if cfg.probe == "online":
+        cfg.num_eval_epochs = cfg.num_epochs
     for batch_size in cfg.batch_sizes:
         cfg.batch_size = batch_size
         cfg.checkpoint_dir = os.path.join(base_checkpoint_dir, str(cfg.batch_size))

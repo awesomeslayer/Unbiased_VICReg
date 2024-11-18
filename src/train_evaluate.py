@@ -20,8 +20,10 @@ def train_evaluate(args, logger: logging.Logger):
     (
         model,
         optimizer,
+        scheduler,
         linear,
         linear_optimizer,
+        linear_scheduler,
         vicreg_loss,
         train_loader_vicreg,
         train_loader_linear,
@@ -45,7 +47,9 @@ def train_evaluate(args, logger: logging.Logger):
             vicreg_loss,
             logger,
             optimizer,
+            scheduler,
             linear_optimizer,
+            linear_scheduler,
             args,
         )
     elif args.probe == "linear":
@@ -62,7 +66,9 @@ def train_evaluate(args, logger: logging.Logger):
             vicreg_loss,
             logger,
             optimizer,
+            scheduler,
             linear_optimizer,
+            linear_scheduler,
             args,
         )
     else:
@@ -178,6 +184,22 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     linear_optimizer = torch.optim.SGD(
         linear.parameters(), lr=args.lr_linear, weight_decay=1e-6
     )
+
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(
+        optimizer,
+        max_lr=1e-3,
+        epochs=args.num_epochs,
+        steps_per_epoch=len(train_loader_vicreg),
+        pct_start=0.1,
+    )
+    linear_scheduler = torch.optim.lr_scheduler.OneCycleLR(
+        linear_optimizer,
+        max_lr=1e-3,
+        epochs=args.num_eval_epochs,
+        steps_per_epoch=len(train_loader_linear),
+        pct_start=0.1,
+    )
+
     logger.info(
         f"Created optimizers with learning rates: vicreg={args.lr_vicreg}, linear={args.lr_linear}"
     )
@@ -198,8 +220,10 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     return (
         model,
         optimizer,
+        scheduler,
         linear,
         linear_optimizer,
+        linear_scheduler,
         vicreg_loss,
         train_loader_vicreg,
         train_loader_linear,
