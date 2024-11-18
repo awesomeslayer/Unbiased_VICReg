@@ -1,12 +1,15 @@
 from src.checkpoints import setup_logging, log_config
 import os
 import hydra
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from src.train_evaluate import train_evaluate
 
 
 @hydra.main(config_path="..", config_name="config.yaml", version_base="1.1")
 def main(cfg: DictConfig):
+    # Allow modification of the config
+    OmegaConf.set_struct(cfg, False)
+
     base_checkpoint_dir = f"./results/{cfg.loss}/{cfg.probe}"
     os.makedirs(base_checkpoint_dir, exist_ok=True)
 
