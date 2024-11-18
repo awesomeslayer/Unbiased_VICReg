@@ -34,7 +34,7 @@ def log_config(cfg: DictConfig, logger: logging.Logger):
         logger.info(f"{key}: {value}")
 
 
-def load_checkpoint(model, optimizer, checkpoint_dir, prefix="vicreg"):
+def load_checkpoint(model, optimizer, scheduler, checkpoint_dir, prefix="vicreg"):
     os.makedirs(checkpoint_dir, exist_ok=True)
     checkpoint_path = os.path.join(checkpoint_dir, f"{prefix}_latest.pt")
 
@@ -45,10 +45,15 @@ def load_checkpoint(model, optimizer, checkpoint_dir, prefix="vicreg"):
     model.load_state_dict(checkpoint["model_state_dict"])
     if optimizer is not None:
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+    if scheduler is not None:
+        scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
     return checkpoint["epoch"] + 1
 
 
-def save_checkpoint(model, optimizer, epoch, checkpoint_dir, prefix="vicreg"):
+def save_checkpoint(
+    model, optimizer, scheduler, epoch, checkpoint_dir, prefix="vicreg"
+):
     os.makedirs(checkpoint_dir, exist_ok=True)
     checkpoint_path = os.path.join(checkpoint_dir, f"{prefix}_latest.pt")
 
@@ -57,6 +62,7 @@ def save_checkpoint(model, optimizer, epoch, checkpoint_dir, prefix="vicreg"):
             "epoch": epoch,
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
+            "scheduler_state_dict": scheduler.state_dict(),
         },
         checkpoint_path,
     )

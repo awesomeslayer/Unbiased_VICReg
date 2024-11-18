@@ -24,6 +24,7 @@ def train_evaluate(args, logger: logging.Logger):
         linear_optimizer,
         linear_scheduler,
         vicreg_loss,
+        linear_loss,
         train_loader_vicreg,
         train_loader_linear,
         test_loader,
@@ -44,6 +45,7 @@ def train_evaluate(args, logger: logging.Logger):
             train_loader_vicreg,
             test_loader,
             vicreg_loss,
+            linear_loss,
             logger,
             optimizer,
             scheduler,
@@ -63,6 +65,7 @@ def train_evaluate(args, logger: logging.Logger):
             train_loader_linear,
             test_loader,
             vicreg_loss,
+            linear_loss,
             logger,
             optimizer,
             scheduler,
@@ -86,7 +89,7 @@ def write_pictures(writer, train_loader, device, model, logger: logging.Logger):
 
         num_samples = 4
         x_vis = x[:num_samples]
-        x0_vis = x0[:num_samples]
+        x0_vis = x0[0][:num_samples]
         labels_vis = y[:num_samples]
 
         writer.add_images("Original Images", x_vis, 0)
@@ -108,10 +111,10 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
 
     if args.backbone == "resnet18":
         logger.info("Using ResNet18 backbone")
-        backbone = torchvision.models.resnet18(num_classes = args.projection_head_dims[0])
+        backbone = torchvision.models.resnet18()
     elif args.backbone == "resnet50":
         logger.info("Using ResNet50 backbone")
-        backbone = torchvision.models.resnet50(num_classes = args.projection_head_dims[0])
+        backbone = torchvision.models.resnet50()
     else:
         logger.error(f"Unknown backbone architecture: {args.backbone}")
         raise ValueError(f"Unknown backbone: {args.backbone}")
@@ -137,6 +140,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         logger.error(f"Unknown loss type: {args.loss}")
         raise ValueError(f"Unknown loss type: {args.loss}")
 
+    linear_loss = nn.CrossEntropyLoss()
     logger.info("Setting up datasets and dataloaders")
     train_dataset = exCIFAR10("data/", train=True, download=True)
     test_dataset = exCIFAR10("data/", train=False, download=True)
@@ -170,20 +174,20 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     )
 
     optimizer = torch.optim.Adam(
-        model.parameters(), lr=args.max_lr_vicreg#, weight_decay=1e-6
+        model.parameters(), lr=args.max_lr_vicreg  # , weight_decay=1e-6
     )
     linear_optimizer = torch.optim.Adam(
-        linear.parameters(), lr=args.max_lr_linear#, weight_decay=1e-6
+        linear.parameters(), lr=args.max_lr_linear  # , weight_decay=1e-6
     )
 
-    scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(  # адаттивный lr для SSL
         optimizer,
         max_lr=args.max_lr_vicreg,
         epochs=args.num_epochs,
         steps_per_epoch=len(train_loader_vicreg),
         pct_start=0.1,
     )
-    linear_scheduler = torch.optim.lr_scheduler.OneCycleLR(
+    linear_scheduler = torch.optim.lr_scheduler.OneCycleLR(  # адаттивный lr для probe
         linear_optimizer,
         max_lr=args.max_lr_linear,
         epochs=args.num_eval_epochs,
@@ -195,9 +199,11 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         f"Created optimizers with learning rates: vicreg={args.max_lr_vicreg}, linear={args.max_lr_linear}"
     )
 
-    vicreg_start = load_checkpoint(model, optimizer, args.checkpoint_dir, "vicreg")
+    vicreg_start = load_checkpoint(
+        model, optimizer, scheduler, args.checkpoint_dir, "vicreg"
+    )
     linear_start = load_checkpoint(
-        linear, linear_optimizer, args.checkpoint_dir, "linear"
+        linear, linear_optimizer, linear_scheduler, args.checkpoint_dir, "linear"
     )
     logger.info(
         f"Loaded checkpoints: vicreg_epoch={vicreg_start}, linear_epoch={linear_start}"
@@ -216,6 +222,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         linear_optimizer,
         linear_scheduler,
         vicreg_loss,
+        linear_loss,
         train_loader_vicreg,
         train_loader_linear,
         test_loader,

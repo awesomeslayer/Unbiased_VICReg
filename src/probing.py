@@ -14,6 +14,7 @@ def linear_probe(
     train_loader_linear,
     test_loader,
     vicreg_loss,
+    linear_loss,
     logger,
     optimizer,
     scheduler,
@@ -25,14 +26,17 @@ def linear_probe(
         logger.info(
             f"Continuing VICReg training from epoch {vicreg_start} to {args.num_epochs}"
         )
-        model.train()
-
         for epoch in range(vicreg_start, args.num_epochs):
+            model.train()
             total_loss = 0
-
             for batch in train_loader_vicreg:
+                for param in model.parameters():
+                    param.requires_grad = True
+                for param in linear.parameters():
+                    param.requires_grad = False
+
                 _, _, x0, x1, _ = batch
-                x0, x1 = x0.to(device), x1.to(device)
+                x0, x1 = x0[0].to(device), x1[0].to(device)
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
                 total_loss += loss.detach()
@@ -47,7 +51,7 @@ def linear_probe(
             writer.add_scalar(f"{args.loss}VICReg_loss/train", avg_loss.item(), epoch)
 
             save_checkpoint(
-                model, optimizer, epoch, args.checkpoint_dir, prefix="vicreg"
+                model, optimizer, scheduler, epoch, args.checkpoint_dir, prefix="vicreg"
             )
     else:
         logger.info(f"VICReg training already completed on {vicreg_start} epoch")
@@ -67,6 +71,11 @@ def linear_probe(
             total = 0
 
             for batch in train_loader_linear:
+                for param in model.parameters():
+                    param.requires_grad = True
+                for param in linear.parameters():
+                    param.requires_grad = False
+
                 _, x, _, _, y = batch
 
                 x, y = x.to(device), y.to(device)
@@ -76,13 +85,13 @@ def linear_probe(
 
                 linear_optimizer.zero_grad()
                 outputs = linear(features)
-                loss = nn.CrossEntropyLoss()(outputs, y)
+                loss = linear_loss(outputs, y)
                 loss.backward()
                 linear_optimizer.step()
                 linear_scheduler.step()
 
-                train_loss += loss.item()
-                _, predicted = outputs.max(1)
+                train_loss += loss.detach()
+                _, predicted = torch.max(outputs, 1)
                 total += y.size(0)
                 correct += predicted.eq(y).sum().item()
 
@@ -96,7 +105,12 @@ def linear_probe(
             writer.add_scalar("Train_loss", train_loss, epoch)
             writer.add_scalar("Train_accuracy", train_accuracy, epoch)
             save_checkpoint(
-                linear, linear_optimizer, epoch, args.checkpoint_dir, "linear"
+                linear,
+                linear_optimizer,
+                linear_scheduler,
+                epoch,
+                args.checkpoint_dir,
+                "linear",
             )
 
             model.eval()
@@ -129,40 +143,40 @@ def linear_probe(
             writer.add_scalar("Test_loss", test_loss, epoch)
             writer.add_scalar("Test_accuracy", test_accuracy, epoch)
 
-        else:
-            logger.info(
-                f"Train exists: {linear_start}/{args.num_eval_epochs} epochs, evaluate on train:"
-            )
+    else:
+        logger.info(
+            f"Train exists: {linear_start}/{args.num_eval_epochs} epochs, evaluate on train:"
+        )
 
-            model.eval()
-            linear.eval()
-            test_loss = 0
-            correct = 0
-            total = 0
+        model.eval()
+        linear.eval()
+        test_loss = 0
+        correct = 0
+        total = 0
 
-            with torch.no_grad():
-                for batch in test_loader:
-                    x, _, _, _, y = batch
-                    x, y = x.to(device), y.to(device)
+        with torch.no_grad():
+            for batch in test_loader:
+                x, _, _, _, y = batch
+                x, y = x.to(device), y.to(device)
 
-                    features = model.backbone(x).flatten(start_dim=1)
-                    outputs = linear(features)
-                    loss = nn.CrossEntropyLoss()(outputs, y)
+                features = model.backbone(x).flatten(start_dim=1)
+                outputs = linear(features)
+                loss = nn.CrossEntropyLoss()(outputs, y)
 
-                    test_loss += loss.item()
-                    _, predicted = outputs.max(1)
-                    total += y.size(0)
-                    correct += predicted.eq(y).sum().item()
+                test_loss += loss.item()
+                _, predicted = outputs.max(1)
+                total += y.size(0)
+                correct += predicted.eq(y).sum().item()
 
-            test_accuracy = 100.0 * correct / total
-            test_loss = test_loss / len(test_loader)
+        test_accuracy = 100.0 * correct / total
+        test_loss = test_loss / len(test_loader)
 
-            logger.info(
-                f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
-            )
+        logger.info(
+            f"Epoch: {epoch:>02}, Test Loss: {test_loss:.5f}, Test Acc: {test_accuracy:.2f}%"
+        )
 
-            writer.add_scalar("Test_loss", test_loss, epoch)
-            writer.add_scalar("Test_accuracy", test_accuracy, epoch)
+        writer.add_scalar("Test_loss", test_loss, epoch)
+        writer.add_scalar("Test_accuracy", test_accuracy, epoch)
 
     writer.close()
 
@@ -178,6 +192,7 @@ def online_probe(
     train_loader,
     test_loader,
     vicreg_loss,
+    linear_loss,
     logger,
     optimizer,
     scheduler,
@@ -190,18 +205,24 @@ def online_probe(
         logger.info(
             f"Continuing training from epoch {start_epoch} to {args.num_epochs}"
         )
-        model.train()
-        linear.train()
-
         for epoch in range(start_epoch, args.num_epochs):
             total_loss = 0
             train_loss = 0
             correct = 0
             total = 0
 
+            model.train()
+            # linear.train()
             for batch_idx, batch in enumerate(train_loader):
+                for param in model.parameters():
+                    param.requires_grad = True
+                for param in linear.parameters():
+                    param.requires_grad = False
+
                 _, x, x0, x1, y = batch
-                x0, x1 = x0.to(device), x1.to(device)
+                x0, x1 = x0[0].to(device), x1[0].to(device)
+                x, y = x.to(device), y.to(device)
+
                 z0, z1 = model(x0), model(x1)
                 loss = vicreg_loss(z0, z1)
                 total_loss += loss.detach()
@@ -210,21 +231,22 @@ def online_probe(
                 scheduler.step()
                 optimizer.zero_grad()
 
-                x = x.to(device)
-                y = y.to(device)
+                for param in model.parameters():
+                    param.requires_grad = False
+                for param in linear.parameters():
+                    param.requires_grad = True
 
-                with torch.no_grad():
-                    features = model.backbone(x).flatten(start_dim=1)
+                features = model.backbone(x).flatten(start_dim=1)
 
-                linear_optimizer.zero_grad()
                 outputs = linear(features)
-                loss = nn.CrossEntropyLoss()(outputs, y)
+                loss = linear_loss(outputs, y)
+                train_loss += loss.detach()
                 loss.backward()
                 linear_optimizer.step()
                 linear_scheduler.step()
+                linear_optimizer.zero_grad()
 
-                train_loss += loss.item()
-                _, predicted = outputs.max(1)
+                _, predicted = torch.max(outputs, 1)
                 total += y.size(0)
                 correct += predicted.eq(y).sum().item()
 
@@ -241,9 +263,16 @@ def online_probe(
                 f"Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
             )
 
-            save_checkpoint(model, optimizer, epoch, args.checkpoint_dir, "vicreg")
             save_checkpoint(
-                linear, linear_optimizer, epoch, args.checkpoint_dir, "linear"
+                model, optimizer, scheduler, epoch, args.checkpoint_dir, "vicreg"
+            )
+            save_checkpoint(
+                linear,
+                linear_optimizer,
+                linear_scheduler,
+                epoch,
+                args.checkpoint_dir,
+                "linear",
             )
 
             model.eval()
