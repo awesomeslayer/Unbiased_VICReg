@@ -4,12 +4,13 @@ from torch.utils.tensorboard import SummaryWriter
 from torch import nn
 from lightly.loss import VICRegLoss
 import logging
+import math
 
 from src.checkpoints import load_checkpoint
 from src.VICReg import VICReg, UnbiasedVICRegLoss
 from src.datasets_setup import exCIFAR10
 from src.probing import online_probe, linear_probe
-
+from src.lars import LARS
 
 def train_evaluate(args, logger: logging.Logger):
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -173,27 +174,32 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         f"Created dataloaders with batch size {args.batch_size} and evaluate {args.batch_size_evaluate}"
     )
 
-    optimizer = torch.optim.Adam(
-        model.parameters(), lr=args.max_lr_vicreg  # , weight_decay=1e-6
-    )
-    linear_optimizer = torch.optim.Adam(
-        linear.parameters(), lr=args.max_lr_linear  # , weight_decay=1e-6
-    )
+    optimizer = LARS(
+            model.parameters(),
+            lr=args.max_lr_vicreg,
+            momentum = args.momentum,
+            weight_decay = args.weight_decay,
+            warmup_epochs = args.warmup_epochs,
+            max_epoch = args.num_epochs
+        )
+    
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer,
+            args.num_epochs,
+            eta_min=args.final_lr_schedule_value,
+        )
+    
+    linear_optimizer = torch.optim.SGD(
+            linear.parameters(),
+            lr=args.max_lr_linear,
+            momentum=args.linear_momentum,
+            weight_decay=args.linear_weight_decay,
+        )
 
-    scheduler = torch.optim.lr_scheduler.OneCycleLR(  # адаттивный lr для SSL
-        optimizer,
-        max_lr=args.max_lr_vicreg,
-        epochs=args.num_epochs,
-        steps_per_epoch=len(train_loader_vicreg),
-        pct_start=0.1,
-    )
-    linear_scheduler = torch.optim.lr_scheduler.OneCycleLR(  # адаттивный lr для probe
-        linear_optimizer,
-        max_lr=args.max_lr_linear,
-        epochs=args.num_eval_epochs,
-        steps_per_epoch=len(train_loader_linear),
-        pct_start=0.1,
-    )
+    
+    milestones = [math.floor(args.num_eval_epochs * 0.6), math.floor(args.num_eval_epochs * 0.8)]
+    
+    linear_scheduler = torch.optim.lr_scheduler.MultiStepLR(linear_optimizer, milestones)
 
     logger.info(
         f"Created optimizers with learning rates: vicreg={args.max_lr_vicreg}, linear={args.max_lr_linear}"

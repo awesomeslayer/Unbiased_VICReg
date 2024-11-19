@@ -20,7 +20,7 @@ class VICReg(nn.Module):
             input_dim=projection_head_dims[0],
             hidden_dim=projection_head_dims[1],
             output_dim=projection_head_dims[1],
-            num_layers=2,
+            num_layers=3,
         )
 
     def forward(self, x):

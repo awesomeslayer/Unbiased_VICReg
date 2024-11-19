@@ -11,7 +11,6 @@ def setup_logging(checkpoint_dir: str) -> logging.Logger:
 
     logger = logging.getLogger("vicreg")
 
-    # Удаляем все обработчики перед добавлением нового
     if logger.hasHandlers():
         logger.handlers.clear()
 

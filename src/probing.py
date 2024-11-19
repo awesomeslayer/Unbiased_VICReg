@@ -72,9 +72,9 @@ def linear_probe(
 
             for batch in train_loader_linear:
                 for param in model.parameters():
-                    param.requires_grad = True
-                for param in linear.parameters():
                     param.requires_grad = False
+                for param in linear.parameters():
+                    param.requires_grad = True
 
                 _, x, _, _, y = batch
 
@@ -212,7 +212,6 @@ def online_probe(
             total = 0
 
             model.train()
-            # linear.train()
             for batch_idx, batch in enumerate(train_loader):
                 for param in model.parameters():
                     param.requires_grad = True
