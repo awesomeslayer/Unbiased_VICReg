@@ -1,6 +1,7 @@
 from src.checkpoints import save_checkpoint
 import torch
 from torch import nn
+from lightly.loss.vicreg_loss import invariance_loss, variance_loss, covariance_loss
 
 
 def linear_probe(
@@ -29,6 +30,9 @@ def linear_probe(
         for epoch in range(vicreg_start, args.num_epochs):
             model.train()
             total_loss = 0
+            total_inv_loss = 0
+            total_var_loss = 0
+            total_cov_loss = 0
             for batch in train_loader_vicreg:
                 for param in model.parameters():
                     param.requires_grad = True
@@ -38,21 +42,44 @@ def linear_probe(
                 _, _, x0, x1, _ = batch
                 x0, x1 = x0[0].to(device), x1[0].to(device)
                 z0, z1 = model(x0), model(x1)
-                loss = vicreg_loss(z0, z1)
+
+                inv_loss = invariance_loss(z0, z1)
+                var_loss = variance_loss(z0, z1)
+                cov_loss = covariance_loss(z0, z1)
+                loss = inv_loss + var_loss + cov_loss
+
                 total_loss += loss.detach()
+                total_inv_loss += inv_loss.detach()
+                total_var_loss += var_loss.detach()
+                total_cov_loss += cov_loss.detach()
+
                 loss.backward()
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad()
 
             avg_loss = total_loss / len(train_loader_vicreg)
+            avg_inv_loss = total_inv_loss / len(train_loader_vicreg)
+            avg_var_loss = total_var_loss / len(train_loader_vicreg)
+            avg_cov_loss = total_cov_loss / len(train_loader_vicreg)
+
             logger.info(f"Epoch: {epoch:>02}, {args.loss}VICReg loss: {avg_loss:.5f}")
+            logger.info(f"Epoch: {epoch:>02}, Invariance loss: {avg_inv_loss:.5f}")
+            logger.info(f"Epoch: {epoch:>02}, Variance loss: {avg_var_loss:.5f}")
+            logger.info(f"Epoch: {epoch:>02}, Covariance loss: {avg_cov_loss:.5f}")
 
             writer.add_scalar(f"{args.loss}VICReg_loss/train", avg_loss.item(), epoch)
+            writer.add_scalar("Invariance_loss/train", avg_inv_loss.item(), epoch)
+            writer.add_scalar("Variance_loss/train", avg_var_loss.item(), epoch)
+            writer.add_scalar("Covariance_loss/train", avg_cov_loss.item(), epoch)
 
             save_checkpoint(
                 model, optimizer, scheduler, epoch, args.checkpoint_dir, prefix="vicreg"
             )
+
+            current_lr_optimizer = optimizer.param_groups[0]["lr"]
+            logger.info(f"Epoch: {epoch:>02}, Optimizer LR: {current_lr_optimizer:.8f}")
+
     else:
         logger.info(f"VICReg training already completed on {vicreg_start} epoch")
 
@@ -111,6 +138,12 @@ def linear_probe(
                 epoch,
                 args.checkpoint_dir,
                 "linear",
+            )
+
+            # Print current learning rates
+            current_lr_linear_optimizer = linear_optimizer.param_groups[0]["lr"]
+            logger.info(
+                f"Epoch: {epoch:>02}, Linear Optimizer LR: {current_lr_linear_optimizer:.8f}"
             )
 
             model.eval()
@@ -207,6 +240,9 @@ def online_probe(
         )
         for epoch in range(start_epoch, args.num_epochs):
             total_loss = 0
+            total_inv_loss = 0
+            total_var_loss = 0
+            total_cov_loss = 0
             train_loss = 0
             correct = 0
             total = 0
@@ -223,8 +259,17 @@ def online_probe(
                 x, y = x.to(device), y.to(device)
 
                 z0, z1 = model(x0), model(x1)
-                loss = vicreg_loss(z0, z1)
+
+                inv_loss = invariance_loss(z0, z1)
+                var_loss = variance_loss(z0, z1)
+                cov_loss = covariance_loss(z0, z1)
+                loss = inv_loss + var_loss + cov_loss
+
                 total_loss += loss.detach()
+                total_inv_loss += inv_loss.detach()
+                total_var_loss += var_loss.detach()
+                total_cov_loss += cov_loss.detach()
+
                 loss.backward()
                 optimizer.step()
                 scheduler.step()
@@ -250,17 +295,26 @@ def online_probe(
                 correct += predicted.eq(y).sum().item()
 
             avg_loss = total_loss / len(train_loader)
+            avg_inv_loss = total_inv_loss / len(train_loader)
+            avg_var_loss = total_var_loss / len(train_loader)
+            avg_cov_loss = total_cov_loss / len(train_loader)
             train_accuracy = 100.0 * correct / total
             train_loss = train_loss / len(train_loader)
 
             writer.add_scalar("Loss/train", train_loss, epoch)
             writer.add_scalar("Accuracy/train", train_accuracy, epoch)
             writer.add_scalar(f"{args.loss}VICReg Loss/train", avg_loss, epoch)
+            writer.add_scalar("Invariance_loss/train", avg_inv_loss.item(), epoch)
+            writer.add_scalar("Variance_loss/train", avg_var_loss.item(), epoch)
+            writer.add_scalar("Covariance_loss/train", avg_cov_loss.item(), epoch)
 
             logger.info(
                 f"Epoch: {epoch:>02}, {args.loss}VICReg loss: {avg_loss:.5f}, "
                 f"Train Loss: {train_loss:.5f}, Train Acc: {train_accuracy:.2f}%"
             )
+            logger.info(f"Epoch: {epoch:>02}, Invariance loss: {avg_inv_loss:.5f}")
+            logger.info(f"Epoch: {epoch:>02}, Variance loss: {avg_var_loss:.5f}")
+            logger.info(f"Epoch: {epoch:>02}, Covariance loss: {avg_cov_loss:.5f}")
 
             save_checkpoint(
                 model, optimizer, scheduler, epoch, args.checkpoint_dir, "vicreg"
@@ -272,6 +326,12 @@ def online_probe(
                 epoch,
                 args.checkpoint_dir,
                 "linear",
+            )
+
+            current_lr_optimizer = optimizer.param_groups[0]["lr"]
+            current_lr_linear_optimizer = linear_optimizer.param_groups[0]["lr"]
+            logger.info(
+                f"Epoch: {epoch:>02}, Optimizer LR: {current_lr_optimizer:.8f}, Linear Optimizer LR: {current_lr_linear_optimizer:.8f}"
             )
 
             model.eval()

@@ -1,21 +1,22 @@
-# Unbiased VICReg Implementation
+# VICReg Implementation
 
-This repository contains an implementation of VICReg (Variance-Invariance-Covariance Regularization) with both biased and unbiased loss variants for self-supervised learning on CIFAR-10 dataset.
+This repository contains an implementation of VICReg (Variance-Invariance-Covariance Regularization) with both biased and unbiased loss variants for self-supervised learning on the CIFAR-10 dataset.
 
 ## Project Structure
+
 ```
 .
 ├── config.yaml           # Configuration file
 ├── main
-│   └── main.py          # Main execution script
-├── noxfile.py           # Development automation
+│   └── main.py           # Main execution script
+├── noxfile.py            # Development automation
 ├── src
-|    ├── checkpoints.py   # Checkpoint management
-|    ├── datasets_setup.py # Dataset preparation
-|    ├── probing.py       # Evaluation probing
-|    ├── train_evaluate.py # Training and evaluation
-|    └── VICReg.py        # VICReg implementation
-└── results               #results dir
+│    ├── checkpoints.py   # Checkpoint management
+│    ├── datasets_setup.py # Dataset preparation
+│    ├── probing.py       # Evaluation probing
+│    ├── train_evaluate.py # Training and evaluation
+│    └── VICReg.py        # VICReg implementation
+└── results               # Results directory
 ```
 
 ## Requirements
@@ -25,23 +26,37 @@ This repository contains an implementation of VICReg (Variance-Invariance-Covari
 
 ## Configuration
 
-The project uses a `config.yaml` file to manage hyperparameters and training settings:
+The project uses a `config.yaml` file to manage hyperparameters and training settings. Below is a detailed description of the configuration parameters:
 
 ```yaml
+hydra:
+  run:
+    dir: .
+
+sim_coeff: 25.0                # Coefficient for the invariance term in VICReg loss
+std_coeff: 25.0                # Coefficient for the variance term in VICReg loss
+cov_coeff: 1                   # Coefficient for the covariance term in VICReg loss
+
 batch_sizes: [256, 128, 64, 32, 16, 8]  # Available batch sizes for testing
+num_epochs: 100                         # Number of training epochs
+max_lr_vicreg: 30                       # Maximum learning rate for VICReg training
+momentum: 0.9                           # Momentum for LARS optimizer and scheduler
+weight_decay: 1e-4                      # Weight decay for LARS optimizer
+final_lr_schedule_value: 0.002           # Final learning rate value for scheduler
+warmup_epochs: 10                       # Number of warmup epochs
+
 batch_size_evaluate: 64                  # Evaluation batch size
-num_epochs: 100                          # Number of training epochs
-num_eval_epochs: 30                      # Number of evaluation epochs
-sim_coeff: 25.0                         # Similarity loss coefficient
-std_coeff: 25.0                         # Standard deviation loss coefficient
-cov_coeff: 1                            # Covariance loss coefficient
-lr_vicreg: 2e-4                         # VICReg learning rate
-lr_linear: 2e-2                         # Linear probe learning rate
+num_eval_epochs: 100                    # Number of evaluation epochs
+max_lr_linear: 30.0                     # Maximum learning rate for linear probe training
+linear_momentum: 0.9                     # Momentum for SGD optimizer and scheduler
+linear_weight_decay: 0.0                 # Weight decay for SGD optimizer
+
 backbone: "resnet18"                    # Backbone architecture (resnet18/resnet50)
-projection_head_dims: [512, 512, 512]   # Projection head dimensions
+num_layers: 3                           # Number of layers in the projection head
+projection_head_dims: [512, 2048]       # Dimensions of the projection head (first must match ResNet output)
 probe: "linear"                         # Probe type (linear/online)
-loss: "unbiased"                        # Loss type (biased/unbiased)
-batch_size_sharing: False               # Same batch_size on linear eval (True/False)
+loss: "unbiased"                        # Loss type (unbiased/biased)
+batch_size_sharing: False                # Whether to use the same batch size for linear evaluation
 ```
 
 ## Usage
@@ -50,13 +65,15 @@ batch_size_sharing: False               # Same batch_size on linear eval (True/F
 
 The project uses nox for automation. Available sessions:
 
-1. Running the Training with installing req-s:
+1. **Running the Training with Installing Requirements:**
+
 ```bash
 nox -s install_requirements
-
 nox -s run
 ```
-2. Linting and Style:
+
+2. **Linting and Style:**
+
 ```bash
 # Run flake8
 nox -s lint
@@ -71,7 +88,6 @@ nox -s isort
 nox -s pylint
 ```
 
-
 ### Running with Different Configurations
 
 To test different batch sizes or switch between biased/unbiased loss:
@@ -81,6 +97,7 @@ To test different batch sizes or switch between biased/unbiased loss:
    - Set `loss` to either "biased" or "unbiased"
 
 2. Run the training:
+
 ```bash
 python -m main.main
 ```
@@ -90,6 +107,7 @@ python -m main.main
 Monitor training progress using TensorBoard:
 
 1. Launch TensorBoard:
+
 ```bash
 tensorboard --logdir=results/
 ```
@@ -100,7 +118,7 @@ Key metrics available in TensorBoard:
 - Training loss
 - Linear probe accuracy
 
-## Checkpoints and logs
+## Checkpoints and Logs
 
 Checkpoints and logs are saved in the directory specified by `<loss>/<probe>/<batch_size>/` in the config. The default path is "./checkpoints".
 

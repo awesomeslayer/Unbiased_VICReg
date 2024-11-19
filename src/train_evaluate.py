@@ -12,6 +12,7 @@ from src.datasets_setup import exCIFAR10
 from src.probing import online_probe, linear_probe
 from src.lars import LARS
 
+
 def train_evaluate(args, logger: logging.Logger):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info(f"Using device: {device}")
@@ -120,8 +121,7 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
         logger.error(f"Unknown backbone architecture: {args.backbone}")
         raise ValueError(f"Unknown backbone: {args.backbone}")
 
-    model = VICReg(backbone, args.projection_head_dims)
-    model.to(device)
+    model = VICReg(backbone, args.projection_head_dims, args.num_layers).to(device)
     linear = nn.Linear(args.projection_head_dims[0], 10).to(device)
 
     if args.loss == "biased":
@@ -175,31 +175,35 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
     )
 
     optimizer = LARS(
-            model.parameters(),
-            lr=args.max_lr_vicreg,
-            momentum = args.momentum,
-            weight_decay = args.weight_decay,
-            warmup_epochs = args.warmup_epochs,
-            max_epoch = args.num_epochs
-        )
-    
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-            optimizer,
-            args.num_epochs,
-            eta_min=args.final_lr_schedule_value,
-        )
-    
-    linear_optimizer = torch.optim.SGD(
-            linear.parameters(),
-            lr=args.max_lr_linear,
-            momentum=args.linear_momentum,
-            weight_decay=args.linear_weight_decay,
-        )
+        model.parameters(),
+        lr=args.max_lr_vicreg,
+        momentum=args.momentum,
+        weight_decay=args.weight_decay,
+        warmup_epochs=args.warmup_epochs,
+        max_epoch=args.num_epochs,
+    )
 
-    
-    milestones = [math.floor(args.num_eval_epochs * 0.6), math.floor(args.num_eval_epochs * 0.8)]
-    
-    linear_scheduler = torch.optim.lr_scheduler.MultiStepLR(linear_optimizer, milestones)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer,
+        args.num_epochs,
+        eta_min=args.final_lr_schedule_value,
+    )
+
+    linear_optimizer = torch.optim.SGD(
+        linear.parameters(),
+        lr=args.max_lr_linear,
+        momentum=args.linear_momentum,
+        weight_decay=args.linear_weight_decay,
+    )
+
+    milestones = [
+        math.floor(args.num_eval_epochs * 0.6),
+        math.floor(args.num_eval_epochs * 0.8),
+    ]
+
+    linear_scheduler = torch.optim.lr_scheduler.MultiStepLR(
+        linear_optimizer, milestones
+    )
 
     logger.info(
         f"Created optimizers with learning rates: vicreg={args.max_lr_vicreg}, linear={args.max_lr_linear}"

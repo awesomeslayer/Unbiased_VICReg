@@ -3,24 +3,26 @@ hydra:
     dir: .
 
 
-sim_coeff: 25.0
+sim_coeff: 25.0                #for V I C reg loss params
 std_coeff: 25
 cov_coeff: 1
 
 batch_sizes: [256, 128, 64, 32, 16, 8]
 num_epochs: 100
 max_lr_vicreg: 30
-momentum : 0.9
+momentum : 0.9                  #for lars oprimizer params and scheduler
 weight_decay: 1e-4
 final_lr_schedule_value : 0.002
 warmup_epochs : 10
   
 batch_size_evaluate: 64
 num_eval_epochs: 100
-max_lr_linear: 30.0
+max_lr_linear: 30.0                     #for SGD ptimizer and scheduler
 linear_momentum: 0.9
 linear_weight_decay: 0.0
+
 backbone: "resnet18"                  #resnet18/50
+num_layers: 3
 projection_head_dims: [512, 2048]     #first must be resnet output
 probe: "linear"                       #online/linear
 loss: "unbiased"                      #unbiased/biased

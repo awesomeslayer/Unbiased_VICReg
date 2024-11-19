@@ -2,6 +2,7 @@
 Layer-wise adaptive rate scaling for SGD in PyTorch!
 Based on https://github.com/noahgolmant/pytorch-lars
 """
+
 import torch
 from torch.optim.optimizer import Optimizer
 
@@ -30,7 +31,16 @@ class LARS(Optimizer):
         >>> optimizer.step()
     """
 
-    def __init__(self, params, lr=1.0, momentum=0.9, weight_decay=0.0005, eta=0.001, max_epoch=200, warmup_epochs=1):
+    def __init__(
+        self,
+        params,
+        lr=1.0,
+        momentum=0.9,
+        weight_decay=0.0005,
+        eta=0.001,
+        max_epoch=200,
+        warmup_epochs=1,
+    ):
         if lr < 0.0:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if momentum < 0.0:
@@ -95,7 +105,9 @@ class LARS(Optimizer):
                 # Update the momentum term
                 if use_lars:
                     # Compute local learning rate for this layer
-                    local_lr = eta * weight_norm / (grad_norm + weight_decay * weight_norm)
+                    local_lr = (
+                        eta * weight_norm / (grad_norm + weight_decay * weight_norm)
+                    )
                     actual_lr = local_lr * global_lr
                     group["lars_lrs"].append(actual_lr.item())
                 else:

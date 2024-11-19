@@ -6,7 +6,7 @@ from lightly.models.modules.heads import VICRegProjectionHead
 
 
 class VICReg(nn.Module):
-    def __init__(self, backbone, projection_head_dims):
+    def __init__(self, backbone, projection_head_dims, num_layers):
         super().__init__()
 
         # used on CIFAR-10 in SIMCLR
@@ -20,7 +20,7 @@ class VICReg(nn.Module):
             input_dim=projection_head_dims[0],
             hidden_dim=projection_head_dims[1],
             output_dim=projection_head_dims[1],
-            num_layers=3,
+            num_layers=num_layers,
         )
 
     def forward(self, x):

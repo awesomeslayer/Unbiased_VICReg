@@ -14,14 +14,18 @@ from lightly.models.modules.heads import VICRegProjectionHead
 from lightly.transforms.vicreg_transform import VICRegTransform
 from pytorch_lightning.loggers import TensorBoardLogger
 
+
 def off_diagonal(x):
     """Return the off-diagonal elements of a square matrix."""
     n, m = x.shape
     assert n == m
     return x.flatten()[:-1].view(n - 1, n + 1)[:, 1:].flatten()
 
+
 class VICRegLossWithComponents(VICRegLoss):
-    def __init__(self, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0, eps=1e-4, gamma=1.0):
+    def __init__(
+        self, sim_coeff=25.0, std_coeff=25.0, cov_coeff=1.0, eps=1e-4, gamma=1.0
+    ):
         super().__init__()  # Initialize the base class without extra arguments
         # Set coefficients manually
         self.sim_coeff = sim_coeff
@@ -42,23 +46,27 @@ class VICRegLossWithComponents(VICRegLoss):
         N, D = x0.size()
         cov_x0 = (x0.T @ x0) / (N - 1)
         cov_x1 = (x1.T @ x1) / (N - 1)
-        cov_loss = (off_diagonal(cov_x0).pow(2).sum()) / D + (off_diagonal(cov_x1).pow(2).sum()) / D
+        cov_loss = (off_diagonal(cov_x0).pow(2).sum()) / D + (
+            off_diagonal(cov_x1).pow(2).sum()
+        ) / D
 
         # Total VICReg loss
         loss = (self.sim_coeff * repr_loss) + (self.cov_coeff * cov_loss)
 
         return loss, repr_loss, cov_loss
 
+
 class CIFAR10TripleView(Dataset):
     def __init__(self, root, transform, train=True, download=True):
         # Basic transform for original image (just normalization)
-        self.base_transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.4914, 0.4822, 0.4465],
-                std=[0.247, 0.243, 0.261]
-            )
-        ])
+        self.base_transform = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.4914, 0.4822, 0.4465], std=[0.247, 0.243, 0.261]
+                ),
+            ]
+        )
 
         # Transform for augmentations
         self.transform = transform
@@ -68,7 +76,7 @@ class CIFAR10TripleView(Dataset):
             root=root,
             train=train,
             download=download,
-            transform=None  # No transform here as we'll apply them manually
+            transform=None,  # No transform here as we'll apply them manually
         )
 
     def __getitem__(self, idx):
@@ -85,8 +93,11 @@ class CIFAR10TripleView(Dataset):
     def __len__(self):
         return len(self.dataset)
 
+
 class SemiSSL(pl.LightningModule):
-    def __init__(self, num_classes=10, lr_vicreg=1e-4, lr_linear=1e-3, weight_decay=1e-6):
+    def __init__(
+        self, num_classes=10, lr_vicreg=1e-4, lr_linear=1e-3, weight_decay=1e-6
+    ):
         super().__init__()
         # Model setup
         resnet = torchvision.models.resnet18()
@@ -130,48 +141,80 @@ class SemiSSL(pl.LightningModule):
         acc = (preds == y).float().mean()
 
         return {
-            'vicreg_loss': vicreg_loss,
-            'classification_loss': classification_loss,
-            'invariance_loss': invariance_loss,
-            'covariance_loss': covariance_loss,
-            'logits': logits,
-            'y': y,
-            'accuracy': acc
+            "vicreg_loss": vicreg_loss,
+            "classification_loss": classification_loss,
+            "invariance_loss": invariance_loss,
+            "covariance_loss": covariance_loss,
+            "logits": logits,
+            "y": y,
+            "accuracy": acc,
         }
 
     def training_step(self, batch, batch_idx):
         outputs = self.shared_step(batch)
-        loss = outputs['vicreg_loss'] + outputs['classification_loss']
+        loss = outputs["vicreg_loss"] + outputs["classification_loss"]
 
         # Logging
-        self.log('train/vicreg_loss', outputs['vicreg_loss'], on_step=False, on_epoch=True)
-        self.log('train/classification_loss', outputs['classification_loss'], on_step=False, on_epoch=True)
-        self.log('train/loss', loss, on_step=False, on_epoch=True)
-        self.log('train/invariance_loss', outputs['invariance_loss'], on_step=False, on_epoch=True)
-        self.log('train/covariance_loss', outputs['covariance_loss'], on_step=False, on_epoch=True)
-        self.log('train/accuracy', outputs['accuracy'], on_step=False, on_epoch=True)
+        self.log(
+            "train/vicreg_loss", outputs["vicreg_loss"], on_step=False, on_epoch=True
+        )
+        self.log(
+            "train/classification_loss",
+            outputs["classification_loss"],
+            on_step=False,
+            on_epoch=True,
+        )
+        self.log("train/loss", loss, on_step=False, on_epoch=True)
+        self.log(
+            "train/invariance_loss",
+            outputs["invariance_loss"],
+            on_step=False,
+            on_epoch=True,
+        )
+        self.log(
+            "train/covariance_loss",
+            outputs["covariance_loss"],
+            on_step=False,
+            on_epoch=True,
+        )
+        self.log("train/accuracy", outputs["accuracy"], on_step=False, on_epoch=True)
 
         return loss
 
     def validation_step(self, batch, batch_idx):
         outputs = self.shared_step(batch)
-        loss = outputs['classification_loss']
+        loss = outputs["classification_loss"]
 
         # Logging
-        self.log('val/classification_loss', loss, on_step=False, on_epoch=True)
-        self.log('val/accuracy', outputs['accuracy'], on_step=False, on_epoch=True)
-        self.log('val/vicreg_loss', outputs['vicreg_loss'], on_step=False, on_epoch=True)
-        self.log('val/invariance_loss', outputs['invariance_loss'], on_step=False, on_epoch=True)
-        self.log('val/covariance_loss', outputs['covariance_loss'], on_step=False, on_epoch=True)
+        self.log("val/classification_loss", loss, on_step=False, on_epoch=True)
+        self.log("val/accuracy", outputs["accuracy"], on_step=False, on_epoch=True)
+        self.log(
+            "val/vicreg_loss", outputs["vicreg_loss"], on_step=False, on_epoch=True
+        )
+        self.log(
+            "val/invariance_loss",
+            outputs["invariance_loss"],
+            on_step=False,
+            on_epoch=True,
+        )
+        self.log(
+            "val/covariance_loss",
+            outputs["covariance_loss"],
+            on_step=False,
+            on_epoch=True,
+        )
 
         return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.AdamW([
-            {'params': self.backbone.parameters(), 'lr': self.lr_vicreg},
-            {'params': self.projection_head.parameters(), 'lr': self.lr_vicreg},
-            {'params': self.linear.parameters(), 'lr': self.lr_linear}
-        ], weight_decay=self.weight_decay)
+        optimizer = torch.optim.AdamW(
+            [
+                {"params": self.backbone.parameters(), "lr": self.lr_vicreg},
+                {"params": self.projection_head.parameters(), "lr": self.lr_vicreg},
+                {"params": self.linear.parameters(), "lr": self.lr_linear},
+            ],
+            weight_decay=self.weight_decay,
+        )
         return optimizer
 
     def prepare_data(self):
@@ -193,13 +236,16 @@ class SemiSSL(pl.LightningModule):
             hf_prob=0.5,
             rr_prob=0.0,
             rr_degrees=None,
-            normalize={'mean': [0.4914, 0.4822, 0.4465],
-                       'std': [0.247, 0.243, 0.261]}
+            normalize={"mean": [0.4914, 0.4822, 0.4465], "std": [0.247, 0.243, 0.261]},
         )
 
         # Datasets
-        self.train_dataset = CIFAR10TripleView("data/", self.transform, train=True, download=True)
-        self.val_dataset = CIFAR10TripleView("data/", self.transform, train=False, download=True)
+        self.train_dataset = CIFAR10TripleView(
+            "data/", self.transform, train=True, download=True
+        )
+        self.val_dataset = CIFAR10TripleView(
+            "data/", self.transform, train=False, download=True
+        )
 
     def setup(self, stage=None):
         # Data loaders
@@ -211,14 +257,14 @@ class SemiSSL(pl.LightningModule):
             batch_size=batch_size,
             shuffle=True,
             drop_last=True,
-            num_workers=num_workers
+            num_workers=num_workers,
         )
         self.val_loader = DataLoader(
             self.val_dataset,
             batch_size=batch_size,
             shuffle=False,
             drop_last=False,
-            num_workers=num_workers
+            num_workers=num_workers,
         )
 
     def train_dataloader(self):
@@ -227,28 +273,25 @@ class SemiSSL(pl.LightningModule):
     def val_dataloader(self):
         return self.val_loader
 
+
 def semi_ssl(num_epochs=10, checkpoint_dir="lightning_logs"):
     # Logger and Trainer setup
-    logger = TensorBoardLogger(save_dir=checkpoint_dir, name='vicreg_semi_ssl')
+    logger = TensorBoardLogger(save_dir=checkpoint_dir, name="vicreg_semi_ssl")
     trainer = pl.Trainer(
         max_epochs=num_epochs,
-        accelerator='gpu' if torch.cuda.is_available() else 'cpu',
+        accelerator="gpu" if torch.cuda.is_available() else "cpu",
         devices=1 if torch.cuda.is_available() else None,
         logger=logger,
         log_every_n_steps=50,
-        callbacks=[pl.callbacks.ModelCheckpoint(monitor='val/classification_loss')]
+        callbacks=[pl.callbacks.ModelCheckpoint(monitor="val/classification_loss")],
     )
 
     # Model instantiation
-    model = SemiSSL(
-        num_classes=10,
-        lr_vicreg=1e-4,
-        lr_linear=1e-3,
-        weight_decay=1e-6
-    )
+    model = SemiSSL(num_classes=10, lr_vicreg=1e-4, lr_linear=1e-3, weight_decay=1e-6)
 
     # Training
     trainer.fit(model)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     semi_ssl()
