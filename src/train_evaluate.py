@@ -8,7 +8,7 @@ import math
 
 from src.checkpoints import load_checkpoint
 from src.VICReg import VICReg, UnbiasedVICRegLoss
-from src.datasets_setup import exCIFAR10
+from src.datasets_setup import extended_CIFAR10
 from src.probing import online_probe, linear_probe
 from src.lars import LARS
 
@@ -143,8 +143,20 @@ def setup_experiment(args, writer, device, logger: logging.Logger):
 
     linear_loss = nn.CrossEntropyLoss()
     logger.info("Setting up datasets and dataloaders")
-    train_dataset = exCIFAR10("data/", train=True, download=True)
-    test_dataset = exCIFAR10("data/", train=False, download=True)
+    train_dataset = extended_CIFAR10(
+        "data/",
+        train=True,
+        download=True,
+        augs_eval_enable=args.augs_eval_enable,
+        augs_train_type=args.augs_train_type,
+    )
+    test_dataset = extended_CIFAR10(
+        "data/",
+        train=False,
+        download=True,
+        augs_eval_enable=args.augs_eval_enable,
+        augs_train_type=args.augs_train_type,
+    )
 
     train_loader_vicreg = torch.utils.data.DataLoader(
         train_dataset,

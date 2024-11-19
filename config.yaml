@@ -22,6 +22,8 @@ linear_momentum: 0.9
 linear_weight_decay: 0.0
 
 backbone: "resnet18"                  #resnet18/50
+augs_train_type : 'lightly'           #or 'custom' for CIFAR-10
+augs_eval_enable : False
 num_layers: 3
 projection_head_dims: [512, 2048]     #first must be resnet output
 probe: "linear"                       #online/linear

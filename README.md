@@ -57,6 +57,8 @@ projection_head_dims: [512, 2048]       # Dimensions of the projection head (fir
 probe: "linear"                         # Probe type (linear/online)
 loss: "unbiased"                        # Loss type (unbiased/biased)
 batch_size_sharing: False                # Whether to use the same batch size for linear evaluation
+augs_train_type : 'lightly'             #Augumentations setup (lightly implementation or custom)
+augs_eval_enable : False                #Enable augumentations on evaluating or not
 ```
 
 ## Usage
