@@ -17,7 +17,7 @@ warmup_epochs : 10
   
 batch_size_evaluate: 64
 num_eval_epochs: 100
-max_lr_linear: 30.0                     #for SGD ptimizer and scheduler
+max_lr_linear: 3                     #for SGD ptimizer and scheduler
 linear_momentum: 0.9
 linear_weight_decay: 0.0
 
@@ -28,5 +28,6 @@ num_layers: 3
 projection_head_dims: [512, 2048]     #first must be resnet output
 probe: "linear"                       #online/linear
 loss: "unbiased"                      #unbiased/biased
-batch_size_sharing: False 
 
+batch_size_sharing: True 
+scaled_lr_batched : True             #
