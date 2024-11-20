@@ -33,10 +33,6 @@ hydra:
   run:
     dir: .
 
-sim_coeff: 25.0                # Coefficient for the invariance term in VICReg loss
-std_coeff: 25.0                # Coefficient for the variance term in VICReg loss
-cov_coeff: 1                   # Coefficient for the covariance term in VICReg loss
-
 batch_sizes: [256, 128, 64, 32, 16, 8]  # Available batch sizes for testing
 num_epochs: 100                         # Number of training epochs
 max_lr_vicreg: 30                       # Maximum learning rate for VICReg training
@@ -44,21 +40,24 @@ momentum: 0.9                           # Momentum for LARS optimizer and schedu
 weight_decay: 1e-4                      # Weight decay for LARS optimizer
 final_lr_schedule_value: 0.002           # Final learning rate value for scheduler
 warmup_epochs: 10                       # Number of warmup epochs
+sim_coeff: 25.0                # Coefficient for the invariance term in VICReg loss
+std_coeff: 25.0                # Coefficient for the variance term in VICReg loss
+cov_coeff: 1                   # Coefficient for the covariance term in VICReg loss
 
 batch_size_evaluate: 64                  # Evaluation batch size
 num_eval_epochs: 100                    # Number of evaluation epochs
+backbone: "resnet18"                    # Backbone architecture (resnet18/resnet50)
+num_layers: 3                           # Number of layers in the projection head
+projection_head_dims: [512, 2048]       # Dimensions of the projection head (first must match ResNet output)
 max_lr_linear: 30.0                     # Maximum learning rate for linear probe training
 linear_momentum: 0.9                     # Momentum for SGD optimizer and scheduler
 linear_weight_decay: 0.0                 # Weight decay for SGD optimizer
 
-backbone: "resnet18"                    # Backbone architecture (resnet18/resnet50)
-num_layers: 3                           # Number of layers in the projection head
-projection_head_dims: [512, 2048]       # Dimensions of the projection head (first must match ResNet output)
 probe: "linear"                         # Probe type (linear/online)
 loss: "unbiased"                        # Loss type (unbiased/biased)
-batch_size_sharing: False                # Whether to use the same batch size for linear evaluation
 augs_train_type : 'lightly'             #Augumentations setup (lightly implementation or custom)
 augs_eval_enable : False                #Enable augumentations on evaluating or not
+batch_size_sharing: False                # Whether to use the same batch size for linear evaluation
 scaled_lr_batched : True                #Scale learning rate on batch_size  or not      
 ```
 

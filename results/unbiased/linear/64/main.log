@@ -1,236 +1,340 @@
-2024-11-18 02:09:07,704 - INFO - Checkpoint directory: ./results/unbiased/linear/64
-2024-11-18 02:09:07,704 - INFO - Configuration:
-2024-11-18 02:09:07,705 - INFO - batch_sizes: [256, 128, 64, 32, 16, 8]
-2024-11-18 02:09:07,705 - INFO - batch_size: 64
-2024-11-18 02:09:07,705 - INFO - batch_size_evaluate: 64
-2024-11-18 02:09:07,705 - INFO - num_epochs: 100
-2024-11-18 02:09:07,705 - INFO - num_eval_epochs: 50
-2024-11-18 02:09:07,705 - INFO - sim_coeff: 25.0
-2024-11-18 02:09:07,705 - INFO - std_coeff: 25.0
-2024-11-18 02:09:07,705 - INFO - cov_coeff: 1
-2024-11-18 02:09:07,706 - INFO - lr_vicreg: 0.0002
-2024-11-18 02:09:07,706 - INFO - lr_linear: 0.01
-2024-11-18 02:09:07,706 - INFO - backbone: resnet18
-2024-11-18 02:09:07,706 - INFO - projection_head_dims: [512, 512, 512]
-2024-11-18 02:09:07,706 - INFO - probe: linear
-2024-11-18 02:09:07,706 - INFO - loss: unbiased
-2024-11-18 02:09:07,706 - INFO - batch_size_sharing: False
-2024-11-18 02:09:07,706 - INFO - checkpoint_dir: ./results/unbiased/linear/64
-2024-11-18 02:09:07,706 - INFO - Running with batch_size=64
-2024-11-18 02:09:07,706 - INFO - Using device: cuda
-2024-11-18 02:09:07,707 - INFO - Setting up experiment...
-2024-11-18 02:09:07,707 - INFO - Using ResNet18 backbone
-2024-11-18 02:09:07,906 - INFO - Using unbiased VICReg loss
-2024-11-18 02:09:07,907 - INFO - Setting up datasets and dataloaders
-2024-11-18 02:09:09,146 - INFO - Created dataloaders with batch size 64 and evaluate 64
-2024-11-18 02:09:09,147 - INFO - Created optimizers with learning rates: vicreg=0.0002, linear=0.01
-2024-11-18 02:09:09,147 - INFO - Loaded checkpoints: vicreg_epoch=0, linear_epoch=0
-2024-11-18 02:09:09,147 - INFO - Starting from epoch vicreg_start:0
-2024-11-18 02:09:09,147 - INFO - Writing visualization data to TensorBoard
-2024-11-18 02:09:11,087 - INFO - Successfully wrote visualization data to TensorBoard
-2024-11-18 02:09:11,111 - INFO - Beginning train + evaluate for linear probing
-2024-11-18 02:09:11,111 - INFO - Continuing VICReg training from epoch 0 to 100
-2024-11-18 02:09:33,566 - INFO - Epoch: 00, unbiasedVICReg loss: 25.09070
-2024-11-18 02:09:56,395 - INFO - Epoch: 01, unbiasedVICReg loss: 22.61763
-2024-11-18 02:10:20,025 - INFO - Epoch: 02, unbiasedVICReg loss: 22.60900
-2024-11-18 02:10:42,954 - INFO - Epoch: 03, unbiasedVICReg loss: 22.60529
-2024-11-18 02:11:05,603 - INFO - Epoch: 04, unbiasedVICReg loss: 22.60175
-2024-11-18 02:11:28,145 - INFO - Epoch: 05, unbiasedVICReg loss: 22.59787
-2024-11-18 02:11:50,256 - INFO - Epoch: 06, unbiasedVICReg loss: 22.59347
-2024-11-18 02:12:12,773 - INFO - Epoch: 07, unbiasedVICReg loss: 22.59030
-2024-11-18 02:12:36,195 - INFO - Epoch: 08, unbiasedVICReg loss: 22.58680
-2024-11-18 02:12:59,205 - INFO - Epoch: 09, unbiasedVICReg loss: 22.58229
-2024-11-18 02:13:21,968 - INFO - Epoch: 10, unbiasedVICReg loss: 22.57586
-2024-11-18 02:13:44,797 - INFO - Epoch: 11, unbiasedVICReg loss: 22.56951
-2024-11-18 02:14:07,335 - INFO - Epoch: 12, unbiasedVICReg loss: 22.56228
-2024-11-18 02:14:30,304 - INFO - Epoch: 13, unbiasedVICReg loss: 22.55522
-2024-11-18 02:14:53,756 - INFO - Epoch: 14, unbiasedVICReg loss: 22.54804
-2024-11-18 02:15:16,418 - INFO - Epoch: 15, unbiasedVICReg loss: 22.54163
-2024-11-18 02:15:39,553 - INFO - Epoch: 16, unbiasedVICReg loss: 22.53652
-2024-11-18 02:16:02,467 - INFO - Epoch: 17, unbiasedVICReg loss: 22.53717
-2024-11-18 02:16:25,200 - INFO - Epoch: 18, unbiasedVICReg loss: 22.53122
-2024-11-18 02:16:48,238 - INFO - Epoch: 19, unbiasedVICReg loss: 22.52996
-2024-11-18 02:17:11,304 - INFO - Epoch: 20, unbiasedVICReg loss: 22.52512
-2024-11-18 02:17:34,193 - INFO - Epoch: 21, unbiasedVICReg loss: 22.51779
-2024-11-18 02:17:57,174 - INFO - Epoch: 22, unbiasedVICReg loss: 22.51566
-2024-11-18 02:18:20,163 - INFO - Epoch: 23, unbiasedVICReg loss: 22.51500
-2024-11-18 02:18:43,379 - INFO - Epoch: 24, unbiasedVICReg loss: 22.51514
-2024-11-18 02:19:06,911 - INFO - Epoch: 25, unbiasedVICReg loss: 22.50539
-2024-11-18 02:19:29,652 - INFO - Epoch: 26, unbiasedVICReg loss: 22.49570
-2024-11-18 02:19:52,406 - INFO - Epoch: 27, unbiasedVICReg loss: 22.49569
-2024-11-18 02:20:15,620 - INFO - Epoch: 28, unbiasedVICReg loss: 22.49619
-2024-11-18 02:20:38,774 - INFO - Epoch: 29, unbiasedVICReg loss: 22.48961
-2024-11-18 02:21:01,632 - INFO - Epoch: 30, unbiasedVICReg loss: 22.49428
-2024-11-18 02:21:24,679 - INFO - Epoch: 31, unbiasedVICReg loss: 22.49271
-2024-11-18 02:21:47,587 - INFO - Epoch: 32, unbiasedVICReg loss: 22.48906
-2024-11-18 02:22:09,812 - INFO - Epoch: 33, unbiasedVICReg loss: 22.48582
-2024-11-18 02:22:32,361 - INFO - Epoch: 34, unbiasedVICReg loss: 22.49384
-2024-11-18 02:22:55,806 - INFO - Epoch: 35, unbiasedVICReg loss: 22.47858
-2024-11-18 02:23:18,561 - INFO - Epoch: 36, unbiasedVICReg loss: 22.47541
-2024-11-18 02:23:41,646 - INFO - Epoch: 37, unbiasedVICReg loss: 22.46939
-2024-11-18 02:24:04,385 - INFO - Epoch: 38, unbiasedVICReg loss: 22.46831
-2024-11-18 02:24:27,899 - INFO - Epoch: 39, unbiasedVICReg loss: 22.47270
-2024-11-18 02:24:50,447 - INFO - Epoch: 40, unbiasedVICReg loss: 22.47757
-2024-11-18 02:25:13,785 - INFO - Epoch: 41, unbiasedVICReg loss: 22.46526
-2024-11-18 02:25:36,331 - INFO - Epoch: 42, unbiasedVICReg loss: 22.46419
-2024-11-18 02:25:59,487 - INFO - Epoch: 43, unbiasedVICReg loss: 22.46029
-2024-11-18 02:26:23,073 - INFO - Epoch: 44, unbiasedVICReg loss: 22.46466
-2024-11-18 02:26:46,591 - INFO - Epoch: 45, unbiasedVICReg loss: 22.45577
-2024-11-18 02:27:09,763 - INFO - Epoch: 46, unbiasedVICReg loss: 22.45446
-2024-11-18 02:27:33,221 - INFO - Epoch: 47, unbiasedVICReg loss: 22.45477
-2024-11-18 02:27:56,022 - INFO - Epoch: 48, unbiasedVICReg loss: 22.45179
-2024-11-18 02:28:19,548 - INFO - Epoch: 49, unbiasedVICReg loss: 22.45836
-2024-11-18 02:28:43,528 - INFO - Epoch: 50, unbiasedVICReg loss: 22.44973
-2024-11-18 02:29:07,385 - INFO - Epoch: 51, unbiasedVICReg loss: 22.44804
-2024-11-18 02:29:30,933 - INFO - Epoch: 52, unbiasedVICReg loss: 22.45444
-2024-11-18 02:29:53,540 - INFO - Epoch: 53, unbiasedVICReg loss: 22.45381
-2024-11-18 02:30:16,176 - INFO - Epoch: 54, unbiasedVICReg loss: 22.44487
-2024-11-18 02:30:39,422 - INFO - Epoch: 55, unbiasedVICReg loss: 22.44052
-2024-11-18 02:31:02,566 - INFO - Epoch: 56, unbiasedVICReg loss: 22.44368
-2024-11-18 02:31:25,595 - INFO - Epoch: 57, unbiasedVICReg loss: 22.44924
-2024-11-18 02:31:48,321 - INFO - Epoch: 58, unbiasedVICReg loss: 22.44540
-2024-11-18 02:32:11,163 - INFO - Epoch: 59, unbiasedVICReg loss: 22.44277
-2024-11-18 02:32:33,776 - INFO - Epoch: 60, unbiasedVICReg loss: 22.44635
-2024-11-18 02:32:58,106 - INFO - Epoch: 61, unbiasedVICReg loss: 22.45452
-2024-11-18 02:33:21,306 - INFO - Epoch: 62, unbiasedVICReg loss: 22.43992
-2024-11-18 02:33:44,028 - INFO - Epoch: 63, unbiasedVICReg loss: 22.44250
-2024-11-18 02:34:07,727 - INFO - Epoch: 64, unbiasedVICReg loss: 22.43779
-2024-11-18 02:34:30,178 - INFO - Epoch: 65, unbiasedVICReg loss: 22.43428
-2024-11-18 02:34:54,336 - INFO - Epoch: 66, unbiasedVICReg loss: 22.43898
-2024-11-18 02:35:17,661 - INFO - Epoch: 67, unbiasedVICReg loss: 22.45041
-2024-11-18 02:35:41,910 - INFO - Epoch: 68, unbiasedVICReg loss: 22.43994
-2024-11-18 02:36:05,575 - INFO - Epoch: 69, unbiasedVICReg loss: 22.43660
-2024-11-18 02:36:29,241 - INFO - Epoch: 70, unbiasedVICReg loss: 22.42811
-2024-11-18 02:36:52,516 - INFO - Epoch: 71, unbiasedVICReg loss: 22.43238
-2024-11-18 02:37:17,872 - INFO - Epoch: 72, unbiasedVICReg loss: 22.43013
-2024-11-18 02:37:43,997 - INFO - Epoch: 73, unbiasedVICReg loss: 22.43049
-2024-11-18 02:38:07,568 - INFO - Epoch: 74, unbiasedVICReg loss: 22.43335
-2024-11-18 02:38:30,955 - INFO - Epoch: 75, unbiasedVICReg loss: 22.43034
-2024-11-18 02:38:54,373 - INFO - Epoch: 76, unbiasedVICReg loss: 22.43220
-2024-11-18 02:39:17,206 - INFO - Epoch: 77, unbiasedVICReg loss: 22.44380
-2024-11-18 02:39:40,392 - INFO - Epoch: 78, unbiasedVICReg loss: 22.43831
-2024-11-18 02:40:04,103 - INFO - Epoch: 79, unbiasedVICReg loss: 22.43709
-2024-11-18 02:40:27,536 - INFO - Epoch: 80, unbiasedVICReg loss: 22.43509
-2024-11-18 02:40:50,549 - INFO - Epoch: 81, unbiasedVICReg loss: 22.42672
-2024-11-18 02:41:13,235 - INFO - Epoch: 82, unbiasedVICReg loss: 22.42389
-2024-11-18 02:41:37,127 - INFO - Epoch: 83, unbiasedVICReg loss: 22.42555
-2024-11-18 02:42:00,932 - INFO - Epoch: 84, unbiasedVICReg loss: 22.41655
-2024-11-18 02:42:24,485 - INFO - Epoch: 85, unbiasedVICReg loss: 22.45033
-2024-11-18 02:42:47,301 - INFO - Epoch: 86, unbiasedVICReg loss: 22.42428
-2024-11-18 02:43:09,912 - INFO - Epoch: 87, unbiasedVICReg loss: 22.42190
-2024-11-18 02:43:32,793 - INFO - Epoch: 88, unbiasedVICReg loss: 22.41362
-2024-11-18 02:43:55,597 - INFO - Epoch: 89, unbiasedVICReg loss: 22.41600
-2024-11-18 02:44:18,221 - INFO - Epoch: 90, unbiasedVICReg loss: 22.41247
-2024-11-18 02:44:40,407 - INFO - Epoch: 91, unbiasedVICReg loss: 22.42036
-2024-11-18 02:45:02,924 - INFO - Epoch: 92, unbiasedVICReg loss: 22.41479
-2024-11-18 02:45:25,161 - INFO - Epoch: 93, unbiasedVICReg loss: 22.41215
-2024-11-18 02:45:47,828 - INFO - Epoch: 94, unbiasedVICReg loss: 22.41409
-2024-11-18 02:46:11,209 - INFO - Epoch: 95, unbiasedVICReg loss: 22.40956
-2024-11-18 02:46:35,427 - INFO - Epoch: 96, unbiasedVICReg loss: 22.40676
-2024-11-18 02:46:58,312 - INFO - Epoch: 97, unbiasedVICReg loss: 22.41418
-2024-11-18 02:47:20,922 - INFO - Epoch: 98, unbiasedVICReg loss: 22.41108
-2024-11-18 02:47:44,012 - INFO - Epoch: 99, unbiasedVICReg loss: 22.40544
-2024-11-18 02:47:44,992 - INFO - linear_start 0, vicreg_start 0
-2024-11-18 02:47:44,992 - INFO - Starting linear evaluation from 0/50 epochs
-2024-11-18 02:48:05,235 - INFO - Epoch: 00, Train Loss: 1.22173, Train Acc: 56.13%
-2024-11-18 02:48:10,066 - INFO - Epoch: 00, Test Loss: 1.15893, Test Acc: 58.62%
-2024-11-18 02:48:30,320 - INFO - Epoch: 01, Train Loss: 1.13253, Train Acc: 59.36%
-2024-11-18 02:48:35,035 - INFO - Epoch: 01, Test Loss: 1.13371, Test Acc: 59.24%
-2024-11-18 02:48:55,134 - INFO - Epoch: 02, Train Loss: 1.10823, Train Acc: 60.14%
-2024-11-18 02:48:59,805 - INFO - Epoch: 02, Test Loss: 1.11873, Test Acc: 59.89%
-2024-11-18 02:49:20,174 - INFO - Epoch: 03, Train Loss: 1.09322, Train Acc: 60.69%
-2024-11-18 02:49:24,833 - INFO - Epoch: 03, Test Loss: 1.10672, Test Acc: 60.14%
-2024-11-18 02:49:45,069 - INFO - Epoch: 04, Train Loss: 1.08410, Train Acc: 61.22%
-2024-11-18 02:49:49,737 - INFO - Epoch: 04, Test Loss: 1.09602, Test Acc: 60.31%
-2024-11-18 02:50:10,072 - INFO - Epoch: 05, Train Loss: 1.07342, Train Acc: 61.57%
-2024-11-18 02:50:14,835 - INFO - Epoch: 05, Test Loss: 1.08755, Test Acc: 61.02%
-2024-11-18 02:50:34,983 - INFO - Epoch: 06, Train Loss: 1.06635, Train Acc: 61.83%
-2024-11-18 02:50:39,702 - INFO - Epoch: 06, Test Loss: 1.10236, Test Acc: 60.94%
-2024-11-18 02:50:59,902 - INFO - Epoch: 07, Train Loss: 1.06396, Train Acc: 61.97%
-2024-11-18 02:51:04,581 - INFO - Epoch: 07, Test Loss: 1.09679, Test Acc: 60.87%
-2024-11-18 02:51:24,733 - INFO - Epoch: 08, Train Loss: 1.05790, Train Acc: 62.27%
-2024-11-18 02:51:29,315 - INFO - Epoch: 08, Test Loss: 1.08163, Test Acc: 61.02%
-2024-11-18 02:51:49,343 - INFO - Epoch: 09, Train Loss: 1.05337, Train Acc: 62.45%
-2024-11-18 02:51:53,939 - INFO - Epoch: 09, Test Loss: 1.07736, Test Acc: 61.40%
-2024-11-18 02:52:13,984 - INFO - Epoch: 10, Train Loss: 1.04700, Train Acc: 62.61%
-2024-11-18 02:52:18,683 - INFO - Epoch: 10, Test Loss: 1.11748, Test Acc: 60.42%
-2024-11-18 02:52:38,866 - INFO - Epoch: 11, Train Loss: 1.04642, Train Acc: 62.62%
-2024-11-18 02:52:43,619 - INFO - Epoch: 11, Test Loss: 1.09901, Test Acc: 60.96%
-2024-11-18 02:53:03,902 - INFO - Epoch: 12, Train Loss: 1.04385, Train Acc: 62.71%
-2024-11-18 02:53:08,480 - INFO - Epoch: 12, Test Loss: 1.14305, Test Acc: 60.94%
-2024-11-18 02:53:28,780 - INFO - Epoch: 13, Train Loss: 1.03995, Train Acc: 62.83%
-2024-11-18 02:53:33,442 - INFO - Epoch: 13, Test Loss: 1.07143, Test Acc: 61.29%
-2024-11-18 02:53:53,657 - INFO - Epoch: 14, Train Loss: 1.03937, Train Acc: 62.99%
-2024-11-18 02:53:58,332 - INFO - Epoch: 14, Test Loss: 1.08041, Test Acc: 61.35%
-2024-11-18 02:54:18,429 - INFO - Epoch: 15, Train Loss: 1.03632, Train Acc: 63.24%
-2024-11-18 02:54:23,034 - INFO - Epoch: 15, Test Loss: 1.06562, Test Acc: 62.02%
-2024-11-18 02:54:43,256 - INFO - Epoch: 16, Train Loss: 1.03491, Train Acc: 63.06%
-2024-11-18 02:54:48,007 - INFO - Epoch: 16, Test Loss: 1.10724, Test Acc: 60.67%
-2024-11-18 02:55:08,081 - INFO - Epoch: 17, Train Loss: 1.03402, Train Acc: 63.14%
-2024-11-18 02:55:12,792 - INFO - Epoch: 17, Test Loss: 1.08148, Test Acc: 61.42%
-2024-11-18 02:55:33,188 - INFO - Epoch: 18, Train Loss: 1.03173, Train Acc: 63.32%
-2024-11-18 02:55:37,657 - INFO - Epoch: 18, Test Loss: 1.06419, Test Acc: 61.87%
-2024-11-18 02:55:57,687 - INFO - Epoch: 19, Train Loss: 1.03061, Train Acc: 63.38%
-2024-11-18 02:56:02,321 - INFO - Epoch: 19, Test Loss: 1.06131, Test Acc: 62.13%
-2024-11-18 02:56:22,416 - INFO - Epoch: 20, Train Loss: 1.02870, Train Acc: 63.33%
-2024-11-18 02:56:27,075 - INFO - Epoch: 20, Test Loss: 1.06705, Test Acc: 61.88%
-2024-11-18 02:56:47,438 - INFO - Epoch: 21, Train Loss: 1.02710, Train Acc: 63.37%
-2024-11-18 02:56:52,076 - INFO - Epoch: 21, Test Loss: 1.07115, Test Acc: 61.56%
-2024-11-18 02:57:12,360 - INFO - Epoch: 22, Train Loss: 1.02780, Train Acc: 63.43%
-2024-11-18 02:57:16,833 - INFO - Epoch: 22, Test Loss: 1.07558, Test Acc: 61.87%
-2024-11-18 02:57:36,951 - INFO - Epoch: 23, Train Loss: 1.02312, Train Acc: 63.43%
-2024-11-18 02:57:41,524 - INFO - Epoch: 23, Test Loss: 1.07224, Test Acc: 61.53%
-2024-11-18 02:58:01,718 - INFO - Epoch: 24, Train Loss: 1.02426, Train Acc: 63.63%
-2024-11-18 02:58:06,361 - INFO - Epoch: 24, Test Loss: 1.10577, Test Acc: 61.37%
-2024-11-18 02:58:26,679 - INFO - Epoch: 25, Train Loss: 1.02406, Train Acc: 63.65%
-2024-11-18 02:58:31,347 - INFO - Epoch: 25, Test Loss: 1.05989, Test Acc: 61.93%
-2024-11-18 02:58:51,550 - INFO - Epoch: 26, Train Loss: 1.02018, Train Acc: 63.54%
-2024-11-18 02:58:56,187 - INFO - Epoch: 26, Test Loss: 1.05939, Test Acc: 62.03%
-2024-11-18 02:59:16,377 - INFO - Epoch: 27, Train Loss: 1.01958, Train Acc: 63.56%
-2024-11-18 02:59:21,054 - INFO - Epoch: 27, Test Loss: 1.07380, Test Acc: 61.48%
-2024-11-18 02:59:41,223 - INFO - Epoch: 28, Train Loss: 1.01720, Train Acc: 63.66%
-2024-11-18 02:59:45,874 - INFO - Epoch: 28, Test Loss: 1.07625, Test Acc: 61.44%
-2024-11-18 03:00:06,077 - INFO - Epoch: 29, Train Loss: 1.01668, Train Acc: 63.78%
-2024-11-18 03:00:10,692 - INFO - Epoch: 29, Test Loss: 1.05796, Test Acc: 62.03%
-2024-11-18 03:00:30,796 - INFO - Epoch: 30, Train Loss: 1.01839, Train Acc: 63.69%
-2024-11-18 03:00:35,431 - INFO - Epoch: 30, Test Loss: 1.06547, Test Acc: 61.75%
-2024-11-18 03:00:55,713 - INFO - Epoch: 31, Train Loss: 1.01894, Train Acc: 63.66%
-2024-11-18 03:01:00,353 - INFO - Epoch: 31, Test Loss: 1.05797, Test Acc: 62.11%
-2024-11-18 03:01:20,715 - INFO - Epoch: 32, Train Loss: 1.01473, Train Acc: 63.86%
-2024-11-18 03:01:25,326 - INFO - Epoch: 32, Test Loss: 1.06843, Test Acc: 61.61%
-2024-11-18 03:01:45,391 - INFO - Epoch: 33, Train Loss: 1.01656, Train Acc: 63.86%
-2024-11-18 03:01:50,073 - INFO - Epoch: 33, Test Loss: 1.08580, Test Acc: 61.64%
-2024-11-18 03:02:10,297 - INFO - Epoch: 34, Train Loss: 1.01362, Train Acc: 63.80%
-2024-11-18 03:02:15,079 - INFO - Epoch: 34, Test Loss: 1.06962, Test Acc: 61.64%
-2024-11-18 03:02:35,074 - INFO - Epoch: 35, Train Loss: 1.01640, Train Acc: 63.95%
-2024-11-18 03:02:39,936 - INFO - Epoch: 35, Test Loss: 1.06920, Test Acc: 61.54%
-2024-11-18 03:02:59,851 - INFO - Epoch: 36, Train Loss: 1.01425, Train Acc: 63.88%
-2024-11-18 03:03:04,830 - INFO - Epoch: 36, Test Loss: 1.06881, Test Acc: 61.68%
-2024-11-18 03:03:24,491 - INFO - Epoch: 37, Train Loss: 1.01404, Train Acc: 63.88%
-2024-11-18 03:03:29,407 - INFO - Epoch: 37, Test Loss: 1.07598, Test Acc: 61.52%
-2024-11-18 03:03:49,153 - INFO - Epoch: 38, Train Loss: 1.01322, Train Acc: 63.94%
-2024-11-18 03:03:54,169 - INFO - Epoch: 38, Test Loss: 1.08295, Test Acc: 61.91%
-2024-11-18 03:04:14,082 - INFO - Epoch: 39, Train Loss: 1.01082, Train Acc: 63.88%
-2024-11-18 03:04:18,572 - INFO - Epoch: 39, Test Loss: 1.06187, Test Acc: 62.09%
-2024-11-18 03:04:37,402 - INFO - Epoch: 40, Train Loss: 1.01091, Train Acc: 63.84%
-2024-11-18 03:04:41,862 - INFO - Epoch: 40, Test Loss: 1.09480, Test Acc: 61.53%
-2024-11-18 03:05:00,492 - INFO - Epoch: 41, Train Loss: 1.00915, Train Acc: 63.95%
-2024-11-18 03:05:04,900 - INFO - Epoch: 41, Test Loss: 1.06115, Test Acc: 61.59%
-2024-11-18 03:05:23,845 - INFO - Epoch: 42, Train Loss: 1.01013, Train Acc: 63.84%
-2024-11-18 03:05:28,187 - INFO - Epoch: 42, Test Loss: 1.06839, Test Acc: 62.15%
-2024-11-18 03:05:46,952 - INFO - Epoch: 43, Train Loss: 1.01098, Train Acc: 63.88%
-2024-11-18 03:05:51,432 - INFO - Epoch: 43, Test Loss: 1.08143, Test Acc: 61.65%
-2024-11-18 03:06:09,962 - INFO - Epoch: 44, Train Loss: 1.00978, Train Acc: 64.05%
-2024-11-18 03:06:14,347 - INFO - Epoch: 44, Test Loss: 1.06834, Test Acc: 62.01%
-2024-11-18 03:06:33,179 - INFO - Epoch: 45, Train Loss: 1.00887, Train Acc: 63.97%
-2024-11-18 03:06:37,569 - INFO - Epoch: 45, Test Loss: 1.06299, Test Acc: 62.14%
-2024-11-18 03:06:56,128 - INFO - Epoch: 46, Train Loss: 1.00886, Train Acc: 63.97%
-2024-11-18 03:07:00,457 - INFO - Epoch: 46, Test Loss: 1.06593, Test Acc: 61.90%
-2024-11-18 03:07:18,961 - INFO - Epoch: 47, Train Loss: 1.00889, Train Acc: 64.00%
-2024-11-18 03:07:23,334 - INFO - Epoch: 47, Test Loss: 1.06702, Test Acc: 62.07%
-2024-11-18 03:07:42,295 - INFO - Epoch: 48, Train Loss: 1.00756, Train Acc: 64.08%
-2024-11-18 03:07:46,627 - INFO - Epoch: 48, Test Loss: 1.06689, Test Acc: 61.72%
-2024-11-18 03:08:05,431 - INFO - Epoch: 49, Train Loss: 1.00585, Train Acc: 64.15%
-2024-11-18 03:08:09,773 - INFO - Epoch: 49, Test Loss: 1.08413, Test Acc: 61.76%
-2024-11-18 03:08:09,774 - INFO - Train exists: 0/50 epochs, evaluate on train:
-2024-11-18 03:08:14,099 - INFO - Epoch: 49, Test Loss: 1.08413, Test Acc: 61.76%
+2024-11-19 19:37:30,041 - INFO - Checkpoint directory: ./results/unbiased/linear/64
+2024-11-19 19:37:30,041 - INFO - Configuration:
+2024-11-19 19:37:30,041 - INFO - sim_coeff: 25.0
+2024-11-19 19:37:30,041 - INFO - std_coeff: 25
+2024-11-19 19:37:30,041 - INFO - cov_coeff: 1
+2024-11-19 19:37:30,041 - INFO - batch_sizes: [256, 128, 64, 32, 16, 8]
+2024-11-19 19:37:30,041 - INFO - num_epochs: 100
+2024-11-19 19:37:30,041 - INFO - max_lr_vicreg: 3.75
+2024-11-19 19:37:30,042 - INFO - momentum: 0.9
+2024-11-19 19:37:30,042 - INFO - weight_decay: 0.0001
+2024-11-19 19:37:30,042 - INFO - final_lr_schedule_value: 0.002
+2024-11-19 19:37:30,042 - INFO - warmup_epochs: 10
+2024-11-19 19:37:30,042 - INFO - batch_size_evaluate: 64
+2024-11-19 19:37:30,042 - INFO - num_eval_epochs: 100
+2024-11-19 19:37:30,042 - INFO - max_lr_linear: 30.0
+2024-11-19 19:37:30,042 - INFO - linear_momentum: 0.9
+2024-11-19 19:37:30,042 - INFO - linear_weight_decay: 0.0
+2024-11-19 19:37:30,042 - INFO - backbone: resnet18
+2024-11-19 19:37:30,042 - INFO - projection_head_dims: [512, 2048]
+2024-11-19 19:37:30,042 - INFO - probe: linear
+2024-11-19 19:37:30,042 - INFO - loss: unbiased
+2024-11-19 19:37:30,042 - INFO - batch_size_sharing: False
+2024-11-19 19:37:30,042 - INFO - batch_size: 64
+2024-11-19 19:37:30,042 - INFO - checkpoint_dir: ./results/unbiased/linear/64
+2024-11-19 19:37:30,042 - INFO - Running with batch_size=64
+2024-11-19 19:37:30,042 - INFO - Using device: cuda
+2024-11-19 19:37:30,043 - INFO - Setting up experiment...
+2024-11-19 19:37:30,044 - INFO - Using ResNet18 backbone
+2024-11-19 19:37:30,330 - INFO - Using unbiased VICReg loss
+2024-11-19 19:37:30,330 - INFO - Setting up datasets and dataloaders
+2024-11-19 19:37:31,561 - INFO - Created dataloaders with batch size 64 and evaluate 64
+2024-11-19 19:37:31,562 - INFO - Created optimizers with learning rates: vicreg=3.75, linear=30.0
+2024-11-19 19:37:31,563 - INFO - Loaded checkpoints: vicreg_epoch=0, linear_epoch=0
+2024-11-19 19:37:31,563 - INFO - Starting from epoch vicreg_start:0
+2024-11-19 19:37:31,563 - INFO - Writing visualization data to TensorBoard
+2024-11-19 19:37:33,205 - INFO - Successfully wrote visualization data to TensorBoard
+2024-11-19 19:37:33,229 - INFO - Beginning train + evaluate for linear probing
+2024-11-19 19:37:33,229 - INFO - Continuing VICReg training from epoch 0 to 100
+2024-11-19 19:38:35,546 - INFO - Epoch: 00, unbiasedVICReg loss: 113.77603
+2024-11-19 19:39:37,450 - INFO - Epoch: 01, unbiasedVICReg loss: 44.91105
+2024-11-19 19:40:39,877 - INFO - Epoch: 02, unbiasedVICReg loss: 44.88079
+2024-11-19 19:41:42,297 - INFO - Epoch: 03, unbiasedVICReg loss: 44.85770
+2024-11-19 19:42:44,935 - INFO - Epoch: 04, unbiasedVICReg loss: 44.84057
+2024-11-19 19:43:47,383 - INFO - Epoch: 05, unbiasedVICReg loss: 44.82714
+2024-11-19 19:44:49,921 - INFO - Epoch: 06, unbiasedVICReg loss: 44.81749
+2024-11-19 19:45:52,640 - INFO - Epoch: 07, unbiasedVICReg loss: 44.80997
+2024-11-19 19:46:55,749 - INFO - Epoch: 08, unbiasedVICReg loss: 44.80343
+2024-11-19 19:47:58,746 - INFO - Epoch: 09, unbiasedVICReg loss: 44.79900
+2024-11-19 19:49:01,447 - INFO - Epoch: 10, unbiasedVICReg loss: 44.79309
+2024-11-19 19:50:04,207 - INFO - Epoch: 11, unbiasedVICReg loss: 44.79063
+2024-11-19 19:51:06,724 - INFO - Epoch: 12, unbiasedVICReg loss: 44.78788
+2024-11-19 19:52:08,866 - INFO - Epoch: 13, unbiasedVICReg loss: 44.78436
+2024-11-19 19:53:11,459 - INFO - Epoch: 14, unbiasedVICReg loss: 44.78160
+2024-11-19 19:54:14,099 - INFO - Epoch: 15, unbiasedVICReg loss: 44.77899
+2024-11-19 19:55:16,598 - INFO - Epoch: 16, unbiasedVICReg loss: 44.77752
+2024-11-19 19:56:19,026 - INFO - Epoch: 17, unbiasedVICReg loss: 44.77477
+2024-11-19 19:57:21,561 - INFO - Epoch: 18, unbiasedVICReg loss: 44.77251
+2024-11-19 19:58:24,179 - INFO - Epoch: 19, unbiasedVICReg loss: 44.77073
+2024-11-19 19:59:26,511 - INFO - Epoch: 20, unbiasedVICReg loss: 44.76950
+2024-11-19 20:00:29,292 - INFO - Epoch: 21, unbiasedVICReg loss: 44.76806
+2024-11-19 20:01:32,283 - INFO - Epoch: 22, unbiasedVICReg loss: 44.76637
+2024-11-19 20:02:34,895 - INFO - Epoch: 23, unbiasedVICReg loss: 44.76678
+2024-11-19 20:03:37,231 - INFO - Epoch: 24, unbiasedVICReg loss: 44.76562
+2024-11-19 20:04:39,866 - INFO - Epoch: 25, unbiasedVICReg loss: 44.76353
+2024-11-19 20:05:42,247 - INFO - Epoch: 26, unbiasedVICReg loss: 44.76282
+2024-11-19 20:06:44,992 - INFO - Epoch: 27, unbiasedVICReg loss: 44.76077
+2024-11-19 20:07:47,490 - INFO - Epoch: 28, unbiasedVICReg loss: 44.76069
+2024-11-19 20:08:49,909 - INFO - Epoch: 29, unbiasedVICReg loss: 44.75927
+2024-11-19 20:09:52,423 - INFO - Epoch: 30, unbiasedVICReg loss: 44.75885
+2024-11-19 20:10:54,923 - INFO - Epoch: 31, unbiasedVICReg loss: 44.75788
+2024-11-19 20:11:57,666 - INFO - Epoch: 32, unbiasedVICReg loss: 44.75729
+2024-11-19 20:13:00,297 - INFO - Epoch: 33, unbiasedVICReg loss: 44.75576
+2024-11-19 20:14:02,656 - INFO - Epoch: 34, unbiasedVICReg loss: 44.75632
+2024-11-19 20:15:05,056 - INFO - Epoch: 35, unbiasedVICReg loss: 44.75656
+2024-11-19 20:16:07,757 - INFO - Epoch: 36, unbiasedVICReg loss: 44.75483
+2024-11-19 20:17:10,805 - INFO - Epoch: 37, unbiasedVICReg loss: 44.75356
+2024-11-19 20:18:14,139 - INFO - Epoch: 38, unbiasedVICReg loss: 44.75286
+2024-11-19 20:19:17,878 - INFO - Epoch: 39, unbiasedVICReg loss: 44.75297
+2024-11-19 20:20:21,571 - INFO - Epoch: 40, unbiasedVICReg loss: 44.75114
+2024-11-19 20:21:24,783 - INFO - Epoch: 41, unbiasedVICReg loss: 44.75251
+2024-11-19 20:22:27,939 - INFO - Epoch: 42, unbiasedVICReg loss: 44.75234
+2024-11-19 20:23:30,624 - INFO - Epoch: 43, unbiasedVICReg loss: 44.75251
+2024-11-19 20:24:32,946 - INFO - Epoch: 44, unbiasedVICReg loss: 44.75191
+2024-11-19 20:25:35,347 - INFO - Epoch: 45, unbiasedVICReg loss: 44.75065
+2024-11-19 20:26:37,727 - INFO - Epoch: 46, unbiasedVICReg loss: 44.75048
+2024-11-19 20:27:40,481 - INFO - Epoch: 47, unbiasedVICReg loss: 44.74976
+2024-11-19 20:28:42,914 - INFO - Epoch: 48, unbiasedVICReg loss: 44.74939
+2024-11-19 20:29:45,151 - INFO - Epoch: 49, unbiasedVICReg loss: 44.74953
+2024-11-19 20:30:47,768 - INFO - Epoch: 50, unbiasedVICReg loss: 44.74809
+2024-11-19 20:31:48,376 - INFO - Epoch: 51, unbiasedVICReg loss: 44.74932
+2024-11-19 20:32:26,930 - INFO - Epoch: 52, unbiasedVICReg loss: 44.74803
+2024-11-19 20:33:06,495 - INFO - Epoch: 53, unbiasedVICReg loss: 44.74813
+2024-11-19 20:33:44,911 - INFO - Epoch: 54, unbiasedVICReg loss: 44.74863
+2024-11-19 20:34:23,074 - INFO - Epoch: 55, unbiasedVICReg loss: 44.74797
+2024-11-19 20:35:02,536 - INFO - Epoch: 56, unbiasedVICReg loss: 44.74826
+2024-11-19 20:35:40,725 - INFO - Epoch: 57, unbiasedVICReg loss: 44.74738
+2024-11-19 20:36:19,654 - INFO - Epoch: 58, unbiasedVICReg loss: 44.74744
+2024-11-19 20:36:58,134 - INFO - Epoch: 59, unbiasedVICReg loss: 44.74578
+2024-11-19 20:37:37,027 - INFO - Epoch: 60, unbiasedVICReg loss: 44.74651
+2024-11-19 20:38:16,209 - INFO - Epoch: 61, unbiasedVICReg loss: 44.74586
+2024-11-19 20:38:54,503 - INFO - Epoch: 62, unbiasedVICReg loss: 44.74572
+2024-11-19 20:39:33,518 - INFO - Epoch: 63, unbiasedVICReg loss: 44.74606
+2024-11-19 20:40:12,157 - INFO - Epoch: 64, unbiasedVICReg loss: 44.74534
+2024-11-19 20:40:51,013 - INFO - Epoch: 65, unbiasedVICReg loss: 44.74492
+2024-11-19 20:41:30,740 - INFO - Epoch: 66, unbiasedVICReg loss: 44.74593
+2024-11-19 20:42:09,282 - INFO - Epoch: 67, unbiasedVICReg loss: 44.74596
+2024-11-19 20:42:48,076 - INFO - Epoch: 68, unbiasedVICReg loss: 44.74442
+2024-11-19 20:43:26,318 - INFO - Epoch: 69, unbiasedVICReg loss: 44.74414
+2024-11-19 20:44:05,217 - INFO - Epoch: 70, unbiasedVICReg loss: 44.74362
+2024-11-19 20:44:43,890 - INFO - Epoch: 71, unbiasedVICReg loss: 44.74337
+2024-11-19 20:45:22,493 - INFO - Epoch: 72, unbiasedVICReg loss: 44.74266
+2024-11-19 20:46:01,385 - INFO - Epoch: 73, unbiasedVICReg loss: 44.74357
+2024-11-19 20:46:39,805 - INFO - Epoch: 74, unbiasedVICReg loss: 44.74437
+2024-11-19 20:47:17,940 - INFO - Epoch: 75, unbiasedVICReg loss: 44.74378
+2024-11-19 20:47:56,353 - INFO - Epoch: 76, unbiasedVICReg loss: 44.74512
+2024-11-19 20:48:35,142 - INFO - Epoch: 77, unbiasedVICReg loss: 44.74399
+2024-11-19 20:49:13,271 - INFO - Epoch: 78, unbiasedVICReg loss: 44.74466
+2024-11-19 20:49:52,048 - INFO - Epoch: 79, unbiasedVICReg loss: 44.74401
+2024-11-19 20:50:30,255 - INFO - Epoch: 80, unbiasedVICReg loss: 44.74302
+2024-11-19 20:51:07,748 - INFO - Epoch: 81, unbiasedVICReg loss: 44.74267
+2024-11-19 20:51:46,655 - INFO - Epoch: 82, unbiasedVICReg loss: 44.74270
+2024-11-19 20:52:25,735 - INFO - Epoch: 83, unbiasedVICReg loss: 44.74269
+2024-11-19 20:53:04,689 - INFO - Epoch: 84, unbiasedVICReg loss: 44.74270
+2024-11-19 20:53:42,660 - INFO - Epoch: 85, unbiasedVICReg loss: 44.74263
+2024-11-19 20:54:22,170 - INFO - Epoch: 86, unbiasedVICReg loss: 44.74323
+2024-11-19 20:55:00,766 - INFO - Epoch: 87, unbiasedVICReg loss: 44.74306
+2024-11-19 20:55:39,213 - INFO - Epoch: 88, unbiasedVICReg loss: 44.74311
+2024-11-19 20:56:17,745 - INFO - Epoch: 89, unbiasedVICReg loss: 44.74200
+2024-11-19 20:56:56,228 - INFO - Epoch: 90, unbiasedVICReg loss: 44.74130
+2024-11-19 20:57:34,406 - INFO - Epoch: 91, unbiasedVICReg loss: 44.74162
+2024-11-19 20:58:12,895 - INFO - Epoch: 92, unbiasedVICReg loss: 44.74087
+2024-11-19 20:58:51,431 - INFO - Epoch: 93, unbiasedVICReg loss: 44.74152
+2024-11-19 20:59:29,461 - INFO - Epoch: 94, unbiasedVICReg loss: 44.74181
+2024-11-19 21:00:08,733 - INFO - Epoch: 95, unbiasedVICReg loss: 44.74259
+2024-11-19 21:00:47,456 - INFO - Epoch: 96, unbiasedVICReg loss: 44.74235
+2024-11-19 21:01:25,576 - INFO - Epoch: 97, unbiasedVICReg loss: 44.74215
+2024-11-19 21:02:04,243 - INFO - Epoch: 98, unbiasedVICReg loss: 44.74193
+2024-11-19 21:02:43,258 - INFO - Epoch: 99, unbiasedVICReg loss: 44.74140
+2024-11-19 21:02:44,141 - INFO - linear_start 0, vicreg_start 0
+2024-11-19 21:02:44,141 - INFO - Starting linear evaluation from 0/100 epochs
+2024-11-19 21:03:03,651 - INFO - Epoch: 00, Train Loss: 13.97297, Train Acc: 65.78%
+2024-11-19 21:03:08,799 - INFO - Epoch: 00, Test Loss: 10.40300, Test Acc: 67.16%
+2024-11-19 21:03:28,445 - INFO - Epoch: 01, Train Loss: 8.56410, Train Acc: 68.13%
+2024-11-19 21:03:33,633 - INFO - Epoch: 01, Test Loss: 7.82922, Test Acc: 68.34%
+2024-11-19 21:03:53,167 - INFO - Epoch: 02, Train Loss: 6.58993, Train Acc: 68.50%
+2024-11-19 21:03:58,031 - INFO - Epoch: 02, Test Loss: 6.14977, Test Acc: 68.49%
+2024-11-19 21:04:18,033 - INFO - Epoch: 03, Train Loss: 5.22666, Train Acc: 68.68%
+2024-11-19 21:04:22,739 - INFO - Epoch: 03, Test Loss: 4.98150, Test Acc: 67.72%
+2024-11-19 21:04:42,444 - INFO - Epoch: 04, Train Loss: 4.22290, Train Acc: 68.62%
+2024-11-19 21:04:47,072 - INFO - Epoch: 04, Test Loss: 4.06783, Test Acc: 67.69%
+2024-11-19 21:05:07,098 - INFO - Epoch: 05, Train Loss: 3.48165, Train Acc: 68.72%
+2024-11-19 21:05:11,905 - INFO - Epoch: 05, Test Loss: 3.37048, Test Acc: 67.35%
+2024-11-19 21:05:31,692 - INFO - Epoch: 06, Train Loss: 2.91846, Train Acc: 68.77%
+2024-11-19 21:05:36,215 - INFO - Epoch: 06, Test Loss: 2.84868, Test Acc: 67.58%
+2024-11-19 21:05:56,119 - INFO - Epoch: 07, Train Loss: 2.50198, Train Acc: 68.83%
+2024-11-19 21:06:00,869 - INFO - Epoch: 07, Test Loss: 2.44031, Test Acc: 67.82%
+2024-11-19 21:06:20,747 - INFO - Epoch: 08, Train Loss: 2.16320, Train Acc: 69.20%
+2024-11-19 21:06:25,507 - INFO - Epoch: 08, Test Loss: 2.12384, Test Acc: 68.56%
+2024-11-19 21:06:45,678 - INFO - Epoch: 09, Train Loss: 1.90324, Train Acc: 69.35%
+2024-11-19 21:06:50,384 - INFO - Epoch: 09, Test Loss: 1.92927, Test Acc: 67.18%
+2024-11-19 21:07:10,354 - INFO - Epoch: 10, Train Loss: 1.70001, Train Acc: 69.61%
+2024-11-19 21:07:15,002 - INFO - Epoch: 10, Test Loss: 1.75909, Test Acc: 67.77%
+2024-11-19 21:07:34,762 - INFO - Epoch: 11, Train Loss: 1.53920, Train Acc: 69.86%
+2024-11-19 21:07:39,412 - INFO - Epoch: 11, Test Loss: 1.55756, Test Acc: 68.66%
+2024-11-19 21:07:58,981 - INFO - Epoch: 12, Train Loss: 1.41065, Train Acc: 70.14%
+2024-11-19 21:08:03,618 - INFO - Epoch: 12, Test Loss: 1.44335, Test Acc: 69.18%
+2024-11-19 21:08:23,535 - INFO - Epoch: 13, Train Loss: 1.30599, Train Acc: 70.42%
+2024-11-19 21:08:28,133 - INFO - Epoch: 13, Test Loss: 1.32663, Test Acc: 69.72%
+2024-11-19 21:08:47,812 - INFO - Epoch: 14, Train Loss: 1.21991, Train Acc: 70.63%
+2024-11-19 21:08:52,471 - INFO - Epoch: 14, Test Loss: 1.25596, Test Acc: 70.00%
+2024-11-19 21:09:12,104 - INFO - Epoch: 15, Train Loss: 1.15481, Train Acc: 70.85%
+2024-11-19 21:09:16,825 - INFO - Epoch: 15, Test Loss: 1.20605, Test Acc: 69.89%
+2024-11-19 21:09:36,424 - INFO - Epoch: 16, Train Loss: 1.09655, Train Acc: 71.33%
+2024-11-19 21:09:40,965 - INFO - Epoch: 16, Test Loss: 1.13160, Test Acc: 70.43%
+2024-11-19 21:10:00,524 - INFO - Epoch: 17, Train Loss: 1.05393, Train Acc: 71.65%
+2024-11-19 21:10:05,180 - INFO - Epoch: 17, Test Loss: 1.08321, Test Acc: 70.88%
+2024-11-19 21:10:24,463 - INFO - Epoch: 18, Train Loss: 1.01341, Train Acc: 71.85%
+2024-11-19 21:10:28,815 - INFO - Epoch: 18, Test Loss: 1.05785, Test Acc: 70.61%
+2024-11-19 21:10:47,107 - INFO - Epoch: 19, Train Loss: 0.98214, Train Acc: 71.70%
+2024-11-19 21:10:51,508 - INFO - Epoch: 19, Test Loss: 1.04510, Test Acc: 70.24%
+2024-11-19 21:11:09,826 - INFO - Epoch: 20, Train Loss: 0.95636, Train Acc: 72.00%
+2024-11-19 21:11:14,191 - INFO - Epoch: 20, Test Loss: 1.00190, Test Acc: 70.99%
+2024-11-19 21:11:32,694 - INFO - Epoch: 21, Train Loss: 0.92963, Train Acc: 72.18%
+2024-11-19 21:11:37,030 - INFO - Epoch: 21, Test Loss: 0.99890, Test Acc: 70.55%
+2024-11-19 21:11:55,179 - INFO - Epoch: 22, Train Loss: 0.90922, Train Acc: 72.28%
+2024-11-19 21:11:59,580 - INFO - Epoch: 22, Test Loss: 0.97326, Test Acc: 70.76%
+2024-11-19 21:12:18,249 - INFO - Epoch: 23, Train Loss: 0.89352, Train Acc: 72.40%
+2024-11-19 21:12:22,494 - INFO - Epoch: 23, Test Loss: 0.98468, Test Acc: 70.43%
+2024-11-19 21:12:40,748 - INFO - Epoch: 24, Train Loss: 0.87436, Train Acc: 72.85%
+2024-11-19 21:12:45,209 - INFO - Epoch: 24, Test Loss: 0.95865, Test Acc: 70.53%
+2024-11-19 21:13:03,572 - INFO - Epoch: 25, Train Loss: 0.86327, Train Acc: 72.67%
+2024-11-19 21:13:07,981 - INFO - Epoch: 25, Test Loss: 0.93169, Test Acc: 70.86%
+2024-11-19 21:13:26,447 - INFO - Epoch: 26, Train Loss: 0.85239, Train Acc: 72.75%
+2024-11-19 21:13:30,807 - INFO - Epoch: 26, Test Loss: 0.93391, Test Acc: 71.05%
+2024-11-19 21:13:49,138 - INFO - Epoch: 27, Train Loss: 0.83954, Train Acc: 73.10%
+2024-11-19 21:13:53,498 - INFO - Epoch: 27, Test Loss: 0.91901, Test Acc: 70.98%
+2024-11-19 21:14:11,766 - INFO - Epoch: 28, Train Loss: 0.82495, Train Acc: 73.24%
+2024-11-19 21:14:16,203 - INFO - Epoch: 28, Test Loss: 0.88682, Test Acc: 71.24%
+2024-11-19 21:14:34,381 - INFO - Epoch: 29, Train Loss: 0.81602, Train Acc: 73.19%
+2024-11-19 21:14:38,824 - INFO - Epoch: 29, Test Loss: 0.86960, Test Acc: 71.97%
+2024-11-19 21:14:57,203 - INFO - Epoch: 30, Train Loss: 0.80577, Train Acc: 73.38%
+2024-11-19 21:15:01,602 - INFO - Epoch: 30, Test Loss: 0.87458, Test Acc: 71.61%
+2024-11-19 21:15:19,847 - INFO - Epoch: 31, Train Loss: 0.80025, Train Acc: 73.46%
+2024-11-19 21:15:24,184 - INFO - Epoch: 31, Test Loss: 0.85440, Test Acc: 72.37%
+2024-11-19 21:15:42,681 - INFO - Epoch: 32, Train Loss: 0.79738, Train Acc: 73.22%
+2024-11-19 21:15:47,113 - INFO - Epoch: 32, Test Loss: 0.86296, Test Acc: 72.38%
+2024-11-19 21:16:05,588 - INFO - Epoch: 33, Train Loss: 0.78948, Train Acc: 73.53%
+2024-11-19 21:16:10,006 - INFO - Epoch: 33, Test Loss: 0.84776, Test Acc: 72.23%
+2024-11-19 21:16:28,253 - INFO - Epoch: 34, Train Loss: 0.78270, Train Acc: 73.68%
+2024-11-19 21:16:32,568 - INFO - Epoch: 34, Test Loss: 0.86551, Test Acc: 71.14%
+2024-11-19 21:16:50,736 - INFO - Epoch: 35, Train Loss: 0.77798, Train Acc: 73.78%
+2024-11-19 21:16:55,395 - INFO - Epoch: 35, Test Loss: 0.89776, Test Acc: 70.53%
+2024-11-19 21:17:13,638 - INFO - Epoch: 36, Train Loss: 0.77519, Train Acc: 73.82%
+2024-11-19 21:17:18,036 - INFO - Epoch: 36, Test Loss: 0.84391, Test Acc: 72.15%
+2024-11-19 21:17:36,412 - INFO - Epoch: 37, Train Loss: 0.77287, Train Acc: 73.79%
+2024-11-19 21:17:40,725 - INFO - Epoch: 37, Test Loss: 0.83748, Test Acc: 72.41%
+2024-11-19 21:17:59,203 - INFO - Epoch: 38, Train Loss: 0.76592, Train Acc: 74.00%
+2024-11-19 21:18:03,629 - INFO - Epoch: 38, Test Loss: 0.88316, Test Acc: 70.71%
+2024-11-19 21:18:22,062 - INFO - Epoch: 39, Train Loss: 0.76515, Train Acc: 73.90%
+2024-11-19 21:18:26,437 - INFO - Epoch: 39, Test Loss: 0.81339, Test Acc: 72.78%
+2024-11-19 21:18:44,892 - INFO - Epoch: 40, Train Loss: 0.76048, Train Acc: 73.98%
+2024-11-19 21:18:49,265 - INFO - Epoch: 40, Test Loss: 0.82744, Test Acc: 72.71%
+2024-11-19 21:19:07,568 - INFO - Epoch: 41, Train Loss: 0.75744, Train Acc: 74.04%
+2024-11-19 21:19:11,977 - INFO - Epoch: 41, Test Loss: 0.86211, Test Acc: 71.41%
+2024-11-19 21:19:30,758 - INFO - Epoch: 42, Train Loss: 0.75160, Train Acc: 74.16%
+2024-11-19 21:19:35,125 - INFO - Epoch: 42, Test Loss: 0.81854, Test Acc: 73.04%
+2024-11-19 21:19:53,498 - INFO - Epoch: 43, Train Loss: 0.74924, Train Acc: 74.29%
+2024-11-19 21:19:57,911 - INFO - Epoch: 43, Test Loss: 0.80651, Test Acc: 72.99%
+2024-11-19 21:20:16,261 - INFO - Epoch: 44, Train Loss: 0.74828, Train Acc: 74.17%
+2024-11-19 21:20:20,661 - INFO - Epoch: 44, Test Loss: 0.80529, Test Acc: 73.04%
+2024-11-19 21:20:39,210 - INFO - Epoch: 45, Train Loss: 0.74689, Train Acc: 74.27%
+2024-11-19 21:20:43,618 - INFO - Epoch: 45, Test Loss: 0.80951, Test Acc: 73.09%
+2024-11-19 21:21:02,170 - INFO - Epoch: 46, Train Loss: 0.74279, Train Acc: 74.24%
+2024-11-19 21:21:06,509 - INFO - Epoch: 46, Test Loss: 0.83700, Test Acc: 71.79%
+2024-11-19 21:21:24,678 - INFO - Epoch: 47, Train Loss: 0.74292, Train Acc: 74.34%
+2024-11-19 21:21:29,024 - INFO - Epoch: 47, Test Loss: 0.80908, Test Acc: 72.62%
+2024-11-19 21:21:47,513 - INFO - Epoch: 48, Train Loss: 0.74022, Train Acc: 74.23%
+2024-11-19 21:21:51,899 - INFO - Epoch: 48, Test Loss: 0.79110, Test Acc: 73.51%
+2024-11-19 21:22:10,339 - INFO - Epoch: 49, Train Loss: 0.73788, Train Acc: 74.51%
+2024-11-19 21:22:14,730 - INFO - Epoch: 49, Test Loss: 0.81026, Test Acc: 72.69%
+2024-11-19 21:22:33,133 - INFO - Epoch: 50, Train Loss: 0.73798, Train Acc: 74.46%
+2024-11-19 21:22:37,516 - INFO - Epoch: 50, Test Loss: 0.80254, Test Acc: 73.04%
+2024-11-19 21:22:55,920 - INFO - Epoch: 51, Train Loss: 0.73715, Train Acc: 74.54%
+2024-11-19 21:23:00,286 - INFO - Epoch: 51, Test Loss: 0.80753, Test Acc: 72.60%
+2024-11-19 21:23:18,707 - INFO - Epoch: 52, Train Loss: 0.73883, Train Acc: 74.34%
+2024-11-19 21:23:23,151 - INFO - Epoch: 52, Test Loss: 0.80657, Test Acc: 72.97%
+2024-11-19 21:23:41,431 - INFO - Epoch: 53, Train Loss: 0.73328, Train Acc: 74.55%
+2024-11-19 21:23:45,805 - INFO - Epoch: 53, Test Loss: 0.85004, Test Acc: 71.33%
+2024-11-19 21:24:03,910 - INFO - Epoch: 54, Train Loss: 0.73568, Train Acc: 74.45%
+2024-11-19 21:24:08,296 - INFO - Epoch: 54, Test Loss: 0.81813, Test Acc: 72.53%
+2024-11-19 21:24:27,087 - INFO - Epoch: 55, Train Loss: 0.72861, Train Acc: 74.71%
+2024-11-19 21:24:31,420 - INFO - Epoch: 55, Test Loss: 0.81443, Test Acc: 72.69%
+2024-11-19 21:24:49,640 - INFO - Epoch: 56, Train Loss: 0.73112, Train Acc: 74.48%
+2024-11-19 21:24:54,056 - INFO - Epoch: 56, Test Loss: 0.79039, Test Acc: 73.29%
+2024-11-19 21:25:12,473 - INFO - Epoch: 57, Train Loss: 0.72986, Train Acc: 74.38%
+2024-11-19 21:25:16,871 - INFO - Epoch: 57, Test Loss: 0.81310, Test Acc: 72.35%
+2024-11-19 21:25:35,073 - INFO - Epoch: 58, Train Loss: 0.72819, Train Acc: 74.40%
+2024-11-19 21:25:39,422 - INFO - Epoch: 58, Test Loss: 0.79453, Test Acc: 73.02%
+2024-11-19 21:25:57,769 - INFO - Epoch: 59, Train Loss: 0.72575, Train Acc: 74.82%
+2024-11-19 21:26:02,130 - INFO - Epoch: 59, Test Loss: 0.82351, Test Acc: 71.54%
+2024-11-19 21:26:20,592 - INFO - Epoch: 60, Train Loss: 0.72668, Train Acc: 74.69%
+2024-11-19 21:26:25,076 - INFO - Epoch: 60, Test Loss: 0.80303, Test Acc: 72.59%
+2024-11-19 21:26:43,669 - INFO - Epoch: 61, Train Loss: 0.72678, Train Acc: 74.64%
+2024-11-19 21:26:48,044 - INFO - Epoch: 61, Test Loss: 0.79583, Test Acc: 72.91%
+2024-11-19 21:27:06,700 - INFO - Epoch: 62, Train Loss: 0.72030, Train Acc: 74.76%
+2024-11-19 21:27:11,268 - INFO - Epoch: 62, Test Loss: 0.78185, Test Acc: 73.48%
+2024-11-19 21:27:29,541 - INFO - Epoch: 63, Train Loss: 0.72402, Train Acc: 74.62%
+2024-11-19 21:27:33,910 - INFO - Epoch: 63, Test Loss: 0.80133, Test Acc: 73.21%
+2024-11-19 21:27:52,341 - INFO - Epoch: 64, Train Loss: 0.72056, Train Acc: 74.80%
+2024-11-19 21:27:56,855 - INFO - Epoch: 64, Test Loss: 0.81017, Test Acc: 72.46%
+2024-11-19 21:28:15,233 - INFO - Epoch: 65, Train Loss: 0.71923, Train Acc: 74.86%
+2024-11-19 21:28:19,629 - INFO - Epoch: 65, Test Loss: 0.79310, Test Acc: 72.81%
+2024-11-19 21:28:37,910 - INFO - Epoch: 66, Train Loss: 0.71967, Train Acc: 74.81%
+2024-11-19 21:28:42,359 - INFO - Epoch: 66, Test Loss: 0.81076, Test Acc: 72.18%
+2024-11-19 21:29:00,743 - INFO - Epoch: 67, Train Loss: 0.71951, Train Acc: 74.79%
+2024-11-19 21:29:05,370 - INFO - Epoch: 67, Test Loss: 0.79497, Test Acc: 72.80%
+2024-11-19 21:29:23,730 - INFO - Epoch: 68, Train Loss: 0.72271, Train Acc: 74.74%
+2024-11-19 21:29:28,008 - INFO - Epoch: 68, Test Loss: 0.82464, Test Acc: 72.06%
+2024-11-19 21:29:46,323 - INFO - Epoch: 69, Train Loss: 0.71973, Train Acc: 74.68%
+2024-11-19 21:29:50,773 - INFO - Epoch: 69, Test Loss: 0.78265, Test Acc: 73.40%
+2024-11-19 21:30:09,038 - INFO - Epoch: 70, Train Loss: 0.71837, Train Acc: 74.95%
+2024-11-19 21:30:13,396 - INFO - Epoch: 70, Test Loss: 0.78483, Test Acc: 73.26%
+2024-11-19 21:30:31,581 - INFO - Epoch: 71, Train Loss: 0.71964, Train Acc: 74.75%
+2024-11-19 21:30:35,873 - INFO - Epoch: 71, Test Loss: 0.79826, Test Acc: 72.71%
+2024-11-19 21:30:54,508 - INFO - Epoch: 72, Train Loss: 0.71509, Train Acc: 74.86%
+2024-11-19 21:30:59,067 - INFO - Epoch: 72, Test Loss: 0.80887, Test Acc: 72.39%
+2024-11-19 21:31:17,338 - INFO - Epoch: 73, Train Loss: 0.71544, Train Acc: 74.83%
+2024-11-19 21:31:21,941 - INFO - Epoch: 73, Test Loss: 0.80375, Test Acc: 72.37%
+2024-11-19 21:31:40,585 - INFO - Epoch: 74, Train Loss: 0.71686, Train Acc: 74.87%
+2024-11-19 21:31:44,817 - INFO - Epoch: 74, Test Loss: 0.78683, Test Acc: 73.02%
+2024-11-19 21:32:03,596 - INFO - Epoch: 75, Train Loss: 0.71290, Train Acc: 74.92%
+2024-11-19 21:32:08,230 - INFO - Epoch: 75, Test Loss: 0.82122, Test Acc: 72.71%
+2024-11-19 21:32:26,783 - INFO - Epoch: 76, Train Loss: 0.71150, Train Acc: 74.99%
+2024-11-19 21:32:31,234 - INFO - Epoch: 76, Test Loss: 0.79696, Test Acc: 72.99%
+2024-11-19 21:32:49,907 - INFO - Epoch: 77, Train Loss: 0.71509, Train Acc: 74.87%
+2024-11-19 21:32:54,298 - INFO - Epoch: 77, Test Loss: 0.80021, Test Acc: 72.94%
+2024-11-19 21:33:12,631 - INFO - Epoch: 78, Train Loss: 0.71519, Train Acc: 74.95%
+2024-11-19 21:33:17,089 - INFO - Epoch: 78, Test Loss: 0.80417, Test Acc: 72.84%
+2024-11-19 21:33:35,529 - INFO - Epoch: 79, Train Loss: 0.71314, Train Acc: 74.97%
+2024-11-19 21:33:40,000 - INFO - Epoch: 79, Test Loss: 0.77994, Test Acc: 73.20%
+2024-11-19 21:33:58,588 - INFO - Epoch: 80, Train Loss: 0.71391, Train Acc: 75.01%
+2024-11-19 21:34:03,017 - INFO - Epoch: 80, Test Loss: 0.79623, Test Acc: 72.69%
+2024-11-19 21:34:21,397 - INFO - Epoch: 81, Train Loss: 0.71005, Train Acc: 74.87%
+2024-11-19 21:34:25,960 - INFO - Epoch: 81, Test Loss: 0.78008, Test Acc: 73.29%
+2024-11-19 21:34:44,587 - INFO - Epoch: 82, Train Loss: 0.71069, Train Acc: 75.07%
+2024-11-19 21:34:48,873 - INFO - Epoch: 82, Test Loss: 0.79908, Test Acc: 73.24%
+2024-11-19 21:35:07,377 - INFO - Epoch: 83, Train Loss: 0.71445, Train Acc: 74.83%
+2024-11-19 21:35:11,841 - INFO - Epoch: 83, Test Loss: 0.77429, Test Acc: 73.35%
+2024-11-19 21:35:30,078 - INFO - Epoch: 84, Train Loss: 0.70885, Train Acc: 74.90%
+2024-11-19 21:35:34,518 - INFO - Epoch: 84, Test Loss: 0.80660, Test Acc: 72.68%
+2024-11-19 21:35:52,825 - INFO - Epoch: 85, Train Loss: 0.71315, Train Acc: 74.90%
+2024-11-19 21:35:57,236 - INFO - Epoch: 85, Test Loss: 0.77549, Test Acc: 73.30%
+2024-11-19 21:36:15,528 - INFO - Epoch: 86, Train Loss: 0.70973, Train Acc: 75.08%
+2024-11-19 21:36:19,975 - INFO - Epoch: 86, Test Loss: 0.79235, Test Acc: 72.78%
+2024-11-19 21:36:38,701 - INFO - Epoch: 87, Train Loss: 0.71319, Train Acc: 74.97%
+2024-11-19 21:36:43,198 - INFO - Epoch: 87, Test Loss: 0.77529, Test Acc: 73.44%
+2024-11-19 21:37:01,634 - INFO - Epoch: 88, Train Loss: 0.71262, Train Acc: 75.01%
+2024-11-19 21:37:06,029 - INFO - Epoch: 88, Test Loss: 0.78943, Test Acc: 73.49%
+2024-11-19 21:37:24,624 - INFO - Epoch: 89, Train Loss: 0.71165, Train Acc: 74.99%
+2024-11-19 21:37:29,058 - INFO - Epoch: 89, Test Loss: 0.78095, Test Acc: 73.30%
+2024-11-19 21:37:47,831 - INFO - Epoch: 90, Train Loss: 0.71018, Train Acc: 74.99%
+2024-11-19 21:37:52,330 - INFO - Epoch: 90, Test Loss: 0.78763, Test Acc: 73.11%
+2024-11-19 21:38:10,935 - INFO - Epoch: 91, Train Loss: 0.70713, Train Acc: 75.02%
+2024-11-19 21:38:15,677 - INFO - Epoch: 91, Test Loss: 0.78098, Test Acc: 73.16%
+2024-11-19 21:38:34,217 - INFO - Epoch: 92, Train Loss: 0.71086, Train Acc: 74.83%
+2024-11-19 21:38:38,694 - INFO - Epoch: 92, Test Loss: 0.77740, Test Acc: 73.42%
+2024-11-19 21:38:56,934 - INFO - Epoch: 93, Train Loss: 0.70769, Train Acc: 75.19%
+2024-11-19 21:39:01,412 - INFO - Epoch: 93, Test Loss: 0.78941, Test Acc: 73.20%
+2024-11-19 21:39:20,287 - INFO - Epoch: 94, Train Loss: 0.70841, Train Acc: 75.16%
+2024-11-19 21:39:24,663 - INFO - Epoch: 94, Test Loss: 0.82298, Test Acc: 72.11%
+2024-11-19 21:39:43,105 - INFO - Epoch: 95, Train Loss: 0.70766, Train Acc: 75.00%
+2024-11-19 21:39:47,694 - INFO - Epoch: 95, Test Loss: 0.77008, Test Acc: 73.58%
+2024-11-19 21:40:06,552 - INFO - Epoch: 96, Train Loss: 0.70974, Train Acc: 75.00%
+2024-11-19 21:40:10,958 - INFO - Epoch: 96, Test Loss: 0.85458, Test Acc: 72.13%
+2024-11-19 21:40:29,700 - INFO - Epoch: 97, Train Loss: 0.70983, Train Acc: 74.96%
+2024-11-19 21:40:34,094 - INFO - Epoch: 97, Test Loss: 0.78509, Test Acc: 73.32%
+2024-11-19 21:40:52,511 - INFO - Epoch: 98, Train Loss: 0.70592, Train Acc: 75.20%
+2024-11-19 21:40:56,974 - INFO - Epoch: 98, Test Loss: 0.77786, Test Acc: 73.76%
+2024-11-19 21:41:15,484 - INFO - Epoch: 99, Train Loss: 0.70455, Train Acc: 75.10%
+2024-11-19 21:41:20,013 - INFO - Epoch: 99, Test Loss: 0.77175, Test Acc: 73.65%
