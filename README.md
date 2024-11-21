@@ -35,7 +35,7 @@ hydra:
 
 batch_sizes: [256, 128, 64, 32, 16, 8]  # Available batch sizes for testing
 num_epochs: 100                         # Number of training epochs
-max_lr_vicreg: 30                       # Maximum learning rate for VICReg training
+max_lr_vicreg: 5                       # Maximum learning rate for VICReg training
 momentum: 0.9                           # Momentum for LARS optimizer and scheduler
 weight_decay: 1e-4                      # Weight decay for LARS optimizer
 final_lr_schedule_value: 0.002           # Final learning rate value for scheduler
@@ -49,7 +49,7 @@ num_eval_epochs: 100                    # Number of evaluation epochs
 backbone: "resnet18"                    # Backbone architecture (resnet18/resnet50)
 num_layers: 3                           # Number of layers in the projection head
 projection_head_dims: [512, 2048]       # Dimensions of the projection head (first must match ResNet output)
-max_lr_linear: 30.0                     # Maximum learning rate for linear probe training
+max_lr_linear: 5                       # Maximum learning rate for linear probe training
 linear_momentum: 0.9                     # Momentum for SGD optimizer and scheduler
 linear_weight_decay: 0.0                 # Weight decay for SGD optimizer
 
@@ -58,7 +58,7 @@ loss: "unbiased"                        # Loss type (unbiased/biased)
 augs_train_type : 'lightly'             #Augumentations setup (lightly implementation or custom)
 augs_eval_enable : False                #Enable augumentations on evaluating or not
 batch_size_sharing: False                # Whether to use the same batch size for linear evaluation
-scaled_lr_batched : True                #Scale learning rate on batch_size  or not      
+scale_lr_batched : True                #Scale learning rate on batch_size  or not      
 ```
 
 ## Usage

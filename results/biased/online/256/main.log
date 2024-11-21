@@ -1,0 +1,392 @@
+2024-11-20 20:22:18,615 - INFO - Checkpoint directory: ./results/biased/online/256
+2024-11-20 20:22:18,615 - INFO - Configuration:
+2024-11-20 20:22:18,616 - INFO - sim_coeff: 25.0
+2024-11-20 20:22:18,616 - INFO - std_coeff: 25
+2024-11-20 20:22:18,616 - INFO - cov_coeff: 1
+2024-11-20 20:22:18,616 - INFO - batch_sizes: [256, 128, 64, 32, 16, 8]
+2024-11-20 20:22:18,616 - INFO - num_epochs: 50
+2024-11-20 20:22:18,616 - INFO - max_lr_vicreg: 3.0
+2024-11-20 20:22:18,616 - INFO - momentum: 0.9
+2024-11-20 20:22:18,616 - INFO - weight_decay: 0.0001
+2024-11-20 20:22:18,616 - INFO - final_lr_schedule_value: 0.001
+2024-11-20 20:22:18,616 - INFO - warmup_epochs: 5
+2024-11-20 20:22:18,616 - INFO - batch_size_evaluate: 256
+2024-11-20 20:22:18,616 - INFO - num_eval_epochs: 50
+2024-11-20 20:22:18,616 - INFO - max_lr_linear: 5.0
+2024-11-20 20:22:18,616 - INFO - linear_momentum: 0.9
+2024-11-20 20:22:18,617 - INFO - linear_weight_decay: 0.0
+2024-11-20 20:22:18,617 - INFO - backbone: resnet18
+2024-11-20 20:22:18,617 - INFO - augs_train_type: lightly
+2024-11-20 20:22:18,617 - INFO - augs_eval_enable: False
+2024-11-20 20:22:18,617 - INFO - num_layers: 3
+2024-11-20 20:22:18,617 - INFO - projection_head_dims: [512, 2048]
+2024-11-20 20:22:18,617 - INFO - probe: online
+2024-11-20 20:22:18,617 - INFO - loss: biased
+2024-11-20 20:22:18,617 - INFO - batch_size_sharing: True
+2024-11-20 20:22:18,617 - INFO - scale_lr_batched: True
+2024-11-20 20:22:18,617 - INFO - batch_size: 256
+2024-11-20 20:22:18,617 - INFO - checkpoint_dir: ./results/biased/online/256
+2024-11-20 20:22:18,617 - INFO - Running with batch_size=256
+2024-11-20 20:22:18,661 - INFO - Using device: cuda
+2024-11-20 20:22:18,663 - INFO - Setting up experiment...
+2024-11-20 20:22:18,663 - INFO - Using ResNet18 backbone
+2024-11-20 20:22:19,476 - INFO - Using biased VICReg loss
+2024-11-20 20:22:19,477 - INFO - Setting up datasets and dataloaders
+2024-11-20 20:22:20,745 - INFO - Created dataloaders with batch size 256 and evaluate 256
+2024-11-20 20:22:20,746 - INFO - Created optimizers with learning rates: vicreg=3.0, linear=5.0
+2024-11-20 20:22:20,746 - INFO - Loaded checkpoints: vicreg_epoch=0, linear_epoch=0
+2024-11-20 20:22:20,747 - INFO - Starting from epoch vicreg_start:0
+2024-11-20 20:22:20,747 - INFO - Writing visualization data to TensorBoard
+2024-11-20 20:22:23,916 - INFO - Successfully wrote visualization data to TensorBoard
+2024-11-20 20:22:23,948 - INFO - Beginning train + evaluate for online probing
+2024-11-20 20:22:23,948 - INFO - Continuing training from epoch 0 to 50
+2024-11-20 20:22:45,589 - INFO - Epoch: 00, biasedVICReg loss: 19.69753, Train Loss: 520.35718, Train Acc: 26.08%
+2024-11-20 20:22:45,589 - INFO - Epoch: 00, Invariance loss: 0.07566
+2024-11-20 20:22:45,589 - INFO - Epoch: 00, Variance loss: 0.66597
+2024-11-20 20:22:45,589 - INFO - Epoch: 00, Covariance loss: 1.15675
+2024-11-20 20:22:45,589 - INFO - Epoch: 00, Compare losses: 19.69753 == 19.69753
+2024-11-20 20:22:45,767 - INFO - Epoch: 00, Optimizer LR: 2.92660925, Linear Optimizer LR: 0.05000000
+2024-11-20 20:22:49,900 - INFO - Epoch: 00, Test Loss: 151.97333, Test Acc: 26.10%
+2024-11-20 20:23:10,528 - INFO - Epoch: 01, biasedVICReg loss: 18.32550, Train Loss: 96.92824, Train Acc: 33.95%
+2024-11-20 20:23:10,528 - INFO - Epoch: 01, Invariance loss: 0.07359
+2024-11-20 20:23:10,529 - INFO - Epoch: 01, Variance loss: 0.59755
+2024-11-20 20:23:10,529 - INFO - Epoch: 01, Covariance loss: 1.54710
+2024-11-20 20:23:10,529 - INFO - Epoch: 01, Compare losses: 18.32550 == 18.32550
+2024-11-20 20:23:11,416 - INFO - Epoch: 01, Optimizer LR: 2.71362098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:23:15,555 - INFO - Epoch: 01, Test Loss: 72.60437, Test Acc: 32.76%
+2024-11-20 20:23:35,964 - INFO - Epoch: 02, biasedVICReg loss: 17.76436, Train Loss: 58.67524, Train Acc: 37.81%
+2024-11-20 20:23:35,964 - INFO - Epoch: 02, Invariance loss: 0.07332
+2024-11-20 20:23:35,965 - INFO - Epoch: 02, Variance loss: 0.56774
+2024-11-20 20:23:35,965 - INFO - Epoch: 02, Covariance loss: 1.73797
+2024-11-20 20:23:35,965 - INFO - Epoch: 02, Compare losses: 17.76436 == 17.76436
+2024-11-20 20:23:36,820 - INFO - Epoch: 02, Optimizer LR: 2.38188399, Linear Optimizer LR: 0.05000000
+2024-11-20 20:23:40,894 - INFO - Epoch: 02, Test Loss: 46.46131, Test Acc: 38.37%
+2024-11-20 20:24:01,355 - INFO - Epoch: 03, biasedVICReg loss: 17.38539, Train Loss: 39.32528, Train Acc: 41.63%
+2024-11-20 20:24:01,355 - INFO - Epoch: 03, Invariance loss: 0.07318
+2024-11-20 20:24:01,356 - INFO - Epoch: 03, Variance loss: 0.54698
+2024-11-20 20:24:01,356 - INFO - Epoch: 03, Covariance loss: 1.88127
+2024-11-20 20:24:01,356 - INFO - Epoch: 03, Compare losses: 17.38539 == 17.38539
+2024-11-20 20:24:02,246 - INFO - Epoch: 03, Optimizer LR: 1.96387098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:24:06,283 - INFO - Epoch: 03, Test Loss: 35.24591, Test Acc: 39.45%
+2024-11-20 20:24:27,678 - INFO - Epoch: 04, biasedVICReg loss: 17.07006, Train Loss: 29.21368, Train Acc: 44.47%
+2024-11-20 20:24:27,678 - INFO - Epoch: 04, Invariance loss: 0.07143
+2024-11-20 20:24:27,679 - INFO - Epoch: 04, Variance loss: 0.53205
+2024-11-20 20:24:27,679 - INFO - Epoch: 04, Covariance loss: 1.98313
+2024-11-20 20:24:27,679 - INFO - Epoch: 04, Compare losses: 17.07006 == 17.07006
+2024-11-20 20:24:28,577 - INFO - Epoch: 04, Optimizer LR: 1.50050000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:24:32,956 - INFO - Epoch: 04, Test Loss: 25.90741, Test Acc: 43.41%
+2024-11-20 20:24:54,368 - INFO - Epoch: 05, biasedVICReg loss: 16.83221, Train Loss: 22.20986, Train Acc: 47.46%
+2024-11-20 20:24:54,368 - INFO - Epoch: 05, Invariance loss: 0.07105
+2024-11-20 20:24:54,368 - INFO - Epoch: 05, Variance loss: 0.51913
+2024-11-20 20:24:54,369 - INFO - Epoch: 05, Covariance loss: 2.07768
+2024-11-20 20:24:54,369 - INFO - Epoch: 05, Compare losses: 16.83221 == 16.83221
+2024-11-20 20:24:55,233 - INFO - Epoch: 05, Optimizer LR: 1.03712902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:24:59,650 - INFO - Epoch: 05, Test Loss: 21.27695, Test Acc: 44.55%
+2024-11-20 20:25:20,883 - INFO - Epoch: 06, biasedVICReg loss: 16.63800, Train Loss: 16.90701, Train Acc: 48.94%
+2024-11-20 20:25:20,883 - INFO - Epoch: 06, Invariance loss: 0.06996
+2024-11-20 20:25:20,883 - INFO - Epoch: 06, Variance loss: 0.50933
+2024-11-20 20:25:20,883 - INFO - Epoch: 06, Covariance loss: 2.15595
+2024-11-20 20:25:20,884 - INFO - Epoch: 06, Compare losses: 16.63801 == 16.63800
+2024-11-20 20:25:21,777 - INFO - Epoch: 06, Optimizer LR: 0.61911601, Linear Optimizer LR: 0.05000000
+2024-11-20 20:25:26,208 - INFO - Epoch: 06, Test Loss: 17.11675, Test Acc: 46.36%
+2024-11-20 20:25:47,527 - INFO - Epoch: 07, biasedVICReg loss: 16.46191, Train Loss: 13.81549, Train Acc: 51.05%
+2024-11-20 20:25:47,527 - INFO - Epoch: 07, Invariance loss: 0.06890
+2024-11-20 20:25:47,527 - INFO - Epoch: 07, Variance loss: 0.50050
+2024-11-20 20:25:47,527 - INFO - Epoch: 07, Covariance loss: 2.22687
+2024-11-20 20:25:47,528 - INFO - Epoch: 07, Compare losses: 16.46192 == 16.46191
+2024-11-20 20:25:48,373 - INFO - Epoch: 07, Optimizer LR: 0.28737902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:25:52,819 - INFO - Epoch: 07, Test Loss: 13.02688, Test Acc: 47.52%
+2024-11-20 20:26:14,117 - INFO - Epoch: 08, biasedVICReg loss: 16.31464, Train Loss: 11.57407, Train Acc: 52.19%
+2024-11-20 20:26:14,118 - INFO - Epoch: 08, Invariance loss: 0.06794
+2024-11-20 20:26:14,118 - INFO - Epoch: 08, Variance loss: 0.49355
+2024-11-20 20:26:14,118 - INFO - Epoch: 08, Covariance loss: 2.27718
+2024-11-20 20:26:14,118 - INFO - Epoch: 08, Compare losses: 16.31463 == 16.31464
+2024-11-20 20:26:14,976 - INFO - Epoch: 08, Optimizer LR: 0.07439075, Linear Optimizer LR: 0.05000000
+2024-11-20 20:26:19,389 - INFO - Epoch: 08, Test Loss: 11.31923, Test Acc: 47.35%
+2024-11-20 20:26:41,177 - INFO - Epoch: 09, biasedVICReg loss: 16.16988, Train Loss: 9.67318, Train Acc: 53.73%
+2024-11-20 20:26:41,178 - INFO - Epoch: 09, Invariance loss: 0.06617
+2024-11-20 20:26:41,178 - INFO - Epoch: 09, Variance loss: 0.48726
+2024-11-20 20:26:41,178 - INFO - Epoch: 09, Covariance loss: 2.33406
+2024-11-20 20:26:41,178 - INFO - Epoch: 09, Compare losses: 16.16987 == 16.16988
+2024-11-20 20:26:42,099 - INFO - Epoch: 09, Optimizer LR: 0.00100000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:26:46,528 - INFO - Epoch: 09, Test Loss: 8.93475, Test Acc: 53.01%
+2024-11-20 20:27:07,835 - INFO - Epoch: 10, biasedVICReg loss: 16.05171, Train Loss: 8.71964, Train Acc: 54.37%
+2024-11-20 20:27:07,835 - INFO - Epoch: 10, Invariance loss: 0.06549
+2024-11-20 20:27:07,835 - INFO - Epoch: 10, Variance loss: 0.48103
+2024-11-20 20:27:07,835 - INFO - Epoch: 10, Covariance loss: 2.38863
+2024-11-20 20:27:07,835 - INFO - Epoch: 10, Compare losses: 16.05171 == 16.05171
+2024-11-20 20:27:08,830 - INFO - Epoch: 10, Optimizer LR: 0.07439075, Linear Optimizer LR: 0.05000000
+2024-11-20 20:27:13,468 - INFO - Epoch: 10, Test Loss: 8.15301, Test Acc: 52.33%
+2024-11-20 20:27:34,805 - INFO - Epoch: 11, biasedVICReg loss: 15.94745, Train Loss: 7.62676, Train Acc: 55.28%
+2024-11-20 20:27:34,806 - INFO - Epoch: 11, Invariance loss: 0.06478
+2024-11-20 20:27:34,806 - INFO - Epoch: 11, Variance loss: 0.47590
+2024-11-20 20:27:34,806 - INFO - Epoch: 11, Covariance loss: 2.43037
+2024-11-20 20:27:34,806 - INFO - Epoch: 11, Compare losses: 15.94745 == 15.94745
+2024-11-20 20:27:35,621 - INFO - Epoch: 11, Optimizer LR: 0.28737902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:27:40,423 - INFO - Epoch: 11, Test Loss: 7.34374, Test Acc: 53.67%
+2024-11-20 20:28:01,794 - INFO - Epoch: 12, biasedVICReg loss: 15.85810, Train Loss: 6.93514, Train Acc: 56.77%
+2024-11-20 20:28:01,794 - INFO - Epoch: 12, Invariance loss: 0.06427
+2024-11-20 20:28:01,794 - INFO - Epoch: 12, Variance loss: 0.47112
+2024-11-20 20:28:01,794 - INFO - Epoch: 12, Covariance loss: 2.47332
+2024-11-20 20:28:01,794 - INFO - Epoch: 12, Compare losses: 15.85810 == 15.85810
+2024-11-20 20:28:02,753 - INFO - Epoch: 12, Optimizer LR: 0.61911601, Linear Optimizer LR: 0.05000000
+2024-11-20 20:28:07,290 - INFO - Epoch: 12, Test Loss: 7.29241, Test Acc: 53.90%
+2024-11-20 20:28:28,674 - INFO - Epoch: 13, biasedVICReg loss: 15.74366, Train Loss: 6.54952, Train Acc: 56.76%
+2024-11-20 20:28:28,674 - INFO - Epoch: 13, Invariance loss: 0.06276
+2024-11-20 20:28:28,675 - INFO - Epoch: 13, Variance loss: 0.46582
+2024-11-20 20:28:28,675 - INFO - Epoch: 13, Covariance loss: 2.52908
+2024-11-20 20:28:28,675 - INFO - Epoch: 13, Compare losses: 15.74367 == 15.74366
+2024-11-20 20:28:29,577 - INFO - Epoch: 13, Optimizer LR: 1.03712902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:28:34,027 - INFO - Epoch: 13, Test Loss: 6.49936, Test Acc: 54.79%
+2024-11-20 20:28:55,450 - INFO - Epoch: 14, biasedVICReg loss: 15.66986, Train Loss: 6.12097, Train Acc: 57.77%
+2024-11-20 20:28:55,450 - INFO - Epoch: 14, Invariance loss: 0.06194
+2024-11-20 20:28:55,450 - INFO - Epoch: 14, Variance loss: 0.46291
+2024-11-20 20:28:55,450 - INFO - Epoch: 14, Covariance loss: 2.54871
+2024-11-20 20:28:55,450 - INFO - Epoch: 14, Compare losses: 15.66987 == 15.66986
+2024-11-20 20:28:56,307 - INFO - Epoch: 14, Optimizer LR: 1.50050000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:29:00,772 - INFO - Epoch: 14, Test Loss: 6.32976, Test Acc: 52.12%
+2024-11-20 20:29:22,126 - INFO - Epoch: 15, biasedVICReg loss: 15.60095, Train Loss: 5.67842, Train Acc: 57.79%
+2024-11-20 20:29:22,126 - INFO - Epoch: 15, Invariance loss: 0.06140
+2024-11-20 20:29:22,126 - INFO - Epoch: 15, Variance loss: 0.45959
+2024-11-20 20:29:22,126 - INFO - Epoch: 15, Covariance loss: 2.57641
+2024-11-20 20:29:22,126 - INFO - Epoch: 15, Compare losses: 15.60096 == 15.60095
+2024-11-20 20:29:23,019 - INFO - Epoch: 15, Optimizer LR: 1.96387098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:29:27,511 - INFO - Epoch: 15, Test Loss: 6.04008, Test Acc: 55.12%
+2024-11-20 20:29:48,920 - INFO - Epoch: 16, biasedVICReg loss: 15.52158, Train Loss: 5.43834, Train Acc: 58.99%
+2024-11-20 20:29:48,920 - INFO - Epoch: 16, Invariance loss: 0.06074
+2024-11-20 20:29:48,920 - INFO - Epoch: 16, Variance loss: 0.45553
+2024-11-20 20:29:48,921 - INFO - Epoch: 16, Covariance loss: 2.61494
+2024-11-20 20:29:48,921 - INFO - Epoch: 16, Compare losses: 15.52158 == 15.52158
+2024-11-20 20:29:49,799 - INFO - Epoch: 16, Optimizer LR: 2.38188399, Linear Optimizer LR: 0.05000000
+2024-11-20 20:29:54,287 - INFO - Epoch: 16, Test Loss: 5.63015, Test Acc: 56.07%
+2024-11-20 20:30:15,660 - INFO - Epoch: 17, biasedVICReg loss: 15.46568, Train Loss: 5.16350, Train Acc: 58.47%
+2024-11-20 20:30:15,661 - INFO - Epoch: 17, Invariance loss: 0.06020
+2024-11-20 20:30:15,661 - INFO - Epoch: 17, Variance loss: 0.45311
+2024-11-20 20:30:15,661 - INFO - Epoch: 17, Covariance loss: 2.63292
+2024-11-20 20:30:15,661 - INFO - Epoch: 17, Compare losses: 15.46568 == 15.46568
+2024-11-20 20:30:16,526 - INFO - Epoch: 17, Optimizer LR: 2.71362098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:30:21,170 - INFO - Epoch: 17, Test Loss: 5.23166, Test Acc: 56.53%
+2024-11-20 20:30:42,307 - INFO - Epoch: 18, biasedVICReg loss: 15.40442, Train Loss: 4.77609, Train Acc: 59.15%
+2024-11-20 20:30:42,308 - INFO - Epoch: 18, Invariance loss: 0.05950
+2024-11-20 20:30:42,308 - INFO - Epoch: 18, Variance loss: 0.45027
+2024-11-20 20:30:42,308 - INFO - Epoch: 18, Covariance loss: 2.66002
+2024-11-20 20:30:42,308 - INFO - Epoch: 18, Compare losses: 15.40443 == 15.40442
+2024-11-20 20:30:43,195 - INFO - Epoch: 18, Optimizer LR: 2.92660925, Linear Optimizer LR: 0.05000000
+2024-11-20 20:30:47,624 - INFO - Epoch: 18, Test Loss: 5.50016, Test Acc: 55.39%
+2024-11-20 20:31:09,011 - INFO - Epoch: 19, biasedVICReg loss: 15.36761, Train Loss: 4.65385, Train Acc: 59.93%
+2024-11-20 20:31:09,011 - INFO - Epoch: 19, Invariance loss: 0.05921
+2024-11-20 20:31:09,012 - INFO - Epoch: 19, Variance loss: 0.44842
+2024-11-20 20:31:09,012 - INFO - Epoch: 19, Covariance loss: 2.67701
+2024-11-20 20:31:09,012 - INFO - Epoch: 19, Compare losses: 15.36761 == 15.36761
+2024-11-20 20:31:09,900 - INFO - Epoch: 19, Optimizer LR: 3.00000000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:31:14,289 - INFO - Epoch: 19, Test Loss: 5.41920, Test Acc: 54.29%
+2024-11-20 20:31:35,607 - INFO - Epoch: 20, biasedVICReg loss: 15.30184, Train Loss: 4.56198, Train Acc: 59.88%
+2024-11-20 20:31:35,607 - INFO - Epoch: 20, Invariance loss: 0.05842
+2024-11-20 20:31:35,607 - INFO - Epoch: 20, Variance loss: 0.44506
+2024-11-20 20:31:35,607 - INFO - Epoch: 20, Covariance loss: 2.71467
+2024-11-20 20:31:35,608 - INFO - Epoch: 20, Compare losses: 15.30184 == 15.30184
+2024-11-20 20:31:36,483 - INFO - Epoch: 20, Optimizer LR: 2.92660925, Linear Optimizer LR: 0.05000000
+2024-11-20 20:31:40,871 - INFO - Epoch: 20, Test Loss: 4.69861, Test Acc: 56.23%
+2024-11-20 20:32:02,538 - INFO - Epoch: 21, biasedVICReg loss: 15.26496, Train Loss: 4.36541, Train Acc: 60.49%
+2024-11-20 20:32:02,538 - INFO - Epoch: 21, Invariance loss: 0.05808
+2024-11-20 20:32:02,539 - INFO - Epoch: 21, Variance loss: 0.44382
+2024-11-20 20:32:02,539 - INFO - Epoch: 21, Covariance loss: 2.71737
+2024-11-20 20:32:02,539 - INFO - Epoch: 21, Compare losses: 15.26497 == 15.26496
+2024-11-20 20:32:03,414 - INFO - Epoch: 21, Optimizer LR: 2.71362098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:32:07,745 - INFO - Epoch: 21, Test Loss: 4.18302, Test Acc: 61.53%
+2024-11-20 20:32:29,315 - INFO - Epoch: 22, biasedVICReg loss: 15.22030, Train Loss: 4.15668, Train Acc: 61.41%
+2024-11-20 20:32:29,315 - INFO - Epoch: 22, Invariance loss: 0.05751
+2024-11-20 20:32:29,316 - INFO - Epoch: 22, Variance loss: 0.44216
+2024-11-20 20:32:29,316 - INFO - Epoch: 22, Covariance loss: 2.72861
+2024-11-20 20:32:29,316 - INFO - Epoch: 22, Compare losses: 15.22030 == 15.22030
+2024-11-20 20:32:30,184 - INFO - Epoch: 22, Optimizer LR: 2.38188399, Linear Optimizer LR: 0.05000000
+2024-11-20 20:32:34,789 - INFO - Epoch: 22, Test Loss: 4.27834, Test Acc: 59.89%
+2024-11-20 20:32:56,313 - INFO - Epoch: 23, biasedVICReg loss: 15.17077, Train Loss: 4.08994, Train Acc: 61.54%
+2024-11-20 20:32:56,313 - INFO - Epoch: 23, Invariance loss: 0.05696
+2024-11-20 20:32:56,313 - INFO - Epoch: 23, Variance loss: 0.43975
+2024-11-20 20:32:56,314 - INFO - Epoch: 23, Covariance loss: 2.75304
+2024-11-20 20:32:56,314 - INFO - Epoch: 23, Compare losses: 15.17077 == 15.17077
+2024-11-20 20:32:57,197 - INFO - Epoch: 23, Optimizer LR: 1.96387098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:33:01,723 - INFO - Epoch: 23, Test Loss: 3.99112, Test Acc: 61.84%
+2024-11-20 20:33:23,114 - INFO - Epoch: 24, biasedVICReg loss: 15.13953, Train Loss: 3.88921, Train Acc: 62.32%
+2024-11-20 20:33:23,114 - INFO - Epoch: 24, Invariance loss: 0.05709
+2024-11-20 20:33:23,115 - INFO - Epoch: 24, Variance loss: 0.43750
+2024-11-20 20:33:23,115 - INFO - Epoch: 24, Covariance loss: 2.77469
+2024-11-20 20:33:23,115 - INFO - Epoch: 24, Compare losses: 15.13952 == 15.13953
+2024-11-20 20:33:24,026 - INFO - Epoch: 24, Optimizer LR: 1.50050000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:33:28,569 - INFO - Epoch: 24, Test Loss: 3.74788, Test Acc: 60.88%
+2024-11-20 20:33:49,900 - INFO - Epoch: 25, biasedVICReg loss: 15.11490, Train Loss: 3.76683, Train Acc: 62.30%
+2024-11-20 20:33:49,900 - INFO - Epoch: 25, Invariance loss: 0.05684
+2024-11-20 20:33:49,900 - INFO - Epoch: 25, Variance loss: 0.43638
+2024-11-20 20:33:49,900 - INFO - Epoch: 25, Covariance loss: 2.78440
+2024-11-20 20:33:49,900 - INFO - Epoch: 25, Compare losses: 15.11490 == 15.11490
+2024-11-20 20:33:50,763 - INFO - Epoch: 25, Optimizer LR: 1.03712902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:33:55,323 - INFO - Epoch: 25, Test Loss: 3.70073, Test Acc: 60.86%
+2024-11-20 20:34:16,717 - INFO - Epoch: 26, biasedVICReg loss: 15.07078, Train Loss: 3.68919, Train Acc: 62.76%
+2024-11-20 20:34:16,718 - INFO - Epoch: 26, Invariance loss: 0.05658
+2024-11-20 20:34:16,718 - INFO - Epoch: 26, Variance loss: 0.43377
+2024-11-20 20:34:16,718 - INFO - Epoch: 26, Covariance loss: 2.81191
+2024-11-20 20:34:16,718 - INFO - Epoch: 26, Compare losses: 15.07078 == 15.07078
+2024-11-20 20:34:17,591 - INFO - Epoch: 26, Optimizer LR: 0.61911601, Linear Optimizer LR: 0.05000000
+2024-11-20 20:34:22,063 - INFO - Epoch: 26, Test Loss: 3.62583, Test Acc: 62.78%
+2024-11-20 20:34:43,678 - INFO - Epoch: 27, biasedVICReg loss: 15.02981, Train Loss: 3.64966, Train Acc: 62.48%
+2024-11-20 20:34:43,678 - INFO - Epoch: 27, Invariance loss: 0.05569
+2024-11-20 20:34:43,679 - INFO - Epoch: 27, Variance loss: 0.43257
+2024-11-20 20:34:43,679 - INFO - Epoch: 27, Covariance loss: 2.82310
+2024-11-20 20:34:43,679 - INFO - Epoch: 27, Compare losses: 15.02982 == 15.02981
+2024-11-20 20:34:44,583 - INFO - Epoch: 27, Optimizer LR: 0.28737902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:34:49,040 - INFO - Epoch: 27, Test Loss: 3.57905, Test Acc: 60.96%
+2024-11-20 20:35:10,354 - INFO - Epoch: 28, biasedVICReg loss: 14.99468, Train Loss: 3.48788, Train Acc: 63.36%
+2024-11-20 20:35:10,354 - INFO - Epoch: 28, Invariance loss: 0.05558
+2024-11-20 20:35:10,354 - INFO - Epoch: 28, Variance loss: 0.43079
+2024-11-20 20:35:10,354 - INFO - Epoch: 28, Covariance loss: 2.83553
+2024-11-20 20:35:10,354 - INFO - Epoch: 28, Compare losses: 14.99468 == 14.99468
+2024-11-20 20:35:11,252 - INFO - Epoch: 28, Optimizer LR: 0.07439075, Linear Optimizer LR: 0.05000000
+2024-11-20 20:35:15,690 - INFO - Epoch: 28, Test Loss: 3.61533, Test Acc: 61.74%
+2024-11-20 20:35:37,108 - INFO - Epoch: 29, biasedVICReg loss: 14.97246, Train Loss: 3.38814, Train Acc: 63.24%
+2024-11-20 20:35:37,108 - INFO - Epoch: 29, Invariance loss: 0.05561
+2024-11-20 20:35:37,108 - INFO - Epoch: 29, Variance loss: 0.42962
+2024-11-20 20:35:37,108 - INFO - Epoch: 29, Covariance loss: 2.84154
+2024-11-20 20:35:37,108 - INFO - Epoch: 29, Compare losses: 14.97247 == 14.97246
+2024-11-20 20:35:37,991 - INFO - Epoch: 29, Optimizer LR: 0.00100000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:35:42,406 - INFO - Epoch: 29, Test Loss: 3.30145, Test Acc: 62.70%
+2024-11-20 20:36:03,766 - INFO - Epoch: 30, biasedVICReg loss: 14.95385, Train Loss: 3.21604, Train Acc: 64.34%
+2024-11-20 20:36:03,766 - INFO - Epoch: 30, Invariance loss: 0.05524
+2024-11-20 20:36:03,766 - INFO - Epoch: 30, Variance loss: 0.42882
+2024-11-20 20:36:03,766 - INFO - Epoch: 30, Covariance loss: 2.85226
+2024-11-20 20:36:03,766 - INFO - Epoch: 30, Compare losses: 14.95386 == 14.95385
+2024-11-20 20:36:04,609 - INFO - Epoch: 30, Optimizer LR: 0.07439075, Linear Optimizer LR: 0.05000000
+2024-11-20 20:36:09,007 - INFO - Epoch: 30, Test Loss: 3.35491, Test Acc: 61.81%
+2024-11-20 20:36:30,445 - INFO - Epoch: 31, biasedVICReg loss: 14.93030, Train Loss: 3.17101, Train Acc: 64.37%
+2024-11-20 20:36:30,446 - INFO - Epoch: 31, Invariance loss: 0.05524
+2024-11-20 20:36:30,446 - INFO - Epoch: 31, Variance loss: 0.42766
+2024-11-20 20:36:30,446 - INFO - Epoch: 31, Covariance loss: 2.85776
+2024-11-20 20:36:30,446 - INFO - Epoch: 31, Compare losses: 14.93030 == 14.93030
+2024-11-20 20:36:31,295 - INFO - Epoch: 31, Optimizer LR: 0.28737902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:36:35,785 - INFO - Epoch: 31, Test Loss: 3.34023, Test Acc: 62.77%
+2024-11-20 20:36:57,127 - INFO - Epoch: 32, biasedVICReg loss: 14.89979, Train Loss: 3.04948, Train Acc: 64.89%
+2024-11-20 20:36:57,127 - INFO - Epoch: 32, Invariance loss: 0.05478
+2024-11-20 20:36:57,128 - INFO - Epoch: 32, Variance loss: 0.42615
+2024-11-20 20:36:57,128 - INFO - Epoch: 32, Covariance loss: 2.87660
+2024-11-20 20:36:57,128 - INFO - Epoch: 32, Compare losses: 14.89979 == 14.89979
+2024-11-20 20:36:57,993 - INFO - Epoch: 32, Optimizer LR: 0.61911601, Linear Optimizer LR: 0.05000000
+2024-11-20 20:37:02,527 - INFO - Epoch: 32, Test Loss: 3.33896, Test Acc: 60.96%
+2024-11-20 20:37:23,919 - INFO - Epoch: 33, biasedVICReg loss: 14.85326, Train Loss: 3.07596, Train Acc: 64.85%
+2024-11-20 20:37:23,920 - INFO - Epoch: 33, Invariance loss: 0.05409
+2024-11-20 20:37:23,920 - INFO - Epoch: 33, Variance loss: 0.42400
+2024-11-20 20:37:23,920 - INFO - Epoch: 33, Covariance loss: 2.90091
+2024-11-20 20:37:23,920 - INFO - Epoch: 33, Compare losses: 14.85326 == 14.85326
+2024-11-20 20:37:24,792 - INFO - Epoch: 33, Optimizer LR: 1.03712902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:37:29,281 - INFO - Epoch: 33, Test Loss: 3.44543, Test Acc: 59.95%
+2024-11-20 20:37:50,543 - INFO - Epoch: 34, biasedVICReg loss: 14.81664, Train Loss: 2.99875, Train Acc: 64.67%
+2024-11-20 20:37:50,544 - INFO - Epoch: 34, Invariance loss: 0.05339
+2024-11-20 20:37:50,544 - INFO - Epoch: 34, Variance loss: 0.42278
+2024-11-20 20:37:50,544 - INFO - Epoch: 34, Covariance loss: 2.91240
+2024-11-20 20:37:50,544 - INFO - Epoch: 34, Compare losses: 14.81664 == 14.81664
+2024-11-20 20:37:51,415 - INFO - Epoch: 34, Optimizer LR: 1.50050000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:37:55,868 - INFO - Epoch: 34, Test Loss: 3.30352, Test Acc: 62.19%
+2024-11-20 20:38:17,364 - INFO - Epoch: 35, biasedVICReg loss: 14.80765, Train Loss: 2.90104, Train Acc: 64.93%
+2024-11-20 20:38:17,364 - INFO - Epoch: 35, Invariance loss: 0.05347
+2024-11-20 20:38:17,364 - INFO - Epoch: 35, Variance loss: 0.42239
+2024-11-20 20:38:17,364 - INFO - Epoch: 35, Covariance loss: 2.91123
+2024-11-20 20:38:17,364 - INFO - Epoch: 35, Compare losses: 14.80765 == 14.80765
+2024-11-20 20:38:18,258 - INFO - Epoch: 35, Optimizer LR: 1.96387098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:38:22,749 - INFO - Epoch: 35, Test Loss: 3.17022, Test Acc: 63.45%
+2024-11-20 20:38:44,166 - INFO - Epoch: 36, biasedVICReg loss: 14.79009, Train Loss: 2.97520, Train Acc: 65.58%
+2024-11-20 20:38:44,166 - INFO - Epoch: 36, Invariance loss: 0.05355
+2024-11-20 20:38:44,166 - INFO - Epoch: 36, Variance loss: 0.42153
+2024-11-20 20:38:44,166 - INFO - Epoch: 36, Covariance loss: 2.91302
+2024-11-20 20:38:44,166 - INFO - Epoch: 36, Compare losses: 14.79008 == 14.79009
+2024-11-20 20:38:45,076 - INFO - Epoch: 36, Optimizer LR: 2.38188399, Linear Optimizer LR: 0.05000000
+2024-11-20 20:38:49,511 - INFO - Epoch: 36, Test Loss: 3.14342, Test Acc: 63.01%
+2024-11-20 20:39:10,863 - INFO - Epoch: 37, biasedVICReg loss: 14.75951, Train Loss: 2.79631, Train Acc: 65.99%
+2024-11-20 20:39:10,863 - INFO - Epoch: 37, Invariance loss: 0.05300
+2024-11-20 20:39:10,863 - INFO - Epoch: 37, Variance loss: 0.42040
+2024-11-20 20:39:10,863 - INFO - Epoch: 37, Covariance loss: 2.92464
+2024-11-20 20:39:10,863 - INFO - Epoch: 37, Compare losses: 14.75952 == 14.75951
+2024-11-20 20:39:11,724 - INFO - Epoch: 37, Optimizer LR: 2.71362098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:39:16,184 - INFO - Epoch: 37, Test Loss: 3.01883, Test Acc: 63.37%
+2024-11-20 20:39:37,577 - INFO - Epoch: 38, biasedVICReg loss: 14.74032, Train Loss: 2.80155, Train Acc: 66.17%
+2024-11-20 20:39:37,577 - INFO - Epoch: 38, Invariance loss: 0.05288
+2024-11-20 20:39:37,577 - INFO - Epoch: 38, Variance loss: 0.41947
+2024-11-20 20:39:37,577 - INFO - Epoch: 38, Covariance loss: 2.93161
+2024-11-20 20:39:37,578 - INFO - Epoch: 38, Compare losses: 14.74032 == 14.74032
+2024-11-20 20:39:38,457 - INFO - Epoch: 38, Optimizer LR: 2.92660925, Linear Optimizer LR: 0.05000000
+2024-11-20 20:39:43,089 - INFO - Epoch: 38, Test Loss: 3.06716, Test Acc: 63.30%
+2024-11-20 20:40:04,276 - INFO - Epoch: 39, biasedVICReg loss: 14.73671, Train Loss: 2.69612, Train Acc: 66.03%
+2024-11-20 20:40:04,276 - INFO - Epoch: 39, Invariance loss: 0.05294
+2024-11-20 20:40:04,276 - INFO - Epoch: 39, Variance loss: 0.41888
+2024-11-20 20:40:04,276 - INFO - Epoch: 39, Covariance loss: 2.94127
+2024-11-20 20:40:04,276 - INFO - Epoch: 39, Compare losses: 14.73670 == 14.73671
+2024-11-20 20:40:05,155 - INFO - Epoch: 39, Optimizer LR: 3.00000000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:40:09,646 - INFO - Epoch: 39, Test Loss: 2.75674, Test Acc: 64.92%
+2024-11-20 20:40:30,879 - INFO - Epoch: 40, biasedVICReg loss: 14.70636, Train Loss: 2.68903, Train Acc: 66.14%
+2024-11-20 20:40:30,879 - INFO - Epoch: 40, Invariance loss: 0.05268
+2024-11-20 20:40:30,879 - INFO - Epoch: 40, Variance loss: 0.41714
+2024-11-20 20:40:30,879 - INFO - Epoch: 40, Covariance loss: 2.96082
+2024-11-20 20:40:30,879 - INFO - Epoch: 40, Compare losses: 14.70636 == 14.70636
+2024-11-20 20:40:31,753 - INFO - Epoch: 40, Optimizer LR: 2.92660925, Linear Optimizer LR: 0.05000000
+2024-11-20 20:40:36,235 - INFO - Epoch: 40, Test Loss: 2.64835, Test Acc: 64.74%
+2024-11-20 20:40:57,640 - INFO - Epoch: 41, biasedVICReg loss: 14.69298, Train Loss: 2.63298, Train Acc: 66.82%
+2024-11-20 20:40:57,640 - INFO - Epoch: 41, Invariance loss: 0.05247
+2024-11-20 20:40:57,640 - INFO - Epoch: 41, Variance loss: 0.41694
+2024-11-20 20:40:57,640 - INFO - Epoch: 41, Covariance loss: 2.95761
+2024-11-20 20:40:57,640 - INFO - Epoch: 41, Compare losses: 14.69298 == 14.69298
+2024-11-20 20:40:58,489 - INFO - Epoch: 41, Optimizer LR: 2.71362098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:41:02,908 - INFO - Epoch: 41, Test Loss: 2.75898, Test Acc: 64.97%
+2024-11-20 20:41:24,237 - INFO - Epoch: 42, biasedVICReg loss: 14.68719, Train Loss: 2.64084, Train Acc: 67.04%
+2024-11-20 20:41:24,238 - INFO - Epoch: 42, Invariance loss: 0.05262
+2024-11-20 20:41:24,238 - INFO - Epoch: 42, Variance loss: 0.41659
+2024-11-20 20:41:24,238 - INFO - Epoch: 42, Covariance loss: 2.95676
+2024-11-20 20:41:24,238 - INFO - Epoch: 42, Compare losses: 14.68719 == 14.68719
+2024-11-20 20:41:25,119 - INFO - Epoch: 42, Optimizer LR: 2.38188399, Linear Optimizer LR: 0.05000000
+2024-11-20 20:41:29,524 - INFO - Epoch: 42, Test Loss: 2.66812, Test Acc: 66.17%
+2024-11-20 20:41:50,984 - INFO - Epoch: 43, biasedVICReg loss: 14.66333, Train Loss: 2.54942, Train Acc: 66.93%
+2024-11-20 20:41:50,984 - INFO - Epoch: 43, Invariance loss: 0.05221
+2024-11-20 20:41:50,985 - INFO - Epoch: 43, Variance loss: 0.41533
+2024-11-20 20:41:50,985 - INFO - Epoch: 43, Covariance loss: 2.97500
+2024-11-20 20:41:50,985 - INFO - Epoch: 43, Compare losses: 14.66333 == 14.66333
+2024-11-20 20:41:51,845 - INFO - Epoch: 43, Optimizer LR: 1.96387098, Linear Optimizer LR: 0.05000000
+2024-11-20 20:41:56,347 - INFO - Epoch: 43, Test Loss: 2.48406, Test Acc: 66.66%
+2024-11-20 20:42:17,623 - INFO - Epoch: 44, biasedVICReg loss: 14.63663, Train Loss: 2.49851, Train Acc: 67.00%
+2024-11-20 20:42:17,623 - INFO - Epoch: 44, Invariance loss: 0.05207
+2024-11-20 20:42:17,623 - INFO - Epoch: 44, Variance loss: 0.41380
+2024-11-20 20:42:17,623 - INFO - Epoch: 44, Covariance loss: 2.98999
+2024-11-20 20:42:17,623 - INFO - Epoch: 44, Compare losses: 14.63663 == 14.63663
+2024-11-20 20:42:18,508 - INFO - Epoch: 44, Optimizer LR: 1.50050000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:42:22,905 - INFO - Epoch: 44, Test Loss: 2.53480, Test Acc: 66.18%
+2024-11-20 20:42:44,228 - INFO - Epoch: 45, biasedVICReg loss: 14.63619, Train Loss: 2.49735, Train Acc: 67.84%
+2024-11-20 20:42:44,228 - INFO - Epoch: 45, Invariance loss: 0.05230
+2024-11-20 20:42:44,228 - INFO - Epoch: 45, Variance loss: 0.41350
+2024-11-20 20:42:44,228 - INFO - Epoch: 45, Covariance loss: 2.99108
+2024-11-20 20:42:44,228 - INFO - Epoch: 45, Compare losses: 14.63619 == 14.63619
+2024-11-20 20:42:45,118 - INFO - Epoch: 45, Optimizer LR: 1.03712902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:42:49,559 - INFO - Epoch: 45, Test Loss: 2.54142, Test Acc: 66.98%
+2024-11-20 20:43:11,002 - INFO - Epoch: 46, biasedVICReg loss: 14.61788, Train Loss: 2.44927, Train Acc: 67.28%
+2024-11-20 20:43:11,003 - INFO - Epoch: 46, Invariance loss: 0.05198
+2024-11-20 20:43:11,003 - INFO - Epoch: 46, Variance loss: 0.41294
+2024-11-20 20:43:11,003 - INFO - Epoch: 46, Covariance loss: 2.99486
+2024-11-20 20:43:11,003 - INFO - Epoch: 46, Compare losses: 14.61788 == 14.61788
+2024-11-20 20:43:11,865 - INFO - Epoch: 46, Optimizer LR: 0.61911601, Linear Optimizer LR: 0.05000000
+2024-11-20 20:43:16,347 - INFO - Epoch: 46, Test Loss: 2.49053, Test Acc: 66.57%
+2024-11-20 20:43:37,417 - INFO - Epoch: 47, biasedVICReg loss: 14.57992, Train Loss: 2.38140, Train Acc: 68.45%
+2024-11-20 20:43:37,417 - INFO - Epoch: 47, Invariance loss: 0.05152
+2024-11-20 20:43:37,417 - INFO - Epoch: 47, Variance loss: 0.41130
+2024-11-20 20:43:37,417 - INFO - Epoch: 47, Covariance loss: 3.00960
+2024-11-20 20:43:37,417 - INFO - Epoch: 47, Compare losses: 14.57992 == 14.57992
+2024-11-20 20:43:38,290 - INFO - Epoch: 47, Optimizer LR: 0.28737902, Linear Optimizer LR: 0.05000000
+2024-11-20 20:43:42,720 - INFO - Epoch: 47, Test Loss: 2.45934, Test Acc: 67.49%
+2024-11-20 20:44:03,977 - INFO - Epoch: 48, biasedVICReg loss: 14.56190, Train Loss: 2.32911, Train Acc: 68.65%
+2024-11-20 20:44:03,977 - INFO - Epoch: 48, Invariance loss: 0.05103
+2024-11-20 20:44:03,978 - INFO - Epoch: 48, Variance loss: 0.41101
+2024-11-20 20:44:03,978 - INFO - Epoch: 48, Covariance loss: 3.01077
+2024-11-20 20:44:03,978 - INFO - Epoch: 48, Compare losses: 14.56190 == 14.56190
+2024-11-20 20:44:04,871 - INFO - Epoch: 48, Optimizer LR: 0.07439075, Linear Optimizer LR: 0.05000000
+2024-11-20 20:44:09,350 - INFO - Epoch: 48, Test Loss: 2.35396, Test Acc: 67.76%
+2024-11-20 20:44:30,582 - INFO - Epoch: 49, biasedVICReg loss: 14.55741, Train Loss: 2.33396, Train Acc: 68.68%
+2024-11-20 20:44:30,582 - INFO - Epoch: 49, Invariance loss: 0.05115
+2024-11-20 20:44:30,582 - INFO - Epoch: 49, Variance loss: 0.41025
+2024-11-20 20:44:30,583 - INFO - Epoch: 49, Covariance loss: 3.02243
+2024-11-20 20:44:30,583 - INFO - Epoch: 49, Compare losses: 14.55742 == 14.55741
+2024-11-20 20:44:31,433 - INFO - Epoch: 49, Optimizer LR: 0.00100000, Linear Optimizer LR: 0.05000000
+2024-11-20 20:44:35,815 - INFO - Epoch: 49, Test Loss: 2.40108, Test Acc: 67.04%

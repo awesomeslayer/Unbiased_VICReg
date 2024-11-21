@@ -44,30 +44,33 @@ def linear_probe(
                 z0, z1 = model(x0), model(x1)
 
                 inv_loss = invariance_loss(z0, z1)
-                var_loss = variance_loss(z0, z1)
-                cov_loss = covariance_loss(z0, z1)
-                loss = inv_loss + var_loss + cov_loss
-
-                total_loss += loss.detach()
-                total_inv_loss += inv_loss.detach()
-                total_var_loss += var_loss.detach()
-                total_cov_loss += cov_loss.detach()
+                var_loss = 0.5*(variance_loss(z0) + variance_loss(z1))
+                cov_loss = (covariance_loss(z0) + covariance_loss(z1))
+                loss = vicreg_loss(z0, z1)
 
                 loss.backward()
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad()
 
+
+                total_loss += loss.detach()
+                total_inv_loss += inv_loss.detach()
+                total_var_loss += var_loss.detach()
+                total_cov_loss += cov_loss.detach()
+
             avg_loss = total_loss / len(train_loader_vicreg)
             avg_inv_loss = total_inv_loss / len(train_loader_vicreg)
             avg_var_loss = total_var_loss / len(train_loader_vicreg)
             avg_cov_loss = total_cov_loss / len(train_loader_vicreg)
-
+            avg_loss_estimated = args.sim_coeff*avg_inv_loss + args.std_coeff*avg_var_loss + args.cov_coeff*avg_cov_loss
+            
             logger.info(f"Epoch: {epoch:>02}, {args.loss}VICReg loss: {avg_loss:.5f}")
             logger.info(f"Epoch: {epoch:>02}, Invariance loss: {avg_inv_loss:.5f}")
             logger.info(f"Epoch: {epoch:>02}, Variance loss: {avg_var_loss:.5f}")
             logger.info(f"Epoch: {epoch:>02}, Covariance loss: {avg_cov_loss:.5f}")
-
+            logger.info(f"Epoch: {epoch:>02}, Compare losses: {avg_loss_estimated:.5f} == {avg_loss:.5f}")
+            
             writer.add_scalar(f"{args.loss}VICReg_loss/train", avg_loss.item(), epoch)
             writer.add_scalar("Invariance_loss/train", avg_inv_loss.item(), epoch)
             writer.add_scalar("Variance_loss/train", avg_var_loss.item(), epoch)
@@ -261,19 +264,20 @@ def online_probe(
                 z0, z1 = model(x0), model(x1)
 
                 inv_loss = invariance_loss(z0, z1)
-                var_loss = variance_loss(z0, z1)
-                cov_loss = covariance_loss(z0, z1)
-                loss = inv_loss + var_loss + cov_loss
+                var_loss = 0.5*(variance_loss(z0) +  variance_loss(z1))
+                cov_loss = covariance_loss(z0) + covariance_loss(z1)
+                loss = vicreg_loss(z0, z1)
+
+                loss.backward()
+                optimizer.step()
+                scheduler.step()
+                optimizer.zero_grad()
 
                 total_loss += loss.detach()
                 total_inv_loss += inv_loss.detach()
                 total_var_loss += var_loss.detach()
                 total_cov_loss += cov_loss.detach()
 
-                loss.backward()
-                optimizer.step()
-                scheduler.step()
-                optimizer.zero_grad()
 
                 for param in model.parameters():
                     param.requires_grad = False
@@ -298,6 +302,8 @@ def online_probe(
             avg_inv_loss = total_inv_loss / len(train_loader)
             avg_var_loss = total_var_loss / len(train_loader)
             avg_cov_loss = total_cov_loss / len(train_loader)
+            avg_loss_estimated = args.sim_coeff*avg_inv_loss + args.std_coeff*avg_var_loss + args.cov_coeff*avg_cov_loss
+            
             train_accuracy = 100.0 * correct / total
             train_loss = train_loss / len(train_loader)
 
@@ -315,7 +321,8 @@ def online_probe(
             logger.info(f"Epoch: {epoch:>02}, Invariance loss: {avg_inv_loss:.5f}")
             logger.info(f"Epoch: {epoch:>02}, Variance loss: {avg_var_loss:.5f}")
             logger.info(f"Epoch: {epoch:>02}, Covariance loss: {avg_cov_loss:.5f}")
-
+            logger.info(f"Epoch: {epoch:>02}, Compare losses: {avg_loss_estimated:.5f} == {avg_loss:.5f}")
+            
             save_checkpoint(
                 model, optimizer, scheduler, epoch, args.checkpoint_dir, "vicreg"
             )
